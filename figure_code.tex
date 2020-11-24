@@ -274,7 +274,7 @@ Combine into one figure
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{(mainObs \textless{}{-}}\StringTok{ }\KeywordTok{ggarrange}\NormalTok{(gramSurvFigure, forbSurvFigure, }\DataTypeTok{ncol =} \DecValTok{1}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{2}\NormalTok{))}
+\NormalTok{(mainObs \textless{}{-}}\StringTok{ }\KeywordTok{ggarrange}\NormalTok{(gramSurvFigure, forbSurvFigure, }\DataTypeTok{ncol =} \DecValTok{1}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{2}\NormalTok{, }\DataTypeTok{heights =} \KeywordTok{c}\NormalTok{(.}\DecValTok{9}\NormalTok{,}\DecValTok{1}\NormalTok{)))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -329,6 +329,7 @@ LDMC model (best model for graminoid survival)
 \StringTok{  }\CommentTok{\#geom\_line(aes(x = globPreds\_a\_s$x, y = globPreds\_a\_s$CI\_low)) +}
 \StringTok{  }\KeywordTok{geom\_polygon}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(globPreds\_a\_s}\OperatorTok{$}\NormalTok{x,}\KeywordTok{rev}\NormalTok{(globPreds\_a\_s}\OperatorTok{$}\NormalTok{x)), }\DataTypeTok{y =} \KeywordTok{c}\NormalTok{( globPreds\_a\_s}\OperatorTok{$}\NormalTok{CI\_low, }\KeywordTok{rev}\NormalTok{(globPreds\_a\_s}\OperatorTok{$}\NormalTok{CI\_high))), }\DataTypeTok{col =} \OtherTok{NA}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"grey"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{.2}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}\OperatorTok{+}
 \StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{expression}\NormalTok{(size[year\_t] ))) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"P(Graminoid Survival)"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{)) }\OperatorTok{+}
@@ -360,7 +361,9 @@ LDMC*SPEI on graminoid survival
 \StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{)) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.ticks.x.bottom =} \KeywordTok{element\_blank}\NormalTok{(),}
         \DataTypeTok{axis.text.x.bottom =} \KeywordTok{element\_blank}\NormalTok{(),}
-        \DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{)}
+        \DataTypeTok{axis.title.x.bottom =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{size =} \FloatTok{9.5}\NormalTok{),}
+        \DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{,}
+\NormalTok{        )}
 \end{Highlighting}
 \end{Shaded}
 
@@ -398,7 +401,7 @@ neighborhood on LDMC*SPEI effect of graminoid survival)
 \begin{Highlighting}[]
 \NormalTok{(effectsSurv \textless{}{-}}\StringTok{ }\KeywordTok{ggarrange}\NormalTok{(AreaEffectSurv, NeighEffectSurv,}
           \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"A"}\NormalTok{, }\StringTok{"B"}\NormalTok{),}
-          \DataTypeTok{ncol =} \DecValTok{2}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{))}
+          \DataTypeTok{ncol =} \DecValTok{2}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{, }\DataTypeTok{align =}\StringTok{"hv"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
