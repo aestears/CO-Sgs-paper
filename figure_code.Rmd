@@ -71,7 +71,7 @@ RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$RDMC_s, trait = "scaled(Ro
 
 #text for labels
 dat_text <- data.frame(
-  label = c("D", "E", "F"),
+  label = c("A", "B", "C"),
   trait = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)"),
   x    = c(min(TLP_G_dat$x),min(LDMC_G_dat$x),min(RDMC_G_dat$x)),
   y     = c(1,1,1)
@@ -82,7 +82,7 @@ gramSurvFigure <- ggplot(data = GramDat) +
   geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
   geom_line(aes(x=x, GramSurv, col = SPEI))  + 
   geom_rug(aes(x = rug), data = RugDat_G) +
-  ggtitle("Observations") +
+  ggtitle(NULL) +
   xlab(NULL) +
   ylab("P(Graminoid Survival)") +
   scale_y_continuous(limits = c(0,1)) +
@@ -134,7 +134,7 @@ RugDat_F <- rbind(RugDat_F, data.frame(rug = CO_point_all$RDMC_s, trait = "scale
 
 #text for labels
 dat_text <- data.frame(
-  label = c("G", "H", "I"),
+  label = c("D", "E", "F"),
   trait = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)"),
   x    = c(min(TLP_F_dat$x),min(LDMC_F_dat$x),min(RDMC_F_dat$x)),
   y     = c(1,1,1)
@@ -159,7 +159,7 @@ forbSurvFigure <- ggplot(data = ForbDat) +
 
 ```
 Combine into one figure
-```{r mainObservationsFig }
+```{r mainObservationsFig, fig.width=8, fig.height=7}
 (mainObs <- ggarrange(gramSurvFigure, forbSurvFigure, ncol = 1, nrow = 2))
 ```
 

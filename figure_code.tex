@@ -180,7 +180,7 @@ survival
 
 \CommentTok{\#text for labels}
 \NormalTok{dat\_text \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
-  \DataTypeTok{label =} \KeywordTok{c}\NormalTok{(}\StringTok{"D"}\NormalTok{, }\StringTok{"E"}\NormalTok{, }\StringTok{"F"}\NormalTok{),}
+  \DataTypeTok{label =} \KeywordTok{c}\NormalTok{(}\StringTok{"A"}\NormalTok{, }\StringTok{"B"}\NormalTok{, }\StringTok{"C"}\NormalTok{),}
   \DataTypeTok{trait =} \KeywordTok{c}\NormalTok{(}\StringTok{"scaled(Turgor Loss Point) (MPa)"}\NormalTok{, }\StringTok{"scaled(Leaf Dry Matter Content) (g/g)"}\NormalTok{, }\StringTok{"scaled(Root Dry Matter Content) (g/g)"}\NormalTok{),}
   \DataTypeTok{x    =} \KeywordTok{c}\NormalTok{(}\KeywordTok{min}\NormalTok{(TLP\_G\_dat}\OperatorTok{$}\NormalTok{x),}\KeywordTok{min}\NormalTok{(LDMC\_G\_dat}\OperatorTok{$}\NormalTok{x),}\KeywordTok{min}\NormalTok{(RDMC\_G\_dat}\OperatorTok{$}\NormalTok{x)),}
   \DataTypeTok{y     =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{)}
@@ -191,7 +191,7 @@ survival
 \StringTok{  }\KeywordTok{geom\_ribbon}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{ymin =}\NormalTok{ CI\_low, }\DataTypeTok{ymax =}\NormalTok{ CI\_high, }\DataTypeTok{fill =}\NormalTok{ SPEI), }\DataTypeTok{alpha =} \FloatTok{0.3}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{x, GramSurv, }\DataTypeTok{col =}\NormalTok{ SPEI))  }\OperatorTok{+}\StringTok{ }
 \StringTok{  }\KeywordTok{geom\_rug}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ rug), }\DataTypeTok{data =}\NormalTok{ RugDat\_G) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Observations"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\OtherTok{NULL}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{xlab}\NormalTok{(}\OtherTok{NULL}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"P(Graminoid Survival)"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{scale\_y\_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{)) }\OperatorTok{+}
@@ -245,7 +245,7 @@ make figure for forb survival
 
 \CommentTok{\#text for labels}
 \NormalTok{dat\_text \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
-  \DataTypeTok{label =} \KeywordTok{c}\NormalTok{(}\StringTok{"G"}\NormalTok{, }\StringTok{"H"}\NormalTok{, }\StringTok{"I"}\NormalTok{),}
+  \DataTypeTok{label =} \KeywordTok{c}\NormalTok{(}\StringTok{"D"}\NormalTok{, }\StringTok{"E"}\NormalTok{, }\StringTok{"F"}\NormalTok{),}
   \DataTypeTok{trait =} \KeywordTok{c}\NormalTok{(}\StringTok{"scaled(Turgor Loss Point) (MPa)"}\NormalTok{, }\StringTok{"scaled(Leaf Dry Matter Content) (g/g)"}\NormalTok{, }\StringTok{"scaled(Root Dry Matter Content) (g/g)"}\NormalTok{),}
   \DataTypeTok{x    =} \KeywordTok{c}\NormalTok{(}\KeywordTok{min}\NormalTok{(TLP\_F\_dat}\OperatorTok{$}\NormalTok{x),}\KeywordTok{min}\NormalTok{(LDMC\_F\_dat}\OperatorTok{$}\NormalTok{x),}\KeywordTok{min}\NormalTok{(RDMC\_F\_dat}\OperatorTok{$}\NormalTok{x)),}
   \DataTypeTok{y     =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{)}
