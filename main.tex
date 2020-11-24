@@ -11,7 +11,7 @@
 \usepackage{array}
 \usepackage{colortbl}
 \usepackage{graphicx}
-\graphicspath{ {./images/} }
+\graphicspath{ {./figures/} }
 \usepackage[section]{placeins}
 \usepackage{amsmath}
 \usepackage[leftcaption]{sidecap}
@@ -95,7 +95,7 @@ We determine if species-level functional trait measurements can improve our pred
 Species that we expect to be drought tolerant (high LDMC, low TLP) should have higher survival probability in dry years than species with low LDMC and high TLP (Fig. \ref{fig:PredsObs}) Additionally, we predict that physiological traits related to water use (TLP) and morphological functional traits that are related to water content and growth rate (LDMC) will be better predictors of survival in response to drought in comparison to other traits such as SLA that are correlated with leaf economic strategy \citep{Wright2004, Reich2014}. Like SLA, LDMC is correlated with plant relative growth rate and resource-acquisition strategy \citep{Weiher1999ChallengingEcology}, but is a more direct measurement of leaf structure and allocation of carbon to leaf tissue than SLA \citep{Niinemets1999ComponentsPlants,Hodgson2011}. Species with higher LDMC have higher allocation to cell wall structure and more densely-packed leaf cells, and thus are more likely to maintain cell turgor under water stress \citep{Niinemets2001Global-scaleShrubs,Poorter2009CausesMeta-analysis,Wilcox2020PlantPrairie}.%having a hard time finding literature to support a hypothesis about RDMC... am I using a search term that is incorrect? (i.e. should I be searching on something different from "root dry matter content?" 
 We also expect that physiological traits will be stronger predictors of survival than easy-to-measure functional traits, since they are more direct measurements of physiological processes that impact growth and survival. 
 \begin{figure}
-\includegraphics[width=1\textwidth]{images/CO_sgs_ConceptualFigure.pdf}
+\includegraphics[width=1\textwidth]{figures/CO_sgs_ConceptualFigure.pdf}
 \caption{\small{
 The demographic processes of growth, survival, and reproduction, which can also be referred to as 'demographic rates', are impacted by environmental variation, interactions with neighboring organisms, and plant size. Due to limitations of our dataset, we focus here on growth and survival and do not investigate reproduction. The impact of environmental variation on an organism's demographic rates is likely mediated by the functional traits of that organism. This is especially likely for traits that are related to environmental covariates that are most limiting or stress-inducing in a given habitat. For example, traits related to water use might be more important for plant growth and survival in very dry years, and relatively less important in years with high water availability. The 'Predictions' panel shows how a drought-tolerance related functional trait might mediate the effect of climate on growth and survival. A species' trait value is important for determining survival or growth probability in dry years, but is not important in wet years when a plant is not experiencing severe water stress. 
 }}
@@ -129,7 +129,7 @@ Because individual size data is not available for forbs, we did not include a ra
 We used AIC model selection to determine the best random effect structure for each model, and AIC model selection to determine the best fixed effect structure. To compare the extent to which including a trait increases the accuracy of a model that predicts survival probability, we compared the AIC of models that include a trait and trait-by-environment interaction to a model using the same data but without the trait and interaction term. The larger the decrease in AIC in the trait model relative to the no-trait model, the more support for the ability of that trait to predict survival or growth in response to drought.
 
 \begin{figure}
-\includegraphics[width=.9\textwidth]{images/PredResultsRugPlot.pdf}
+\includegraphics[width=.9\textwidth]{figures/mainObservationsFig-1.pdf}
 \caption[width=0.35\textwidth]{\small{Predicted effect of Turgor Loss Point (\textbf{A}), Leaf Dry Matter Content (\textbf{B}), and Root Dry Matter Content (\textbf{C}) on the probability of survival in dry (yellow) and wet years (green). \textbf{D} Graminoid species are more likely to survive in dry years (low SPEI) if they have a low TLP than species with a high TLP, while species with a high TLP are slightly more likely to survive in wet years (high SPEI) (Marginal R$^2$ = 0.34, Conditional R$^2$ = 0.56; interaction term coefficient = 0.08, p $<$ 0.01). \textbf{E} A similar trend in graminoid survival probability is predicted by the model that includes LDMC (Marginal R$^2$ = 0.39, Conditional R$^2$ = 0.51; interaction term coefficient = -0.14, p $<$ 0.01). \textbf{F} A similar trend to LDMC exists for graminoid survival probability as predicted by the interaction between RDMC and SPEI (Marginal R$^2$ = 0.27, Conditional R$^2$ = 0.44; interaction term coefficient = -0.11, p $<$ 0.01)
 \textbf{G}, \textbf{H}, and \textbf{I} show that similar trends were observed for forbs, although the model fit is weaker and the interaction between trait and environment is less significant for each trait (\textbf{G}: Marginal R$^2$ = 0.02, Conditional R$^2$ = 0.40; interaction term coefficient = 0.28, p = 0.02)(\textbf{H}: Marginal R$^2$ = 0.03, Conditional R$^2$ = 0.38; interaction term coefficient = -0.34, p = 0.01)(\textbf{I}: Marginal R$^2$ = 0.03, Conditional R$^2$ = 0.38; interaction term coefficient = -0.30, p = 0.02). Black vertical bars along the x-axis (rug plots) indicate the trait values of the species included in each analysis. Survival probability for 'wet years' and 'dry years' are calculated for the 97.5$^{th}$ and 2.5$^{th}$ quantiles of the distribution of SPEI values.
 }}
@@ -308,7 +308,7 @@ $\Delta$ AIC$^\dagger$  & 5.18 & 3.98 & -8.49 & -15.40 & -13.28 & -12.57 & -5.56
 
 \begin{figure}
     \centering
-    \includegraphics[width=.9\textwidth]{images/Effects_Survival.pdf}
+    \includegraphics[width=.9\textwidth]{figures/survEffectPlots-1.pdf}
     \caption{The effect of size in year \textit{t} (\textbf{A}) and local neighborhood density (\textbf{B}) on graminoid survival in models using LDMC as the trait predictor. Dark lines indicate the overall effect of each covariate on survival. The 95\% confidence interval for the overall effect of each covariate is shown in light grey. Dark grey lines indicate the effects of each covariate according to species. For all measured graminoid species, larger individuals are more likely to survive to the next year than smaller individuals of the same species (\textbf{A}). Across all graminoid species, higher crowding of an individual's local neighborhood (10 cm radius) with individuals of the same species corresponds to lower survival probability (\textbf{B}). }
     \label{fig:Effects_Survival}
 \end{figure}
@@ -350,7 +350,7 @@ LDMC & &  & &  &  & $1$ & $-$ $0.145$ \\
 \end{table}
 
 \begin{figure}
-\includegraphics[width=1\textwidth]{images/AllTraitsSurv_Grams.pdf}
+\includegraphics[width=1\textwidth]{figures/supGramSurvPlots-1.pdf}
 \caption{\small{
 Illustration of the interaction between trait and SPEI for all graminoid survival models.
 }}
@@ -358,7 +358,7 @@ Illustration of the interaction between trait and SPEI for all graminoid surviva
 \end{figure}
 
 \begin{figure}
-\includegraphics[width=1\textwidth]{images/AllTraitsSurv_Forbs.pdf}
+\includegraphics[width=1\textwidth]{figures/supForbSurvPlots-1.pdf}
 \caption{\small{
 Illustration of the interaction between trait and SPEI for all forb survival models.
 }}
@@ -366,7 +366,7 @@ Illustration of the interaction between trait and SPEI for all forb survival mod
 \end{figure}
 
 \begin{figure}
-\includegraphics[width=1\textwidth]{images/AllTraitsGrowth.pdf}
+\includegraphics[width=1\textwidth]{figures/supGramGrowthPlots-1.pdf}
 \caption{\small{
 Illustration of the interaction between trait and SPEI for all graminoid models.
 }}
@@ -375,7 +375,7 @@ Illustration of the interaction between trait and SPEI for all graminoid models.
 
 \begin{figure}
     \centering
-    \includegraphics[width=.9\textwidth]{images/Effects_Growth.pdf}
+    \includegraphics[width=.9\textwidth]{figures/growthEffectPlots-1.pdf}
     \caption{The effect of local neighborhood density on graminoid size in year \textit{t+1} in models using TLP as the trait predictor. Dark lines indicate the overall effect of each covariate on survival. The 95\% confidence interval for the overall effect of conspecific local neighborhood competition is shown in light grey. Dark grey lines indicate the effects of competition according to each species. Across all graminoid species, higher crowding of an individual's local neighborhood (10 cm radius) with individuals of the same species corresponds to lower growth in the next year.}
     \label{fig:Effects_Growth}
 \end{figure}
