@@ -285,6 +285,17 @@ $\Delta$ AIC$^\dagger$  & 5.18 & 3.98 & -8.49 & -15.40 & -13.28 & -12.57 & -5.56
     \label{fig:Effects_Survival}
 \end{figure}
 
+% testing out incorporating R code directly into overleaf
+<<>>=
+# Create a sequence of numbers
+
+X = 2:10
+
+# Display basic statistical measures
+summary(X)
+
+@
+
 \section{Discussion}
 The effect of trait values on \textbf{survival} varies according to drought intensity for species in this shortgrass steppe ecosystem. This supports our hypothesis that water-related traits mediate the effect of drought on plant demographic rates, and the pattern of this mediation differs depending on drought severity. Although the strength of the interactions between trait values and drought varies according to functional group and the trait in question (Table \ref{ModResults}; Table \ref{ForbSurv_ModResults}), the fact that the interaction is significant in most cases indicates that this question merits further study, particularly for traits that are functionally related to the most limiting resources in a given habitat. 
 
