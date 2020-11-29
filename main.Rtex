@@ -286,13 +286,14 @@ $\Delta$ AIC$^\dagger$  & 5.18 & 3.98 & -8.49 & -15.40 & -13.28 & -12.57 & -5.56
 \end{figure}
 
 % testing out incorporating R code directly into overleaf
-<<>>=
-# Create a sequence of numbers
+%The chunk below will not be printed
+<<echo=FALSE, cache=FALSE>>=
+read_chunk("OverleafModelResults.R")
+@
 
-X = 2:10
+The code must show up here
 
-# Display basic statistical measures
-summary(X)
+<<myrcode1>>=
 
 @
 
