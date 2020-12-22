@@ -574,5 +574,31 @@ mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Dry Matter Conten
 mainObs
 ```
 
+make a plot of SPEI intervals
+```{r uniqueSPEIfig, fig.width=6, fig.height=4}
+#make a fake dataset
+phenDat <- data.frame(species = "Species A", month = c(1:12), flowering = c(0,0,0,0,.2,.6,.9,.9,.7,.3,0,0), xInt = 4.5, xInt2 = 11.25, xmin = 3.5, xmax = 11.25, ymin = -.9, ymax = -.2)
+phenDat <- rbind(phenDat, data.frame(species = "Species B", month = c(1:12), flowering = c(0,0,0,.3,.7,.95,.8,.4,.1,0,0,0),xInt = 3, xInt2 = 9.25, xmin = 2, xmax = 9.25, ymin = -.9, ymax = -.2))
+phenDat <- rbind(phenDat, data.frame(species = "Species C", month = c(1:12), flowering = c(0,0,0,0,0,.2,.5,.75,.9,.4,0,0), xInt = 5, xInt2 = 11.25, xmin = 4, xmax = 11.25, ymin = -.9, ymax = -.2))
+
+ggplot( data = phenDat) +
+  geom_smooth(aes(y = flowering, x =  month, col = species), method = 'gam', se = FALSE) +
+  geom_rect(aes(xmin = xmin,xmax = xmax, ymin = ymin, ymax = ymax, col = species, fill = species)) +
+  geom_vline(aes(xintercept = xInt), lty = 2, col = "grey30") +
+  geom_vline(aes(xintercept = xInt2), lty = 2, col = "grey30") + 
+  geom_text(aes(label = "species-level SPEI Interval", x = (xInt+3), y = -.55), colour = 
+              "white") +
+  facet_grid(species~.) +
+  ylim(c(-1,1)) + 
+  xlim(c(1,12)) +
+  xlab("Month") +
+  ylab("Likelihood of Flowering") +
+  scale_color_discrete(guide = FALSE) +
+  scale_fill_discrete(guide = FALSE) +
+  scale_x_continuous(labels = scales::number_format(accuracy = 1)) +
+  theme_classic() +  
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_blank()) 
+```
 
 
