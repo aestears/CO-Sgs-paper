@@ -568,9 +568,9 @@ mainObs <- plot_grid(forbSurvFigure, gramSurvFigure, GrowthExtraFig, ncol = 3, a
   draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .39, y = .529, width = .25, height = .035) +
   draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .73, y = .529, width = .25, height = .035)
 
-mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Dry Matter Content) (g/c"*m^3*")"),x = .5, y = 9, size = 9))
-mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Dry Matter Content) (g/c"*m^3*")"),x = .19, y = 10, size = 9))
-mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Dry Matter Content) (g/c"*m^3*")"),x = .873, y = 11, size = 9))
+mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Tissue Density) (g/c"*m^3*")"),x = .5, y = 9, size = 9))
+mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Tissue Density) (g/c"*m^3*")"),x = .19, y = 10, size = 9))
+mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Tissue Density) (g/c"*m^3*")"),x = .873, y = 11, size = 9))
 mainObs
 ```
 
