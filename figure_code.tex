@@ -734,4 +734,36 @@ Combine into one figure
 
 \includegraphics{figures/suppObservationsFig-1.pdf}
 
+make a plot of SPEI intervals
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#make a fake dataset}
+\NormalTok{phenDat \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{species =} \StringTok{"Species A"}\NormalTok{, }\DataTypeTok{month =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{12}\NormalTok{), }\DataTypeTok{flowering =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,.}\DecValTok{2}\NormalTok{,.}\DecValTok{6}\NormalTok{,.}\DecValTok{9}\NormalTok{,.}\DecValTok{9}\NormalTok{,.}\DecValTok{7}\NormalTok{,.}\DecValTok{3}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{), }\DataTypeTok{xInt =} \FloatTok{4.5}\NormalTok{, }\DataTypeTok{xInt2 =} \FloatTok{11.25}\NormalTok{, }\DataTypeTok{xmin =} \FloatTok{3.5}\NormalTok{, }\DataTypeTok{xmax =} \FloatTok{11.25}\NormalTok{, }\DataTypeTok{ymin =} \FloatTok{{-}.9}\NormalTok{, }\DataTypeTok{ymax =} \FloatTok{{-}.2}\NormalTok{)}
+\NormalTok{phenDat \textless{}{-}}\StringTok{ }\KeywordTok{rbind}\NormalTok{(phenDat, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{species =} \StringTok{"Species B"}\NormalTok{, }\DataTypeTok{month =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{12}\NormalTok{), }\DataTypeTok{flowering =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,.}\DecValTok{3}\NormalTok{,.}\DecValTok{7}\NormalTok{,.}\DecValTok{95}\NormalTok{,.}\DecValTok{8}\NormalTok{,.}\DecValTok{4}\NormalTok{,.}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{),}\DataTypeTok{xInt =} \DecValTok{3}\NormalTok{, }\DataTypeTok{xInt2 =} \FloatTok{9.25}\NormalTok{, }\DataTypeTok{xmin =} \DecValTok{2}\NormalTok{, }\DataTypeTok{xmax =} \FloatTok{9.25}\NormalTok{, }\DataTypeTok{ymin =} \FloatTok{{-}.9}\NormalTok{, }\DataTypeTok{ymax =} \FloatTok{{-}.2}\NormalTok{))}
+\NormalTok{phenDat \textless{}{-}}\StringTok{ }\KeywordTok{rbind}\NormalTok{(phenDat, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{species =} \StringTok{"Species C"}\NormalTok{, }\DataTypeTok{month =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{12}\NormalTok{), }\DataTypeTok{flowering =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,.}\DecValTok{2}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{75}\NormalTok{,.}\DecValTok{9}\NormalTok{,.}\DecValTok{4}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{), }\DataTypeTok{xInt =} \DecValTok{5}\NormalTok{, }\DataTypeTok{xInt2 =} \FloatTok{11.25}\NormalTok{, }\DataTypeTok{xmin =} \DecValTok{4}\NormalTok{, }\DataTypeTok{xmax =} \FloatTok{11.25}\NormalTok{, }\DataTypeTok{ymin =} \FloatTok{{-}.9}\NormalTok{, }\DataTypeTok{ymax =} \FloatTok{{-}.2}\NormalTok{))}
+
+\KeywordTok{ggplot}\NormalTok{( }\DataTypeTok{data =}\NormalTok{ phenDat) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_smooth}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ flowering, }\DataTypeTok{x =}\NormalTok{  month, }\DataTypeTok{col =}\NormalTok{ species), }\DataTypeTok{method =} \StringTok{\textquotesingle{}gam\textquotesingle{}}\NormalTok{, }\DataTypeTok{se =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_rect}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{xmin =}\NormalTok{ xmin,}\DataTypeTok{xmax =}\NormalTok{ xmax, }\DataTypeTok{ymin =}\NormalTok{ ymin, }\DataTypeTok{ymax =}\NormalTok{ ymax, }\DataTypeTok{col =}\NormalTok{ species, }\DataTypeTok{fill =}\NormalTok{ species)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_vline}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{xintercept =}\NormalTok{ xInt), }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{"grey30"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_vline}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{xintercept =}\NormalTok{ xInt2), }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{"grey30"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom\_text}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{label =} \StringTok{"species{-}level SPEI Interval"}\NormalTok{, }\DataTypeTok{x =}\NormalTok{ (xInt}\OperatorTok{+}\DecValTok{3}\NormalTok{), }\DataTypeTok{y =} \FloatTok{{-}.55}\NormalTok{), }\DataTypeTok{colour =} 
+              \StringTok{"white"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet\_grid}\NormalTok{(species}\OperatorTok{\textasciitilde{}}\NormalTok{.) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\OperatorTok{{-}}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{xlim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{12}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Month"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Likelihood of Flowering"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_discrete}\NormalTok{(}\DataTypeTok{guide =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_fill\_discrete}\NormalTok{(}\DataTypeTok{guide =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_x\_continuous}\NormalTok{(}\DataTypeTok{labels =}\NormalTok{ scales}\OperatorTok{::}\KeywordTok{number\_format}\NormalTok{(}\DataTypeTok{accuracy =} \DecValTok{1}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.ticks.y =} \KeywordTok{element\_blank}\NormalTok{(),}
+        \DataTypeTok{axis.text.y =} \KeywordTok{element\_blank}\NormalTok{()) }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{figures/uniqueSPEIfig-1.pdf}
+
 \end{document}
