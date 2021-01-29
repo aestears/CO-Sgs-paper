@@ -109,7 +109,7 @@ gramSurvFigure <- ggplot(data = GramDat) +
   xlab(NULL) +
   ylab("Probability of Graminoid Survival") +
   scale_y_continuous(limits = c(0,1)) +
-  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5"), guide = FALSE) +
+  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
   scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
   facet_wrap(~trait, scales = "free_x", strip.position =  "bottom", ncol =1) +
   theme_classic()+
@@ -278,7 +278,7 @@ GrowthExtraFig <- ggplot(data = GrowthDat) +
 
 Combine into one figure
 ```{r mainObservationsFig, fig.width=9, fig.height=10}
-mainObs <- plot_grid(forbSurvFigure, gramSurvFigure, GrowthExtraFig, ncol = 3, align = "h", axis = "tb", rel_widths = c(.9,.9,1)) %>% 
+mainObs <- plot_grid( gramSurvFigure, GrowthExtraFig, forbSurvFigure, ncol = 3, align = "h", axis = "tb", rel_widths = c(.9,1, .9)) %>% 
   ggdraw() + draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .07, y = .06, width = .92, height = .0225) 
 
 mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Specific Leaf Area) (c"*m^2*"/g)"),x = .5, y = 3, size = 9))
