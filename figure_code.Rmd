@@ -89,7 +89,7 @@ RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$SLA_s, trait = "scaled(Spe
 
 #text for labels
 dat_text <- data.frame(
-  label = c("B", "E", "H", "K", "N"),
+  label = c("A", "D", "G", "J", "M"),
   sig = c("*,§","*,§","*,§","*,§","*,§"),
   trait = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)","scaled(Average Root Diameter) (cm)", "scaled(Specific Leaf Area) (g/cm2)"),
   x    = c(min(TLP_G_dat$x),min(LDMC_G_dat$x),min(RDMC_G_dat$x), min(RDiam_G_dat$x), min(SLA_G_dat$x)),
@@ -173,7 +173,7 @@ RugDat_F <- rbind(RugDat_F, data.frame(rug = CO_point_all$SLA_s, trait = "scaled
 
 #text for labels
 dat_text <- data.frame(
-  label = c("A", "D", "G", "J", "M"),
+  label = c("C", "F", "I", "L", "O"),
   sig = c("*,§", "*,§","§", "", "" ),
   trait = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)", "scaled(Average Root Diameter) (cm)", "scaled(Specific Leaf Area) (g/cm2)"),
   x    = c(min(TLP_F_dat$x),min(LDMC_F_dat$x),min(RDMC_F_dat$x), min(RDiam_F_dat$x), min(SLA_F_dat$x)),
@@ -250,7 +250,7 @@ RugDat <- rbind(RugDat, data.frame(rug = CO_grow_SLA$SLA_s, trait = "scaled(Spec
 
 #text for labels
 dat_text <- data.frame(
-  label = c("C", "F", "I", "L","O"),
+  label = c("B", "E", "H", "K","N"),
   sig = c("*,§", "*,§","", "*", "*" ), 
   trait = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)", "scaled(Average Root Diameter) (cm)", "scaled(Specific Leaf Area) (g/cm2)"),
   x    = c(min(TLP_grow_dat$x), min(LDMC_grow_dat$x), min(RDMC_grow_dat$x), min(RDiam_grow_dat$x), min(SLA_grow_dat$x)),
@@ -437,7 +437,7 @@ RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$SRL_s, trait = "scaled(Spe
 
 #text for labels
 dat_text <- data.frame(
-  label = c("B", "E"),
+  label = c("A", "D"),
   trait = c("scaled(Root Tissue Density) (g/cm3)", "scaled(Specific Root Length) (m/g)"),
   x    = c(min(RTD_G_dat$x),min(SRL_G_dat$x)),
   y     = c(1,1)
@@ -454,7 +454,7 @@ gramSurvFigure <- ggplot(data = GramDat) +
   xlab(NULL) +
   ylab("Probability of Graminoid Survival") +
   scale_y_continuous(limits = c(0,1)) +
-  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5"), guide = FALSE) +
+  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
   scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
   facet_wrap(~trait, scales = "free_x", strip.position =  "bottom", ncol =1) +
   theme_classic()+
@@ -496,7 +496,7 @@ RugDat_F <- rbind(RugDat_F, data.frame(rug = CO_point_all$SRL_s, trait = "scaled
 
 #text for labels
 dat_text <- data.frame(
-  label = c("A", "D"),
+  label = c("C", "F"),
   trait = c("scaled(Root Tissue Density) (g/cm3)", "scaled(Specific Root Length) (m/g)"),
   x    = c(min(RTD_F_dat$x),min(SRL_F_dat$x)),
   y     = c(1,1)
@@ -551,7 +551,7 @@ RugDat <- rbind(RugDat, data.frame(rug = CO_grow_SRL$SRL_s, trait = "scaled(Spec
 
 #text for labels
 dat_text <- data.frame(
-  label = c("C", "F"),
+  label = c("B", "E"),
   trait = c("scaled(Root Tissue Density) (g/cm3)", "scaled(Specific Root Length) (m/g)"),
   x    = c(min(RTD_grow_dat$x), min(SRL_grow_dat$x)),
   y     = c(1.2,1.2)
@@ -575,14 +575,14 @@ GrowthExtraFig <- ggplot(data = GrowthDat) +
 
 Combine into one figure
 ```{r suppObservationsFig, fig.width=9, fig.height=6}
-mainObs <- plot_grid(forbSurvFigure, gramSurvFigure, GrowthExtraFig, ncol = 3, align = "h", axis = "tb", rel_widths = c(.9,.9,1)) %>% 
+mainObs <- plot_grid( gramSurvFigure, GrowthExtraFig, forbSurvFigure, ncol = 3, align = "h", axis = "tb", rel_widths = c(.9,1,.9)) %>% 
   ggdraw() + draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .07, y = .529, width = .25, height = .035) +
   draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .39, y = .529, width = .25, height = .035) +
   draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .73, y = .529, width = .25, height = .035)
 
-mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Tissue Density) (g/c"*m^3*")"),x = .5, y = 9, size = 9))
-mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Tissue Density) (g/c"*m^3*")"),x = .19, y = 10, size = 9))
-mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Tissue Density) (g/c"*m^3*")"),x = .873, y = 11, size = 9))
+mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Tissue Density) (g/c"*m^3*")"),x = .55, y = 9.7, size = 9))
+mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Tissue Density) (g/c"*m^3*")"),x = .19, y = 10.7, size = 9))
+mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Tissue Density) (g/c"*m^3*")"),x = .873, y = 11.7, size = 9))
 mainObs
 ```
 
