@@ -1,20 +1,31 @@
 #//////////////////////////
 # Demographic trade-offs affect how leaf turgor loss point and tissue dry matter content mediate the effect of drought on herbaceous perennial survival and growth
-# Data Cleaning Script
+# Nearest Neighbor Calculations
 # Script 1 of 6
 # Alice Stears, astears@uwyo.edu
 # Revised 9 February 2021
+# R version 4.0.3 
 #//////////////////////////
 
-# 
-#### load packages ####
-require(tidyverse)
-require(sf)
-require(mapview)
-require(lwgeom)
+#clear workspace
+rm(list=ls())
 
-#### Calculating Nearest Neighbor Area for Polygon Dataset####
-poly <- read.csv("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/SurvivalData/polygon_species_survD_IPM.csv")
+#### load packages ####
+require(tidyverse) #v1.3.0
+require(sf) #v0.9-7
+require(mapview) #v2.9.0
+require(lwgeom) #v0.2-5
+
+
+#### Calculating Conspecific Nearest Neighbor Area for Polygon Dataset
+## set wd and read in data file
+workDir <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/SurvivalData" #change to the path of your file "polygon_species_survD_IPM.csv"
+setwd(workDir) 
+
+#read in polygon survival data file
+poly <- read.csv("polygon_species_survD_IPM.csv")
+
+## create empty columns in the data.frame to hold values for each nearest neighbor radius (in cm)
 poly$neighbor_area_5 <- NA
 poly$neighbor_area_10 <- NA
 poly$neighbor_area_15 <- NA
@@ -29,10 +40,15 @@ quad <- unique(poly$quad)
 #make a vector for species in the dataset
 species <- unique(poly$species)
 
-#get the data for SP_ID from tracking files and merge this with the poly dataset (for individuals with only one observation--haven't been clumped at genet scale)
-#load all tracking data files
-setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/InputData/PolygonTrackingResults")
-for(k in 1:length(species)) {
+#### get the data for SP_ID from tracking files and merge this with the poly dataset (for individuals with only one observation--haven't been clumped at genet scale) ####
+
+#load all tracking data files with the following loop
+
+#set the working directory to the location of the folder "PolygonTrackingResults"
+trackingDatWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/InputData/PolygonTrackingResults" #change to appropriate working directory
+setwd(trackingDatWD)
+
+for(k in 1:length(species)) { #loop through all species
   trackTemp <- read.csv(paste("./",
                               str_to_upper(paste(str_sub(species[k],1,3), 
                                                  str_sub(species[k],str_locate(species[k]," ")[1]+1,str_locate(species[k]," ")[1]+3),sep = ""))
@@ -44,36 +60,40 @@ for(k in 1:length(species)) {
   }
 }
 #trackSP data file has all raw tracking results
-#aggregate this data.frame by quad, year, species, and trackID to get the trackIDs of numbers that are singletons
+
+## aggregate this data.frame by quad, year, species, and trackID to get the trackIDs of individuals that are singletons (i.e. not mapped as multiple polygons)
 #will use this data to identify the SP_ID's that are 'good' in the trackSP data.set
 trackGOOD <- aggregate(trackSP, by = list(trackSP$quad, trackSP$year, trackSP$Species, trackSP$trackID), FUN = length)
 # drop all IDs that have more than one individual (would have >1 SP_ID)
 trackGOOD <- filter(trackGOOD,quad==1)
 #add a column so we know the individual record is 'good'
 trackGOOD$need <- "need"
+#fix the names of the data.frame
 trackGOOD <- trackGOOD[,c("Group.1", "Group.2", "Group.3", "Group.4", "need")]
 names(trackGOOD) <- c("quad","year","Species","trackID","need")
-#merge with trackSP dataset to ID 'good' records
+#merge with trackSP dataset to ID 'good' records (denoted by "need" in the need column)
 trackSP <- left_join(trackSP, trackGOOD, by = c("quad", "year", "Species", "trackID"))
 #filter the trackSP data for those that we "need"
 trackSP <- filter(trackSP, need=="need")
 #merge with poly dataset to get SP_IDs
 poly<- left_join(poly, trackSP[,c("quad","year","SP_ID","Species","trackID")], by = c("quad", "year_t"="year", "species"="Species", "trackID"))
 
-### calculate nearest neighbor for polygons with only one SP_ID ###
+#### calculate nearest neighbor for polygons with only one SP_ID ####
+shpWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data/CO_shapefiles" #change to your file that contains the CO shapefiles
+setwd(shpWD)
 
-setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data/CO_shapefiles")
+#make a bounding box that is the shape and size of the quadrat
 baseShape <- st_read(dsn = "gzgz_5a", layer = "poly_gzgz_5a_1997")
 box <- st_as_sfc(st_bbox(baseShape)) #make a box that is the size of a quadrat (1mx1m)
 boxBuffer <- st_buffer(box, dist = -0.05)#make a 5cm buffer inside the box
 boxBuffer <- st_difference(box, boxBuffer)
 
-# for 5cm radius
-for(j in 1:length(quad)) {
+## Calculate nearest neighbor for 5cm radius
+for(j in 1:length(quad)) { #loop throught the quadrats
   temp1 <- poly[poly$quad==quad[j],]
-  for (i in 1:length(year)) {
+  for (i in 1:length(year)) { #loop through the years
     temp2 <- temp1[temp1$year==year[i],]
-    for (k in 1:length(species)) {
+    for (k in 1:length(species)) { #loop through the species
       temp3 <- temp2[temp2$species == species[k],]
       if (nrow(temp3)>0) {
         #now find the appropriate shapefile 
@@ -99,7 +119,7 @@ for(j in 1:length(quad)) {
   }
 }
 
-#for 10cm radius
+#for 10cm nearest neighbor radius
 for(j in 1:length(quad)) {
   temp1 <- poly[poly$quad==quad[j],]
   for (i in 1:length(year)) {
@@ -130,7 +150,7 @@ for(j in 1:length(quad)) {
   }
 }
 
-#for 15cm radius
+#for 15cm nearest neighbor radius
 for(j in 1:length(quad)) {
   temp1 <- poly[poly$quad==quad[j],]
   for (i in 1:length(year)) {
@@ -161,7 +181,7 @@ for(j in 1:length(quad)) {
   }
 }
 
-#for 20cm radius
+#for 20cm nearest neighbor radius
 for(j in 1:length(quad)) {
   temp1 <- poly[poly$quad==quad[j],]
   for (i in 1:length(year)) {
@@ -192,31 +212,20 @@ for(j in 1:length(quad)) {
   }
 }
 
-
-
-##problem: the individuals that have "NA"s for nearest neighbor values are those that have been 
-# aggregated into a single genet. 
-# So they are actually two polygons, and their area has been summed. 
-# Need to figure out how to calculate area values for those individuals that are actually multiple polygons.  
-# Could sum the area of the buffer polygons for each , but need to make sure they don't overlap, 
-# and need to figure out how to identify those two polygons in the first place
-
-## Workflow: 
-# identify those polygons that have been aggregated into one individual 
-#do this by pulling out the data files of raw polygon tracking by species, and merging these data with the data from the nearest neighbor calculations that don't have any nearest neighbors (the individuals that have been grouped!)
-#can merge them by the track IDs! (I think... should be able to do a full join to identify the individuals that have been grouped)
-#load raw tracking files
-
+#### calculate nearest neighbor area for individuals with multiple SP ID's (mapped as multiple polygons) ####
 #set up a buffer box 
 baseShape <- st_read(dsn = "gzgz_5a", layer = "poly_gzgz_5a_1997")
 box <- st_as_sfc(st_bbox(baseShape)) #make a box that is the size of a quadrat (1mx1m)
 boxBuffer <- st_buffer(box, dist = -0.05)#make a 5cm buffer inside the box
 boxBuffer <- st_difference(box, boxBuffer)
 
-##loop through species
+#reminders: 
+# trackingDatWD is an object that stores the path of the "PolygonTrackingResults" directory
+# shpWD is an object that stores the path of the "CO_shapefiles" directory
+
 #for 5cm radius
-for (k in 1:length(species)){
-  setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/InputData/PolygonTrackingResults")
+for (k in 1:length(species)){ ##loop through species
+  setwd(trackingDatWD)
   tempSP <- read.csv(paste(str_to_upper(paste(str_sub(species[k],1,3), 
                                               str_sub(species[k],str_locate(species[k]," ")[1]+1,str_locate(species[k]," ")[1]+3),sep = ""))
                            ,"_buf5_dorm1.csv", sep = ""))
@@ -239,7 +248,7 @@ for (k in 1:length(species)){
       yearSP <- yeartempSP[yeartempSP$trackID %in% unique(yearNeSP$trackID),]
       if(nrow(yearSP)>length(unique(yearSP$trackID))) {
         #load appropriate shape file
-        setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data/CO_shapefiles")
+        setwd(shpWD)
         shape <- st_read(dsn = paste(quad[j]), layer = paste("poly_",quad[j],"_",year[i], sep=""))
         #get focal species from shape file
         shapeFocal <- drop_na(shape[shape$Species == paste(species[k]),],"Species")
@@ -276,7 +285,7 @@ for (k in 1:length(species)){
 
 #for 10cm radius
 for (k in 1:length(species)){
-  setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/InputData/PolygonTrackingResults")
+  setwd(trackingDatWD)
   tempSP <- read.csv(paste(
                            str_to_upper(paste(str_sub(species[k],1,3), 
                                               str_sub(species[k],str_locate(species[k]," ")[1]+1,str_locate(species[k]," ")[1]+3),sep = ""))
@@ -300,7 +309,7 @@ for (k in 1:length(species)){
       yearSP <- yeartempSP[yeartempSP$trackID %in% unique(yearNeSP$trackID),]
       if(nrow(yearSP)>length(unique(yearSP$trackID))) {
         #load appropriate shape file
-        setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data/CO_shapefiles")
+        setwd(shpWD)
         shape <- st_read(dsn = paste(quad[j]), layer = paste("poly_",quad[j],"_",year[i], sep=""))
         #get focal species from shape file
         shapeFocal <- drop_na(shape[shape$Species == paste(species[k]),],"Species")
@@ -337,7 +346,7 @@ for (k in 1:length(species)){
 
 #for 15cm radius
 for (k in 1:length(species)){
-  setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/InputData/PolygonTrackingResults")
+  setwd(trackingDatWD)
   tempSP <- read.csv(paste(str_to_upper(paste(str_sub(species[k],1,3), 
                                               str_sub(species[k],str_locate(species[k]," ")[1]+1,str_locate(species[k]," ")[1]+3),sep = ""))
                            ,"_buf5_dorm1.csv", sep = ""))
@@ -360,7 +369,7 @@ for (k in 1:length(species)){
       yearSP <- yeartempSP[yeartempSP$trackID %in% unique(yearNeSP$trackID),]
       if(nrow(yearSP)>length(unique(yearSP$trackID))) {
         #load appropriate shape file
-        setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data/CO_shapefiles")
+        setwd(shpWD)
         shape <- st_read(dsn = paste(quad[j]), layer = paste("poly_",quad[j],"_",year[i], sep=""))
         #get focal species from shape file
         shapeFocal <- drop_na(shape[shape$Species == paste(species[k]),],"Species")
@@ -397,7 +406,7 @@ for (k in 1:length(species)){
 
 #for 20cm radius
 for (k in 1:length(species)){
-  setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/InputData/PolygonTrackingResults")
+  setwd(trackingDatWD)
   tempSP <- read.csv(paste(str_to_upper(paste(str_sub(species[k],1,3), 
                                               str_sub(species[k],str_locate(species[k]," ")[1]+1,str_locate(species[k]," ")[1]+3),sep = ""))
                            ,"_buf5_dorm1.csv", sep = ""))
@@ -420,7 +429,7 @@ for (k in 1:length(species)){
       yearSP <- yeartempSP[yeartempSP$trackID %in% unique(yearNeSP$trackID),]
       if(nrow(yearSP)>length(unique(yearSP$trackID))) {
         #load appropriate shape file
-        setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data/CO_shapefiles")
+        setwd(shpWD)
         shape <- st_read(dsn = paste(quad[j]), layer = paste("poly_",quad[j],"_",year[i], sep=""))
         #get focal species from shape file
         shapeFocal <- drop_na(shape[shape$Species == paste(species[k]),],"Species")
@@ -456,61 +465,86 @@ for (k in 1:length(species)){
   }
 }
 
-#### Calculating Change in Area for Polygons####
-poly$delta_area <- NA
-# #track <- seq(1,807,1)
-# 
-# for (k in 1:length(species)){ #loop through all possible species
-#   temp1 <- poly[poly$species==species[k],]
-#   for(j in 1:length(quad)) { #within each species, loop throuhgh all quadrats
-#     temp2 <- temp1[temp1$quad==quad[j],]
-#     track <- unique(temp2$trackID)
-#     for(n in 1:length(track)) { #within each quadrat and species, loop through each individual
-#       temp3 <- temp2[temp2$trackID==track[n],]
-#       if(nrow(temp3)>1){ #make sure that the individual stays alive for more than one year
-#         temp3 <- arrange(temp3,year_t) #make sure that the rows are in order according to year (from earliest to latest)
-#         #make sure that there are no gaps
-#         #if there is a gap, re-start the counting process
-#         for(l in 2:nrow(temp3)){ #for all but the first observation, subtract the area of the individual in the previous year from the area of the individual in the current year (get delta area)
-#           if (temp3[l,"year_t"]-temp3[l-1,"year_t"]==1){
-#             temp3[l,"delta_area"] <- temp3[l,"area_t"]-temp3[(l-1),"area_t"]
-#             }
-#           }
-#       }
-#       for(p in 1:nrow(temp3)){
-#             poly[poly$species==species[k] & 
-#                    poly$quad==quad[j] & 
-#                    poly$trackID==track[n] &
-#                    poly$year_t==temp3$year_t[p],"delta_area"] <- temp3[p,"delta_area"]
-#           }
-#       }
-#     }
-#   }
-# ##for years after they are dormant, should have growth be an 'NA'
-# # new recruits should also have an 'NA' 
 
-#use area in t+1 in demographic tracking scripts to determine change in size from year t to year t+1 (size in year t+1 - size year t)
-poly$delta_area <- poly$area_tplus1-poly$area_t
+# #write  to csv file
+# write.csv(poly,
+#           "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files/Intermediate Analysis Files/polygon_demo_2_12_18.csv", 
+#           row.names = FALSE)
 
-
-#write to csv file
-write.csv(poly,
-          "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files/Intermediate Analysis Files/polygon_demo_2_12_18.csv", 
-          row.names = FALSE)
 
 #### Calculate Nearest Neighbor for Points Dataset ####
-setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData")
-points <- read.csv("SurvivalData/point_species_survD.csv", stringsAsFactors = FALSE)
+pointsWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/SurvivalData" #change the location of your 'point_species_survD.csv" file 
+setwd(pointsWD)
+
+#read in point survival data
+points <- read.csv("point_species_survD.csv", stringsAsFactors = FALSE)
+#add a column for 'site' 
 points$Site <- "CO"
-#have to do it separately for each quadrat for each year (loop through each quadrat and year)
+
 #create an empty column for nearest neighbor density
-points$neighbors_20 <- NA
+points$neighbors_5 <- NA
 points$neighbors_10 <- NA
+points$neighbors_15 <- NA
+points$neighbors_20 <- NA
+
 #make a vector for years in the dataset
-setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data/CO_shapefiles")
 year <- sort(unique(points$year))
-quad <- unique(points$quad)
-species <- unique(points$species)
+quad <- unique(points$quad) #make a vector of quads in the dataset
+species <- unique(points$species) #make a vector of species in the dataset
+
+setwd(shpWD) #change WD to the path for the CO_shapefiles folder (which is the same as "shpWD", defined above)
+
+#calculate nearest neighbor density for 5cm radius
+for(j in 1:length(quad)) {
+  temp1 <- points[points$quad==quad[j],]
+  for (i in 1:length(year)) {
+    temp2 <- temp1[temp1$year==year[i],]
+    for (k in 1:length(species)) {
+      temp3 <- temp2[temp2$species == species[k],]
+      if (nrow(temp3)>0) {
+        shape <- st_read(dsn = paste(quad[j]), layer = paste("pnt_",quad[j],"_",year[i], sep = ""))
+        shape <- shape[shape$Species == as.character(species[k]),]
+        for (m in 1:nrow(shape)) {
+          buffer <- st_buffer(shape[m,],.05)
+          count <- ifelse(length(unlist(st_intersects(buffer, shape)))==0,
+                          yes = (0), no = (length(unlist(st_intersects(buffer, shape)))-1))
+          points[points$x < (as.data.frame(shape[m,"coords_x1"])[1,1]+.0001) &
+                   points$x > (as.data.frame(shape[m,"coords_x1"])[1,1]-.0001) &
+                   points$quad == quad[j] &
+                   points$year == year[i] &
+                   points$species == species[k], "neighbors_5"] <- count
+        }
+      }
+    }
+  }
+}
+
+#calculate nearest neighbor density for 10cm radius
+for(j in 1:length(quad)) {
+  temp1 <- points[points$quad==quad[j],]
+  for (i in 1:length(year)) {
+    temp2 <- temp1[temp1$year==year[i],]
+    for (k in 1:length(species)) {
+      temp3 <- temp2[temp2$species == species[k],]
+      if (nrow(temp3)>0) {
+        shape <- st_read(dsn = paste(quad[j]), layer = paste("pnt_",quad[j],"_",year[i], sep = ""))
+        shape <- shape[shape$Species == as.character(species[k]),]
+        for (m in 1:nrow(shape)) {
+          buffer <- st_buffer(shape[m,],.10)
+          count <- ifelse(length(unlist(st_intersects(buffer, shape)))==0,
+                          yes = (0), no = (length(unlist(st_intersects(buffer, shape)))-1))
+          points[points$x < (as.data.frame(shape[m,"coords_x1"])[1,1]+.0001) &
+                   points$x > (as.data.frame(shape[m,"coords_x1"])[1,1]-.0001) &
+                   points$quad == quad[j] &
+                   points$year == year[i] &
+                   points$species == species[k], "neighbors_10"] <- count
+        }
+      }
+    }
+  }
+}
+
+#calculate nearest neighbor density for 15cm radius
 for(j in 1:length(quad)) {
   temp1 <- points[points$quad==quad[j],]
   for (i in 1:length(year)) {
@@ -535,11 +569,7 @@ for(j in 1:length(quad)) {
   }
 }
 
-points$neighbors_20 <- NA
-setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Raw Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data/CO_shapefiles")
-year <- sort(unique(points$year))
-quad <- unique(points$quad)
-species <- unique(points$species)
+#calculate nearest neighbor density for 20cm radius
 for(j in 1:length(quad)) {
   temp1 <- points[points$quad==quad[j],]
   for (i in 1:length(year)) {
@@ -563,42 +593,14 @@ for(j in 1:length(quad)) {
     }
   }
 }
-points$neighbors_10 <- NA
-setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Raw Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data/CO_shapefiles")
-year <- sort(unique(points$year))
-quad <- unique(points$quad)
-species <- unique(points$species)
-for(j in 1:length(quad)) {
-  temp1 <- points[points$quad==quad[j],]
-  for (i in 1:length(year)) {
-    temp2 <- temp1[temp1$year==year[i],]
-    for (k in 1:length(species)) {
-      temp3 <- temp2[temp2$species == species[k],]
-      if (nrow(temp3)>0) {
-        shape <- st_read(dsn = paste(quad[j]), layer = paste("pnt_",quad[j],"_",year[i], sep = ""))
-        shape <- shape[shape$Species == as.character(species[k]),]
-        for (m in 1:nrow(shape)) {
-          buffer <- st_buffer(shape[m,],.10)
-          count <- ifelse(length(unlist(st_intersects(buffer, shape)))==0,
-                          yes = (0), no = (length(unlist(st_intersects(buffer, shape)))-1))
-          points[points$x < (as.data.frame(shape[m,"coords_x1"])[1,1]+.0001) &
-                   points$x > (as.data.frame(shape[m,"coords_x1"])[1,1]-.0001) &
-                   points$quad == quad[j] &
-                   points$year == year[i] &
-                   points$species == species[k], "neighbors_10"] <- count
-        }
-      }
-    }
-  }
-}
-#there are some individuals that do not have an "NA" for nearest neigbhor-- not a match in the spatial dataset (in terms of x-y coordinates)
-#could this be data entry error?
 
-# remove individuals from the 'points' dataset that are 5cm from the edges of a plot
+
+# remove individuals from the 'points' dataset that are <5cm from the edges of a plot (won't include in the analysis, since we cannot accurately estimate nearest neighbor density)
 points$edgeAS <- NA
 points[points$x<0.05 | points$x>0.95 | points$y<0.05 | points$y>0.95,"edgeAS"] <- TRUE
 points[points$x>=0.05 & points$x<=0.95 & points$y>=0.05 & points$y<=0.95,"edgeAS"] <- FALSE
 
-#write to csv
-write.csv(points, 
-          "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files/Intermediate Analysis Files/point_demo_2_23_20.csv", row.names = FALSE)
+#### remove files that aren't needed for further analysis ####
+rm(list = ls()[!(ls() %in% c('points','poly'))])
+
+#### for next script, need 'points' and 'poly' data.frames ####
