@@ -1,3 +1,12 @@
+#//////////////////////////
+# Demographic trade-offs affect how leaf turgor loss point and tissue dry matter content mediate the effect of drought on herbaceous perennial survival and growth
+# Data Cleaning Script
+# Script 1 of 6
+# Alice Stears, astears@uwyo.edu
+# Revised 9 February 2021
+#//////////////////////////
+
+# 
 #### load packages ####
 require(tidyverse)
 require(sf)
