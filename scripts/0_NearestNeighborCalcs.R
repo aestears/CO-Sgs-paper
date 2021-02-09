@@ -11,6 +11,7 @@
 rm(list=ls())
 
 #### load packages ####
+<<<<<<< HEAD
 library(tidyverse) #v1.3.0
 library(sf) #v0.9-7
 library(mapview) #v2.9.0
@@ -21,6 +22,17 @@ library(lwgeom) #v0.2-5
 #### Calculating Conspecific Nearest Neighbor Area for Polygon Dataset
 ## set wd and read in data file
 # workDir <-  #change to the path of your file "polygon_species_survD_IPM.csv"
+=======
+require(tidyverse) #v1.3.0
+require(sf) #v0.9-7
+require(mapview) #v2.9.0
+require(lwgeom) #v0.2-5
+
+
+#### Calculating Conspecific Nearest Neighbor Area for Polygon Dataset
+## set wd and read in data file
+workDir <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/SurvivalData" #change to the path of your file "polygon_species_survD_IPM.csv"
+>>>>>>> 00232cd... renamed file
 setwd(workDir) 
 
 #read in polygon survival data file
@@ -46,8 +58,12 @@ species <- unique(poly$species)
 #load all tracking data files with the following loop
 
 #set the working directory to the location of the folder "PolygonTrackingResults"
+<<<<<<< HEAD
 # trackingDatWD <- # change the location of the folder "PolygonTrackingResults"
 #change to appropriate working directory
+=======
+trackingDatWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/InputData/PolygonTrackingResults" #change to appropriate working directory
+>>>>>>> 00232cd... renamed file
 setwd(trackingDatWD)
 
 for(k in 1:length(species)) { #loop through all species
@@ -81,7 +97,11 @@ trackSP <- filter(trackSP, need=="need")
 poly<- left_join(poly, trackSP[,c("quad","year","SP_ID","Species","trackID")], by = c("quad", "year_t"="year", "species"="Species", "trackID"))
 
 #### calculate nearest neighbor for polygons with only one SP_ID ####
+<<<<<<< HEAD
 # shpWD <- #change to your file that contains the CO shapefiles
+=======
+shpWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data/CO_shapefiles" #change to your file that contains the CO shapefiles
+>>>>>>> 00232cd... renamed file
 setwd(shpWD)
 
 #make a bounding box that is the shape and size of the quadrat
@@ -475,7 +495,11 @@ for (k in 1:length(species)){
 
 
 #### Calculate Nearest Neighbor for Points Dataset ####
+<<<<<<< HEAD
 # pointsWD <-#change the location of your 'point_species_survD.csv" file 
+=======
+pointsWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/SurvivalData" #change the location of your 'point_species_survD.csv" file 
+>>>>>>> 00232cd... renamed file
 setwd(pointsWD)
 
 #read in point survival data
@@ -606,7 +630,10 @@ points[points$x>=0.05 & points$x<=0.95 & points$y>=0.05 & points$y<=0.95,"edgeAS
 rm(list = ls()[!(ls() %in% c('points','poly'))])
 
 #### for next script, need 'points' and 'poly' data.frames ####
+<<<<<<< HEAD
 #save as an .RData file 
 # path =  #location where you'll put the environment data file
 setwd(path)
 save.image('script0_output.RData')
+=======
+>>>>>>> 00232cd... renamed file
