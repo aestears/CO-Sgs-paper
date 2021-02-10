@@ -604,3 +604,8 @@ points[points$x>=0.05 & points$x<=0.95 & points$y>=0.05 & points$y<=0.95,"edgeAS
 rm(list = ls()[!(ls() %in% c('points','poly'))])
 
 #### for next script, need 'points' and 'poly' data.frames ####
+#save as an .RData file 
+path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
+setwd(path)
+
+save.image('script0_output.RData')

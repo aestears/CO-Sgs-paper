@@ -1,13 +1,21 @@
-###############
-# Preparing CO Shortgrass Steppe Data for Analysis
-###############
+#//////////////////////////
+# Demographic trade-offs affect how leaf turgor loss point and tissue dry matter content mediate the effect of drought on herbaceous perennial survival and growth
+# Data Cleaning and file preparation
+# Script 2 of 6
+# Alice Stears, astears@uwyo.edu
+# Revised 9 February 2021
+# R version 4.0.3 
+#//////////////////////////
 
-##### LOAD PACKAGES #####
-library(dplyr)
-library(tidyverse)
+##### load packages #####
+require(tidyverse) #v1.3.0
 
+##### Load data files #####
+#source the previous script ("0_NearestNeighborCalcs.R") to get "points" and "poly" data.frames
+nearWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper" #a path for the directory containing the /scripts folder
+setwd(nearWD)
+source("/scripts/0_NearestNeighborCalcs.R")
 
-##### LOAD DATA FILES #####
 setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files")
 
 #load point survival data
