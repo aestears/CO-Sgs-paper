@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f43506c... updating script 0 and script 1
 #//////////////////////////
 # Demographic trade-offs affect how leaf turgor loss point and tissue dry matter content mediate the effect of drought on herbaceous perennial survival and growth
 # Data Cleaning and file preparation
@@ -9,6 +12,7 @@
 #//////////////////////////
 
 ##### load packages #####
+<<<<<<< HEAD
 library(tidyverse) #v1.3.0
 
 ## clear workspace ##
@@ -68,13 +72,16 @@ save.image('script1_output.RData')
 ###############
 # Preparing CO Shortgrass Steppe Data for Analysis
 ###############
+=======
+require(tidyverse) #v1.3.0
 
-##### LOAD PACKAGES #####
-library(dplyr)
-library(tidyverse)
+##### Load data files #####
+#source the previous script ("0_NearestNeighborCalcs.R") to get "points" and "poly" data.frames
+nearWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper" #a path for the directory containing the /scripts folder
+setwd(nearWD)
+source("/scripts/0_NearestNeighborCalcs.R")
+>>>>>>> f43506c... updating script 0 and script 1
 
-
-##### LOAD DATA FILES #####
 setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files")
 
 #load point survival data
