@@ -607,5 +607,4 @@ rm(list = ls()[!(ls() %in% c('points','poly'))])
 #save as an .RData file 
 path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
 setwd(path)
-
 save.image('script0_output.RData')
