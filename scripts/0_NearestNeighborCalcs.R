@@ -642,6 +642,5 @@ save.image('script0_output.RData')
 #save as an .RData file 
 path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
 setwd(path)
-
 save.image('script0_output.RData')
 >>>>>>> f43506c... updating script 0 and script 1
