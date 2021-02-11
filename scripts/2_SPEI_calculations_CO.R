@@ -19,10 +19,6 @@ datWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysi
 setwd(datWD)
 load("./scripts/script1_output.RData")
 
-CO_poly_all <-  CO_poly_surv_traits_quads
-CO_point_all  <- CO_point_surv_traits_quads
-rm(list=c("CO_point_surv_traits_quads", "CO_poly_surv_traits_quads"))
-
 #load SPEI dataset
 # source: https://spei.csic.es/database.html
 climWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Climate Data/" #set wd to the location of the CO_SPEI.csv file
