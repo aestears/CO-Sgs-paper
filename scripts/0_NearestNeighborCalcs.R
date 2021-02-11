@@ -16,7 +16,8 @@ require(sf) #v0.9-7
 require(mapview) #v2.9.0
 require(lwgeom) #v0.2-5
 
-
+#### Data Sources ####
+# Polygon and Point demographic tracking data from output of 'tracking script' set of scripts
 #### Calculating Conspecific Nearest Neighbor Area for Polygon Dataset
 ## set wd and read in data file
 workDir <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/SurvivalData" #change to the path of your file "polygon_species_survD_IPM.csv"

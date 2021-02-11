@@ -10,43 +10,36 @@
 ##### load packages #####
 require(tidyverse) #v1.3.0
 
+## clear workspace ##
+rm(list=ls())
+
 ##### Load data files #####
 #source the previous script ("0_NearestNeighborCalcs.R") to get "points" and "poly" data.frames
-nearWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper" #a path for the directory containing the /scripts folder
+nearWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper"  #a path for the directory containing the /scripts folder
 setwd(nearWD)
-source("/scripts/0_NearestNeighborCalcs.R")
+load("./scripts/script0_output.RData")
 
-setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files")
+## load phenology data 
+# data source: Flora of Colorado, Jennifer Ackerfield 
+flwrWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files" #set working directory for location of flowering time data file
+setwd(flwrWD)
+flowering <- read.csv("./Flowering_Time_data_CO.csv")
 
-#load point survival data
-CO_point_surv <- read.csv("./Intermediate Analysis Files/point_demo_2_23_20.csv")
-#load polygon survival data
-CO_poly_surv <- read.csv("./Intermediate Analysis Files/polygon_demo_2_23_20.csv")
-#load flowering survival data 
-flowering <- read.csv("./all Flowering Time data.csv")
-#load USDA ARS trait data
-CO_traits <- read.csv("./Mean trait values_for Analysis.csv", stringsAsFactors = FALSE)
-CO_traits$TLP <- as.numeric(CO_traits$TLP)
-CO_traits$LDMC_g_g <- as.numeric(CO_traits$LDMC_g_g)
-CO_traits$SLA_adj_cm2_g <- as.numeric(CO_traits$SLA_adj_cm2_g)
-CO_traits$RDMC_g_g <- as.numeric(CO_traits$RDMC_g_g)
-CO_traits$RTD_g_cm3 <- as.numeric(CO_traits$RTD_g_cm3)
-CO_traits$SRL_best_m_g <- as.numeric(CO_traits$SRL_best_m_g)
-CO_traits$AvgDiam_mm <- as.numeric(CO_traits$AvgDiam_mm)
+##load trait data 
+# data source: Blumenthal, 2020 (https://doi.org/10.1111/1365-2745.13454) 
+CO_traits <- read.csv("./Mean_trait_values.csv", stringsAsFactors = FALSE)
 
-#load quadrat information
-CO_quads <- read.csv("./quad_info_all.csv")
+## load quadrat information
+CO_quads <- read.csv("./quad_info_CO.csv")
 #load climate information
 CO_climate <- read.csv("./CO_Climate_All.csv")
 #load data on families and tribes
 families <- read.csv("./Families_Tribes.csv")
 
-#################################################################
-###### PREPARE DATASET FOR ANALYSIS #####
+##///////////////////////////////////////
+###### Prepare Dataset for Analysis #####
 
 ### clean up CO_trait datset ###
-## clean-up and subset flowering datset 
-flowering[flowering$site == "AZ","site"] <- "AZ_s"
 
 #fix species names in traits and flowering datasets
 # CO_traits[CO_traits$Species %in% prob_sp_names,]
