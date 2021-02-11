@@ -138,6 +138,7 @@ CO_point_surv_traits <- left_join (points, all_CO_traits, by=c("species"="specie
 CO_point_surv_traits_quads <- left_join(CO_point_surv_traits, CO_quads, by=c("quad"="quad"))
 
 CO_point_surv_traits_quads
+
 #### save workspace image for next script ####
 rm(list = ls()[!(ls() %in% c('CO_point_surv_traits_quads','CO_poly_surv_traits_quads'))])
 
