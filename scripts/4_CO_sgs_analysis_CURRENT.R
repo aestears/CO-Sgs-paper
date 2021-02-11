@@ -1,18 +1,26 @@
-#/////////////////////////////////////////////
-## Colorado Shortgrass Steppe Data Analysis ##
-#/////////////////////////////////////////////
-##### LOAD PACKAGES #####
-require(tidyverse)
-require(visreg)
-require(fields)
-require(lme4)
-require(MuMIn)
-require(lmerTest)
-require(stargazer)
-require(glmmTMB)
-require(sjPlot)
-require(effects)
-require(Ryacas)
+#//////////////////////////
+# Demographic trade-offs affect how leaf turgor loss point and tissue dry matter content mediate the effect of drought on herbaceous perennial survival and growth
+# Analysis 
+# Script 5 of 6
+# Alice Stears, astears@uwyo.edu
+# Revised 9 February 2021
+# R version 4.0.3 
+#//////////////////////////
+
+##### Load Packages #####
+require(tidyverse) #v1.3.0
+require(fields) #v11.6
+require(lme4) #v1.1-26
+require(MuMIn) #v1.43.17
+require(lmerTest) #v3.1-3
+require(stargazer) #v5.2.2
+require(glmmTMB) #v1.0.2.1
+require(sjPlot) #v2.8.7
+require(effects) #v4.2-0
+require(Ryacas) #v1.1.3.1
+
+## clear workspace ##
+rm(list=ls())
 
 ##### LOAD DATA FILES #####
 setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis")

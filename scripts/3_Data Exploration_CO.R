@@ -46,8 +46,6 @@ require(piecewiseSEM) #v2.1.2
 require(MuMIn) #v1.43.1
 require(corrplot) #v0.84
 
-source("~/Dropbox/Grad School/Courses/Fall 2018 Courses/Quantitative Analyses for Field Data/QuantitativeFieldData_2018/source/HighstatLibV8.r")
-
 ## clear workspace ##
 rm(list=ls())
 
