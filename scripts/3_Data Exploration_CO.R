@@ -1,50 +1,30 @@
-#////////////////////////////////////
-## set working directory
-setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis")
-## Load files from "prep" file
-# source("./SCRIPTS/2_SPEI_calculations_CO.R")
+#//////////////////////////
+# Demographic trade-offs affect how leaf turgor loss point and tissue dry matter content mediate the effect of drought on herbaceous perennial survival and growth
+# Data Exploration
+# Script 4 of 6
+# Alice Stears, astears@uwyo.edu
+# Revised 9 February 2021
+# R version 4.0.3 
+#//////////////////////////
+
 ## Load packages
-require(lattice)
-require(tidyr)
-require(dplyr)
-require(lme4)
-library(piecewiseSEM)
-library(MuMIn)
-require(visreg)
-require(plotly)
+require(lattice) #v0.20-41
+require(tidyverse) #v1.3.0
+require(lme4) #v1.1-26
+library(piecewiseSEM) #v2.1.2
+library(MuMIn) #v1.43.1
+
 source("~/Dropbox/Grad School/Courses/Fall 2018 Courses/Quantitative Analyses for Field Data/QuantitativeFieldData_2018/source/HighstatLibV8.r")
 
-##load intermediate data files (demographic data with nearest neighbor and SPEI)
-setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files")
-CO_point_all <- read.csv("./Intermediate Analysis Files/Point_Demo_SPEI_2_24_20.csv",stringsAsFactors = FALSE)
-CO_poly_all <- read.csv("./Intermediate Analysis Files/Poly_Demo_SPEI_2_24_20.csv",stringsAsFactors =  FALSE)
+## clear workspace ##
+rm(list=ls())
 
-#scale variables in polygon dataset
-CO_poly_all$TLP_s <- as.numeric(scale(CO_poly_all$TLP))
-CO_poly_all$LDMC_s <- as.numeric(scale(CO_poly_all$LDMC_g_g))
-CO_poly_all$SPEI_s <- as.numeric(scale(CO_poly_all$SPEI_unique))
-CO_poly_all$neighbors_10_s <- as.numeric(scale(CO_poly_all$neighbor_area_10))
-CO_poly_all$neighbors_15_s <- as.numeric(scale(CO_poly_all$neighbor_area_15))
-CO_poly_all$neighbors_20_s <- as.numeric(scale(CO_poly_all$neighbor_area_20))
-CO_poly_all$SLA_s <- as.numeric(scale(CO_poly_all$SLA_adj_cm2_g))
-CO_poly_all$Height_s <- as.numeric(scale(CO_poly_all$PlantHeight_mm))
-CO_poly_all$RDMC_s <- as.numeric(scale(CO_poly_all$RDMC_g_g))
-CO_poly_all$RTD_s <- as.numeric(scale(CO_poly_all$RTD_g_cm3))
-#log transform area
-CO_poly_all$area_s <- as.numeric((log(CO_poly_all$area_t)))
-CO_poly_all$delta_area <- as.numeric((log(CO_poly_all$area_t)))
-CO_poly_all$area_tplus1_s <- as.numeric(log(CO_poly_all$area_tplus1))
-#scale variables in point dataset
-CO_point_all$TLP_s <- as.numeric(scale(CO_point_all$TLP))
-CO_point_all$LDMC_s <- as.numeric(scale(CO_point_all$LDMC_g_g))
-CO_point_all$SPEI_s <- as.numeric(scale(CO_point_all$SPEI_unique))
-CO_point_all$SLA_s <- as.numeric(scale(CO_point_all$SLA_adj))
-CO_point_all$neighbors_10_s <- as.numeric(scale(CO_point_all$neighbors_10))
-CO_point_all$neighbors_15_s <- as.numeric(scale(CO_point_all$neighbors_15))
-CO_point_all$neighbors_20_s <- as.numeric(scale(CO_point_all$neighbors_20))
-CO_point_all$Height_s <- as.numeric(scale(CO_point_all$PlantHeight_mm))
-CO_point_all$RDMC_s <- as.numeric(scale(CO_point_all$RDMC_g_g))
-CO_point_all$RTD_s <- as.numeric(scale(CO_point_all$RTD_g_cm3))
+## set working directory
+datWD <- setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper") #set path for the location of the environment image of script 2 output
+setwd(datWD)
+#load data from previous 
+load("./scripts/script2_output.RData")
+ 
 
 
 #//////////////////////////////////////
@@ -393,4 +373,31 @@ CO_point_all$SRL_s <- as.numeric(scale(CO_point_all$SRL_best_m_g))
 CO_point_all$RDiam_s <- as.numeric(scale(CO_point_all$AvgDiam_mm))
 CO_point_all$nearEdge <- as.factor(CO_point_all$nearEdge)
 
+#### scaling (from top) ####
+#scale variables in polygon dataset
+CO_poly_all$TLP_s <- as.numeric(scale(CO_poly_all$TLP))
+CO_poly_all$LDMC_s <- as.numeric(scale(CO_poly_all$LDMC_g_g))
+CO_poly_all$SPEI_s <- as.numeric(scale(CO_poly_all$SPEI_unique))
+CO_poly_all$neighbors_10_s <- as.numeric(scale(CO_poly_all$neighbor_area_10))
+CO_poly_all$neighbors_15_s <- as.numeric(scale(CO_poly_all$neighbor_area_15))
+CO_poly_all$neighbors_20_s <- as.numeric(scale(CO_poly_all$neighbor_area_20))
+CO_poly_all$SLA_s <- as.numeric(scale(CO_poly_all$SLA_adj_cm2_g))
+CO_poly_all$Height_s <- as.numeric(scale(CO_poly_all$PlantHeight_mm))
+CO_poly_all$RDMC_s <- as.numeric(scale(CO_poly_all$RDMC_g_g))
+CO_poly_all$RTD_s <- as.numeric(scale(CO_poly_all$RTD_g_cm3))
+#log transform area
+CO_poly_all$area_s <- as.numeric((log(CO_poly_all$area_t)))
+CO_poly_all$delta_area <- as.numeric((log(CO_poly_all$area_t)))
+CO_poly_all$area_tplus1_s <- as.numeric(log(CO_poly_all$area_tplus1))
+#scale variables in point dataset
+CO_point_all$TLP_s <- as.numeric(scale(CO_point_all$TLP))
+CO_point_all$LDMC_s <- as.numeric(scale(CO_point_all$LDMC_g_g))
+CO_point_all$SPEI_s <- as.numeric(scale(CO_point_all$SPEI_unique))
+CO_point_all$SLA_s <- as.numeric(scale(CO_point_all$SLA_adj))
+CO_point_all$neighbors_10_s <- as.numeric(scale(CO_point_all$neighbors_10))
+CO_point_all$neighbors_15_s <- as.numeric(scale(CO_point_all$neighbors_15))
+CO_point_all$neighbors_20_s <- as.numeric(scale(CO_point_all$neighbors_20))
+CO_point_all$Height_s <- as.numeric(scale(CO_point_all$PlantHeight_mm))
+CO_point_all$RDMC_s <- as.numeric(scale(CO_point_all$RDMC_g_g))
+CO_point_all$RTD_s <- as.numeric(scale(CO_point_all$RTD_g_cm3))
 
