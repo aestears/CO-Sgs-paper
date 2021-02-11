@@ -195,100 +195,105 @@ corvif(temp_point[,MyVar15])
 #All of the VIFs are below 3 
   
 
-###Standardize, scale, or leave covariates alone
-#I want to scale the variables of SPEI, LOP, LDMC_g_g, and area so that they are on similar scales
-temp_point$TLP_s <- as.numeric(scale(temp_point$TLP))
-temp_point$LDMC_g_g_s <- as.numeric(scale(temp_point$LDMC_g_g))
-temp_point$SPEI_s <- as.numeric(scale(temp_point$SPEI_unique))
-temp_point$SLA_s <- as.numeric(scale(temp_point$SLA_adj))
-#log transform stems
-
-par(mfrow=c(2,3))
-hist(temp_point$TLP_s)
-hist(temp_point$LDMC_g_g_s)
-hist(temp_point$SPEI_s)
-
-
 #### Data exploration steps for growth data ####
+## calculate growth for each polygon ####
+CO_poly_all$logDiffArea <- (log(CO_poly_all$area_tplus1)) - (log(CO_poly_all$area_t))
+
+## subset dataset for growth dataset
 poly_temp_growth <- CO_poly_all
 #variables to test
 MyVar <- c("species","quad","year_t","area_t","logDiffArea","TLP",
-           "SPEI_unique","SPEI_unique_prev","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "neighbor_area_5",
+           "SPEI_unique","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "neighbor_area_5", "AvgDiam_mm", 
            "neighbor_area_15", "neighbor_area_10","neighbor_area_20")
 poly_temp_growth <- poly_temp_growth[,MyVar]
 
-# remove values for which we don't have growth data
-poly_temp_growth <- poly_temp_growth %>% 
-  filter(!is.na(poly_temp_growth$logDiffArea))
-
-which(is.na(poly_temp_growth))
 ## Data exploration for graminoids
 ### Data outliers
 
-par(mfrow=c(2,3))
+par(mfrow=c(3,4))
 hist(poly_temp_growth$LDMC_g_g)
 hist(poly_temp_growth$TLP)
 hist(poly_temp_growth$logDiffArea)
 hist(poly_temp_growth$SPEI_unique)
+hist(poly_temp_growth$SLA_adj_cm2_g)
+hist(poly_temp_growth$RDMC_g_g)
+hist(poly_temp_growth$SRL_m_g)
+hist(poly_temp_growth$RTD_g_cm3)
+hist(poly_temp_growth$AvgDiam_mm)
 boxplot(poly_temp_growth$area,
         varwidth = TRUE,
         main = "Boxplot of area",
         ylab = "area", col=c("gray40", "gray60", "gray80"), data = poly_temp_growth, pch=16)	
 
-###	Extra 0s
-#From the above histograms, it looks like the only variable with a lot of zeros is survival, which makes sense (it is all 0sand 1s, so we expect lots of 0s).  Obvious hint that I'll want to use a binomial distribution
-
 ###	Collinearity
-
+par(mfrow=c(1,1))
 #for TLP models
 MyVar2 <- c("area_t","logDiffArea","TLP","SPEI_unique")
-pairs(poly_temp_growth[,MyVar2], lower.panel = panel.cor)
+corrplot(cor(poly_temp_growth[,MyVar2], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+# no substantial correlations between covariates
 
-#There is some corrrelation between survival and area, but not enough to worry about (0.3)
-
-#for LDMC_g_g models
+#for LDMC models
 MyVar3 <- c("area_t","logDiffArea","LDMC_g_g","SPEI_unique")
-pairs(poly_temp_growth[,MyVar3], lower.panel = panel.cor)
+corrplot(cor(poly_temp_growth[,MyVar3], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+# no substantial correlations between covariates
 
-#There is some corrrelation between survival and area, but not enough to worry about (0.3)
+#for SLA models
+MyVar4 <- c("area_t","logDiffArea","SLA_adj_cm2_g","SPEI_unique")
+corrplot(cor(poly_temp_growth[,MyVar4], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+# no substantial correlations between covariates
 
-### VARIANCE INFLATION FACTORS (VIF) for fixed effects
+#for RDMC models
+MyVar5 <- c("area_t","logDiffArea","RDMC_g_g","SPEI_unique")
+corrplot(cor(poly_temp_growth[,MyVar5], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+# no substantial correlations between covariates
 
-#for LOP model
+#for SRL models
+MyVar6 <- c("area_t","logDiffArea","SRL_m_g","SPEI_unique")
+corrplot(cor(poly_temp_growth[,MyVar6], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+# no substantial correlations between covariates
+
+#for RTD models
+MyVar7 <- c("area_t","logDiffArea","RTD_g_cm3","SPEI_unique")
+corrplot(cor(poly_temp_growth[,MyVar7], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+# no substantial correlations between covariates
+
+#for RDiam models
+MyVar8 <- c("area_t","logDiffArea","AvgDiam_mm","SPEI_unique")
+corrplot(cor(poly_temp_growth[,MyVar8], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+# no substantial correlations between covariates
+
+### Variance Inflation Factors (VIF) for fixed effects
+
+#for TLP model
 temp <- poly_temp_growth[,MyVar2] %>% 
   dplyr::filter(!is.na(TLP))
 corvif(temp)
-
-
 #for LDMC_g_g model
 temp <- poly_temp_growth[,MyVar3] %>% 
-  dplyr::filter(!is.na(LDMC_g_g))
+  dplyr::filter(!is.na("LDMC_g_g"))
+corvif(temp)
+#for SLA model
+temp <- poly_temp_growth[,MyVar4] %>% 
+  dplyr::filter(!is.na(SLA_adj_cm2_g))
+corvif(temp)
+#for RDMC_g_g model
+temp <- poly_temp_growth[,MyVar5] %>% 
+  dplyr::filter(!is.na("RDMC_g_g"))
+corvif(temp)
+#for SRL model
+temp <- poly_temp_growth[,MyVar6] %>% 
+  dplyr::filter(!is.na("SRL_m_g"))
+corvif(temp)
+#for RTD model
+temp <- poly_temp_growth[,MyVar7] %>% 
+  dplyr::filter(!is.na("RTD_g_cm3"))
+corvif(temp)
+#for RDiam
+temp <- poly_temp_growth[,MyVar8] %>% 
+  dplyr::filter(!is.na("AvgDiam_mm"))
 corvif(temp)
 
 # All values are below 3, which is good
-
-
-###	Interactions 
-#I want to include an interaction term between SPEI and trait (SPEI*TLP and SPEI*LDMC_g_g)
-#Plot SPEI and LDMC_g_g against growth at high and low values of SPEI to see if there seems to be an interaction that makes sense to include (bottom 25% of SPEI vs. top 25% of SPEI)
-
-#It does look like there are different patterns of growth (interacting patterns) for species with different LOP at high vs. low SPEI
-
-#For LDMC_g_g
-par(mfrow=c(1,2))
-plot(jitter(logDiffArea)~jitter(LDMC_g_g),
-     data=poly_temp_growth[poly_temp_growth$SPEI_unique<quantile(poly_temp_growth$SPEI_unique)[2],],
-     main="Bottom 25% of SPEI_values")
-#abline(glm(logDiffArea~LDMC_g_g, data=poly_temp_growth[poly_temp_growth$SPEI_unique<quantile(poly_temp_growth$SPEI_unique)[2],]))
-
-plot(jitter(logDiffArea)~jitter(LDMC_g_g),
-     data=poly_temp_growth[poly_temp_growth$SPEI_unique>quantile(poly_temp_growth$SPEI_unique)[3],],
-     main="Top 25% of SPEI values")
-#abline(glm(logDiffArea~LDMC_g_g,data=poly_temp_growth[poly_temp_growth$SPEI_unique>quantile(poly_temp_growth$SPEI_unique)[3],]))
-
-#There is not nearly as much of an interaction here with LDMC_g_g, so I'm not too sure if it makes sense to include one here?  I think it makes biological sense, but 
-#it is hard to visually see any trends here.  But I definitely think there is a high enough sample size to include an interaction. 
- 
 
 #### subset and scale data sets ####
 #subset the point dataset to include only 500 of Sphaeralcea coccinea indivduals
@@ -308,7 +313,7 @@ CO_point_SPHfew_3 <- CO_point_SPH %>%
   sample_n(size = 15, replace = FALSE)%>% 
   as.data.frame()
 
-#rest of points
+#rest of points 
 CO_point_rest <- CO_point_all[CO_point_all$species != "Sphaeralcea coccinea",]
 
 #join subsetted points for sphaeralcea with rest of dataset 
@@ -317,8 +322,7 @@ CO_point_all_2 <- rbind(CO_point_SPHfew_2, CO_point_rest)
 CO_point_all_3 <- rbind(CO_point_SPHfew_3, CO_point_rest)
 CO_point_all <- rbind(rbind(CO_point_SPHfew_3, CO_point_rest))
 
-
-
+#### scaling and log-transforming variables####
 #scale variables in polygon dataset
 CO_poly_all$TLP_s <- as.numeric(scale(CO_poly_all$TLP))
 CO_poly_all$LDMC_s <- as.numeric(scale(CO_poly_all$LDMC_g_g))
@@ -328,63 +332,25 @@ CO_poly_all$neighbors_10_s <- as.numeric(scale(CO_poly_all$neighbor_area_10))
 CO_poly_all$neighbors_15_s <- as.numeric(scale(CO_poly_all$neighbor_area_15))
 CO_poly_all$neighbors_20_s <- as.numeric(scale(CO_poly_all$neighbor_area_20))
 CO_poly_all$SLA_s <- as.numeric(scale(CO_poly_all$SLA_adj_cm2_g))
-CO_poly_all$Height_s <- as.numeric(scale(CO_poly_all$PlantHeight_mm))
 CO_poly_all$RDMC_s <- as.numeric(scale(CO_poly_all$RDMC_g_g))
 CO_poly_all$RTD_s <- as.numeric(scale(CO_poly_all$RTD_g_cm3))
-CO_poly_all$year <- as.factor(CO_poly_all$year_t)
-CO_poly_all$species <- as.factor(CO_poly_all$species)
-CO_poly_all$quad <- as.factor(CO_poly_all$quad)
-CO_poly_all$SRL_s <- as.numeric(scale(CO_poly_all$SRL_best_m_g))
 CO_poly_all$RDiam_s <- as.numeric(scale(CO_poly_all$AvgDiam_mm))
-CO_poly_all$survives_tplus1 <- as.factor(CO_poly_all$survives_tplus1)
-CO_poly_all$nearEdge <- as.factor(CO_poly_all$nearEdge_t)
-#log transform area
-CO_poly_all$area_s <- as.numeric(scale(log(CO_poly_all$area_t)))
-
-#scale variables in point dataset
-#iteration 1
-CO_point_all$TLP_s <- as.numeric(scale(CO_point_all$TLP))
-CO_point_all$LDMC_s <- as.numeric(scale(CO_point_all$LDMC_g_g))
-CO_point_all$SPEI_s <- as.numeric(scale(CO_point_all$SPEI_unique))
-CO_point_all$SLA_s <- as.numeric(scale(CO_point_all$SLA_adj))
-CO_point_all$neighbors_10_s <- as.numeric(scale(CO_point_all$neighbors_10))
-CO_point_all$neighbors_15_s <- as.numeric(scale(CO_point_all$neighbors_15))
-CO_point_all$neighbors_20_s <- as.numeric(scale(CO_point_all$neighbors_20))
-CO_point_all$Height_s <- as.numeric(scale(CO_point_all$PlantHeight_mm))
-CO_point_all$RDMC_s <- as.numeric(scale(CO_point_all$RDMC_g_g))
-CO_point_all$RTD_s <- as.numeric(scale(CO_point_all$RTD_g_cm3))
-CO_point_all$year <- as.factor(CO_point_all$year)
-CO_point_all$species <- as.factor(CO_point_all$species)
-CO_point_all$quad <- as.factor(CO_point_all$quad)
-CO_point_all$SRL_s <- as.numeric(scale(CO_point_all$SRL_best_m_g))
-CO_point_all$RDiam_s <- as.numeric(scale(CO_point_all$AvgDiam_mm))
-CO_point_all$nearEdge <- as.factor(CO_point_all$nearEdge)
-
-#### scaling (from top) ####
-#scale variables in polygon dataset
-CO_poly_all$TLP_s <- as.numeric(scale(CO_poly_all$TLP))
-CO_poly_all$LDMC_s <- as.numeric(scale(CO_poly_all$LDMC_g_g))
-CO_poly_all$SPEI_s <- as.numeric(scale(CO_poly_all$SPEI_unique))
-CO_poly_all$neighbors_10_s <- as.numeric(scale(CO_poly_all$neighbor_area_10))
-CO_poly_all$neighbors_15_s <- as.numeric(scale(CO_poly_all$neighbor_area_15))
-CO_poly_all$neighbors_20_s <- as.numeric(scale(CO_poly_all$neighbor_area_20))
-CO_poly_all$SLA_s <- as.numeric(scale(CO_poly_all$SLA_adj_cm2_g))
-CO_poly_all$Height_s <- as.numeric(scale(CO_poly_all$PlantHeight_mm))
-CO_poly_all$RDMC_s <- as.numeric(scale(CO_poly_all$RDMC_g_g))
-CO_poly_all$RTD_s <- as.numeric(scale(CO_poly_all$RTD_g_cm3))
 #log transform area
 CO_poly_all$area_s <- as.numeric((log(CO_poly_all$area_t)))
-CO_poly_all$delta_area <- as.numeric((log(CO_poly_all$area_t)))
 CO_poly_all$area_tplus1_s <- as.numeric(log(CO_poly_all$area_tplus1))
-#scale variables in point dataset
+
+## scale variables in point dataset
 CO_point_all$TLP_s <- as.numeric(scale(CO_point_all$TLP))
 CO_point_all$LDMC_s <- as.numeric(scale(CO_point_all$LDMC_g_g))
 CO_point_all$SPEI_s <- as.numeric(scale(CO_point_all$SPEI_unique))
 CO_point_all$SLA_s <- as.numeric(scale(CO_point_all$SLA_adj))
+CO_point_all$neighbors_5_s <- as.numeric(scale(CO_point_all$neighbors_5))
 CO_point_all$neighbors_10_s <- as.numeric(scale(CO_point_all$neighbors_10))
 CO_point_all$neighbors_15_s <- as.numeric(scale(CO_point_all$neighbors_15))
 CO_point_all$neighbors_20_s <- as.numeric(scale(CO_point_all$neighbors_20))
-CO_point_all$Height_s <- as.numeric(scale(CO_point_all$PlantHeight_mm))
 CO_point_all$RDMC_s <- as.numeric(scale(CO_point_all$RDMC_g_g))
 CO_point_all$RTD_s <- as.numeric(scale(CO_point_all$RTD_g_cm3))
+CO_point_all$RDiam_s <- as.numeric(scale(CO_point_all$AvgDiam_mm))
+
+
 
