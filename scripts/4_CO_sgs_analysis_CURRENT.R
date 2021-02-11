@@ -22,17 +22,19 @@ require(Ryacas) #v1.1.3.1
 ## clear workspace ##
 rm(list=ls())
 
-##### LOAD DATA FILES #####
-setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis")
-
-source("./SCRIPTS/3_Data Exploration_CO.R")
+##### Load Data Files #####
+## set working directory
+datWD <- setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper") #set path for the location of the environment image of script 3 output
+setwd(datWD)
+#load data from previous 
+load("./scripts/script3_output.RData")
 
 #### ensure that the structure of the variables is correct ####
 CO_poly_all <- CO_poly_all %>% 
-  dplyr::select(species, quad, year_t, area_t, survives_tplus1, nearEdge_t, area_tplus1, neighbors_5_s, neighbors_10_s, neighbors_15_s, neighbors_20_s, area_s, RTD_s, RDMC_s, Height_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s) %>% 
+  dplyr::select(species, quad, year_t, area_t, survives_tplus1, nearEdge_t, area_tplus1, neighbors_5_s, neighbors_10_s, neighbors_15_s, neighbors_20_s, area_s, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s) %>% 
   mutate(species = as.factor(species), quad = as.factor(quad), year_t = as.factor(year_t), nearEdge_t = as.factor(nearEdge_t))
 
-CO_point_all <- CO_point_all %>% dplyr::select(species, quad, year, survives, nearEdge,  neighbors_10_s, neighbors_15_s, neighbors_20_s, RTD_s, RDMC_s, Height_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s) %>% 
+CO_point_all <- CO_point_all %>% dplyr::select(species, quad, year, survives, nearEdge,  neighbors_10_s, neighbors_15_s, neighbors_20_s, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s) %>% 
   mutate(species = as.factor(species), quad = as.factor(quad), year_t = as.factor(year), survives_tplus1 = as.integer(survives), nearEdge_t = as.integer(nearEdge)) 
   
 #### testing viability of different neighborhood distance radii####
