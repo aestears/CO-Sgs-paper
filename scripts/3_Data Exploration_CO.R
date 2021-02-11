@@ -831,5 +831,16 @@ CO_point_all$RTD_s <- as.numeric(scale(CO_point_all$RTD_g_cm3))
 CO_point_all$RDiam_s <- as.numeric(scale(CO_point_all$AvgDiam_mm))
 
 
+<<<<<<< HEAD
 
 >>>>>>> 56c8fd3... added scripts for data analysis
+=======
+#### save workspace image for next script ####
+rm(list = ls()[!(ls() %in% c('CO_point_all','CO_poly_all'))])
+
+## for next script, need CO_point_all and CO_poly_all data.frames
+#save as an .RData file 
+path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
+setwd(path)
+save.image('script3_output.RData')
+>>>>>>> 6050f84... finishing update of script 3
