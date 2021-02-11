@@ -75,10 +75,14 @@ save.image('script1_output.RData')
 =======
 require(tidyverse) #v1.3.0
 
+## clear workspace ##
+rm(list=ls())
+
 ##### Load data files #####
 #source the previous script ("0_NearestNeighborCalcs.R") to get "points" and "poly" data.frames
-nearWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper" #a path for the directory containing the /scripts folder
+nearWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper"  #a path for the directory containing the /scripts folder
 setwd(nearWD)
+<<<<<<< HEAD
 source("/scripts/0_NearestNeighborCalcs.R")
 >>>>>>> f43506c... updating script 0 and script 1
 
@@ -102,17 +106,31 @@ CO_traits$AvgDiam_mm <- as.numeric(CO_traits$AvgDiam_mm)
 
 #load quadrat information
 CO_quads <- read.csv("./quad_info_all.csv")
+=======
+load("./scripts/script0_output.RData")
+
+## load phenology data 
+# data source: Flora of Colorado, Jennifer Ackerfield 
+flwrWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files" #set working directory for location of flowering time data file
+setwd(flwrWD)
+flowering <- read.csv("./Flowering_Time_data_CO.csv")
+
+##load trait data 
+# data source: Blumenthal, 2020 (https://doi.org/10.1111/1365-2745.13454) 
+CO_traits <- read.csv("./Mean_trait_values.csv", stringsAsFactors = FALSE)
+
+## load quadrat information
+CO_quads <- read.csv("./quad_info_CO.csv")
+>>>>>>> cf7f924... cleaned up file loading
 #load climate information
 CO_climate <- read.csv("./CO_Climate_All.csv")
 #load data on families and tribes
 families <- read.csv("./Families_Tribes.csv")
 
-#################################################################
-###### PREPARE DATASET FOR ANALYSIS #####
+##///////////////////////////////////////
+###### Prepare Dataset for Analysis #####
 
 ### clean up CO_trait datset ###
-## clean-up and subset flowering datset 
-flowering[flowering$site == "AZ","site"] <- "AZ_s"
 
 #fix species names in traits and flowering datasets
 # CO_traits[CO_traits$Species %in% prob_sp_names,]
