@@ -11,8 +11,9 @@
 require(lattice) #v0.20-41
 require(tidyverse) #v1.3.0
 require(lme4) #v1.1-26
-library(piecewiseSEM) #v2.1.2
-library(MuMIn) #v1.43.1
+require(piecewiseSEM) #v2.1.2
+require(MuMIn) #v1.43.1
+require(corrplot) #v0.84
 
 source("~/Dropbox/Grad School/Courses/Fall 2018 Courses/Quantitative Analyses for Field Data/QuantitativeFieldData_2018/source/HighstatLibV8.r")
 
@@ -24,127 +25,114 @@ datWD <- setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs A
 setwd(datWD)
 #load data from previous 
 load("./scripts/script2_output.RData")
- 
 
-
-#//////////////////////////////////////
 ####Data exploration steps for survival data####
-##Create a variable for phylogeny in each group (polygons and points)
 #Data exploration steps
 #trim out the variables we aren't using from the datset
 poly_temp <- CO_poly_all
 #variables to test
 MyVar <- c("species","quad","year_t","area_t","survives_tplus1","TLP",
-           "SPEI_unique","SPEI_unique_prev","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3",
+           "SPEI_unique","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "AvgDiam_mm", "neighbor_area_5",
            "neighbor_area_15", "neighbor_area_10","neighbor_area_20")
 poly_temp <- poly_temp[,MyVar]
-#remove values for which we do not have trait data
-#poly_temp <- drop_na(poly_temp)
 
 ## Data exploration for graminoids
-### Data outliers
-
-par(mfrow=c(2,3))
+### Look for outliers
+par(mfrow=c(3,4))
 hist(poly_temp$LDMC_g_g)
 hist(poly_temp$TLP)
 hist(poly_temp$survives)
 hist(poly_temp$SPEI_unique)
+hist(poly_temp$SLA_adj_cm2_g)
+hist(poly_temp$RDMC_g_g)
+hist(poly_temp$RTD_g_cm3)
+hist(poly_temp$AvgDiam_mm)
+hist(poly_temp$SRL_m_g)
 boxplot(poly_temp$area,
 varwidth = TRUE,
 main = "Boxplot of area",
 ylab = "LDMC_g_g", col=c("gray40", "gray60", "gray80"), data = poly_temp, pch=16)	
 
 ###	Extra 0s
-#From the above histograms, it looks like the only variable with a lot of zeros is survival, which makes sense (it is all 0sand 1s, so we expect lots of 0s).  Obvious hint that I'll want to use a binomial distribution
+#From the above histograms, it looks like the only variable with a lot of zeros is survival, which makes sense (it is all 0sand 1s, so we expect lots of 0s).  
 
-###	Collinearity
-
+###	Check for collinearity
 #for TLP models
+par(mfrow = c(1,1))
 MyVar2 <- c("area_t","survives_tplus1","TLP","SPEI_unique")
-pairs(poly_temp[,MyVar2], lower.panel = panel.cor)
-
-#There is some corrrelation between survival and area, but not enough to worry about (0.3)
+corrplot(cor(poly_temp[,MyVar2], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+#There is some corrrelation between survival and area, but not enough to worry about (0.32)
 
 #for LDMC_g_g models
 MyVar3 <- c("area_t","survives_tplus1","LDMC_g_g","SPEI_unique")
-pairs(poly_temp[,MyVar3], lower.panel = panel.cor)
-
+corrplot(cor(poly_temp[,MyVar3], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #There is some corrrelation between survival and area, but not enough to worry about (0.3)
 
-### VARIANCE INFLATION FACTORS (VIF) for fixed effects
+#for SLA models
+MyVar4 <- c("area_t","survives_tplus1","SLA_adj_cm2_g","SPEI_unique")
+corrplot(cor(poly_temp[,MyVar4], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+#There is some corrrelation between survival and area, but not enough to worry about (0.3)
 
-#for LOP model
+#for SRL models
+MyVar5 <- c("area_t","survives_tplus1","SRL_m_g","SPEI_unique")
+corrplot(cor(poly_temp[,MyVar5], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+#There is some corrrelation between survival and area, but not enough to worry about (0.3)
+
+#for RDMC models
+MyVar6<- c("area_t","survives_tplus1","RDMC_g_g","SPEI_unique")
+corrplot(cor(poly_temp[,MyVar6], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+#There is some corrrelation between survival and area, but not enough to worry about (0.3)
+
+#for RTD models
+MyVar7 <- c("area_t","survives_tplus1","RTD_g_cm3","SPEI_unique")
+corrplot(cor(poly_temp[,MyVar7], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+#There is some corrrelation between survival and area, but not enough to worry about (0.3)
+
+#for RDiam models
+MyVar8 <- c("area_t","survives_tplus1","AvgDiam_mm","SPEI_unique")
+corrplot(cor(poly_temp[,MyVar8], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+#There is some corrrelation between survival and area, but not enough to worry about (0.3)
+
+
+### examing variance inflation factors (VIF) for fixed effects
+#for TLP model
 corvif(poly_temp[,MyVar2])
-
-
 #for LDMC_g_g model
 corvif(poly_temp[,MyVar3])
+#for SLA model
+corvif(poly_temp[,MyVar4])
+#for SRL model
+corvif(poly_temp[,MyVar5])
+#for RDMC_g_g model
+corvif(poly_temp[,MyVar6])
+#for RTD model
+corvif(poly_temp[,MyVar7])
+#for RDiam model
+corvif(poly_temp[,MyVar8])
 
 # All values are below 3, which is good
 
-
-###	Interactions 
-#I want to include an interaction term between SPEI and trait (SPEI*TLP and SPEI*LDMC_g_g)
-#Plot SPEI and LDMC_g_g against survival at high and low values of SPEI to see if there seems to be an interaction that makes sense to include (bottom 25% of SPEI vs. top 25% of SPEI)
-
- #It does look like there are different patterns of survival (interacting patterns) for species with different LOP at high vs. low SPEI
-
-#For LDMC_g_g
-par(mfrow=c(1,2))
-plot(jitter(survives_tplus1)~jitter(LDMC_g_g),
-data=poly_temp[poly_temp$SPEI_unique<quantile(poly_temp$SPEI_unique)[2],],
-main="Bottom 25% of SPEI_values")
-#abline(glm(survives_tplus1~LDMC_g_g, data=poly_temp[poly_temp$SPEI_unique<quantile(poly_temp$SPEI_unique)[2],], family=binomial(link="logit")))
-
-plot(jitter(survives_tplus1)~jitter(LDMC_g_g),
-data=poly_temp[poly_temp$SPEI_unique>quantile(poly_temp$SPEI_unique)[3],],
-main="Top 25% of SPEI values")
-#abline(glm(survives_tplus1~LDMC_g_g, data=poly_temp[poly_temp$SPEI_unique>quantile(poly_temp$SPEI_unique)[3],], family=binomial(link="logit")))
-
-#There is not nearly as much of an interaction here with LDMC_g_g, so I'm not too sure if it makes sense to include one here?  I think it makes biological sense, but 
-#it is hard to visually see any trends here.  But I definitely think there is a high enough sample size to include an interaction. 
-
-###Standardize, scale, or leave covariates alone
-#I want to scale the variables of SPEI, LOP, LDMC_g_g, and area so that they are on similar scales
-poly_temp$TLP_s <- as.numeric(scale(poly_temp$TLP))
-poly_temp$LDMC_s <- as.numeric(scale(poly_temp$LDMC_g_g))
-poly_temp$SPEI_s <- as.numeric(scale(poly_temp$SPEI_unique))
-
-#log transform area
-poly_temp$area_s <- as.numeric(scale(log(poly_temp$area_t)))
-
-par(mfrow=c(2,3))
-hist(poly_temp$TLP_s)
-hist(poly_temp$LDMC_s)
-hist(poly_temp$SPEI_s)
-hist(poly_temp$area_s)
-
-
-###	Violation of homogeneity (before analysis)
-#We already know that the response variable is heterogeneous (somewhat) with respect to year and quadrat, so I will include random effects for quadrat and year
 
 ### Data exploration steps for forbs
 #trim the dataset to those variables you actually want 
 temp_point <- CO_point_all
 #variables to test
 MyVar <- c("species","quad","year","stems","survives","TLP",
-           "SPEI_unique","SPEI_unique_prev","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3",
+           "SPEI_unique","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "AvgDiam_mm",
            "neighbors_15", "neighbors_10","neighbors_20")
 temp_point <- temp_point[,MyVar]
-#remove values for which we do not have trait data
-temp_point <- temp_point %>% 
-  drop_na()
 
 ### Data outliers
-par(mfrow=c(2,3))
+par(mfrow=c(3,3))
 hist(temp_point$LDMC_g_g)
 hist(temp_point$TLP)
 hist(temp_point$survives)
 hist(temp_point$SPEI_unique)
-boxplot(temp_point$stems,
-        varwidth = TRUE,
-        main = "Boxplot of stems",
-        ylab = "LDMC_g_g", col=c("gray40", "gray60", "gray80"), data = temp_point, pch=16)
+hist(temp_point$SLA_adj_cm2_g)
+hist(temp_point$RDMC_g_g)
+hist(temp_point$RTD_g_cm3)
+hist(temp_point$AvgDiam_mm)
+hist(temp_point$SRL_m_g)
 #There don't seem to be any really crazy outliers. The values for LDMC_g_g and LOP are definitely skewed, and I think that is because this dataset is largely dominated by one species. But that is one reason why I will include a random intercept for species
 
 ###	Extra 0s (looking at previous histograms)
@@ -152,62 +140,61 @@ boxplot(temp_point$stems,
 #(it is all 0sand 1s, so we expect lots of 0s).  Obvious hint that I'll want to use a binomial distribution
 
 ##	Collinearity
+par(mfrow=c(1,1))
 #for LOP
-MyVar4 <-c("survives","TLP","SPEI_unique")  
-pairs(temp_point[,MyVar4], lower.panel = panel.cor)
+MyVar9 <-c("survives","TLP","SPEI_unique")  
+corrplot(cor(temp_point[,MyVar9], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #No correlation between covariates for LOP model
 
 #for LDMC_g_g
-MyVar5 <-c("survives","LDMC_g_g","SPEI_unique")  
-pairs(temp_point[,MyVar5], lower.panel = panel.cor)
+MyVar10 <-c("survives","LDMC_g_g","SPEI_unique")  
+corrplot(cor(temp_point[,MyVar10], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+#No significant correlation between covariates
+
+#for SLA
+MyVar15 <-c("survives","SLA_adj_cm2_g","SPEI_unique")  
+corrplot(cor(temp_point[,MyVar15], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+#No significant correlation between covariates
+
+#for RDMC
+MyVar11 <-c("survives","RDMC_g_g","SPEI_unique")  
+corrplot(cor(temp_point[,MyVar11], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+#No significant correlation between covariates
+
+#for SRL
+MyVar12 <-c("survives","SRL_m_g","SPEI_unique")  
+corrplot(cor(temp_point[,MyVar12], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+#No significant correlation between covariates
+
+#for RTD
+MyVar13 <-c("survives","RTD_g_cm3","SPEI_unique")  
+corrplot(cor(temp_point[,MyVar13], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
+#No significant correlation between covariates
+
+#for RDiam
+MyVar14 <-c("survives","AvgDiam_mm","SPEI_unique")  
+corrplot(cor(temp_point[,MyVar14], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #No significant correlation between covariates
 
 ### Variance Inflation Factors (VIF) for fixed effects
+#For LDMC model
+corvif(temp_point[,MyVar10])
+#for TLP model
+corvif(temp_point[,MyVar9])
+#For RDMC model
+corvif(temp_point[,MyVar11])
+#For SRL model
+corvif(temp_point[,MyVar12])
+#For RTD model
+corvif(temp_point[,MyVar13])
+#For AvgDiam model
+corvif(temp_point[,MyVar14])
+#For SLA model
+corvif(temp_point[,MyVar15])
 
-#For LDMC_g_g model
-#remove categorical variables (species and quad)
-corvif(temp_point[,MyVar5])
-#for LOP model
-corvif(temp_point[,MyVar4])
-#All of the VIFs look small enough! 
+#All of the VIFs are below 3 
   
- ###Interactions 
-#  I want to include an interaction term between SPEI and trait (SPEI*LOP and SPEI*LDMC_g_g)
-#Plot SPEI and LDMC_g_g against survival at high and low values of SPEI to see if there seems to be an interaction that makes sense to include (bottom 25% of SPEI vs. top 25% of SPEI)
 
-#For LOP
-par(mfrow=c(1,2))
-plot(jitter(survives)~jitter(TLP),
-     data=temp_point[temp_point$SPEI_unique<quantile(temp_point$SPEI_unique)[2],],
-     main="Bottom 25% of SPEI values")
-abline(glm(survives~TLP,
-           data=temp_point[temp_point$SPEI_unique<quantile(temp_point$SPEI_unique)[2],],
-           family=binomial(link="logit")))
-plot(jitter(survives)~jitter(TLP),
-     data=temp_point[temp_point$SPEI_unique>quantile(temp_point$SPEI_unique)[3],],
-     main="Top 25% of SPEI values")
-abline(glm(survives~TLP,
-           data=temp_point[temp_point$SPEI_unique>quantile(temp_point$SPEI_unique)[3],],
-           family=binomial(link="logit")))
-
-#It is still difficult to see patterns, especially since the data isn't uniform accross the LOP values. 
-
-#For LDMC_g_g
-par(mfrow=c(1,2))
-plot(jitter(survives)~jitter(LDMC_g_g),
-data=temp_point[temp_point$SPEI_unique<quantile(temp_point$SPEI_unique)[2],],
-main="Bottom 25% of SPEI values")
-abline(glm(survives~LDMC_g_g,
-data=temp_point[temp_point$SPEI_unique<quantile(temp_point$SPEI_unique)[2],],
-family=binomial(link="logit")))
-plot(jitter(survives)~jitter(LDMC_g_g),
-data=temp_point[temp_point$SPEI_unique>quantile(temp_point$SPEI_unique)[3],],
-main="Top 25% of SPEI values")
-abline(glm(survives~LDMC_g_g,
-data=temp_point[temp_point$SPEI_unique>quantile(temp_point$SPEI_unique)[3],],
-family=binomial(link="logit")))
-
-#Again, it is hard to tell because the LDMC_g_g values are not uniformly distributed, but it looks like there are different relationships. 
 ###Standardize, scale, or leave covariates alone
 #I want to scale the variables of SPEI, LOP, LDMC_g_g, and area so that they are on similar scales
 temp_point$TLP_s <- as.numeric(scale(temp_point$TLP))
