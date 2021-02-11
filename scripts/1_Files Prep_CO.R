@@ -116,11 +116,15 @@ setwd(datWD)
 ##load trait data 
 # data source: Blumenthal, 2020 (https://doi.org/10.1111/1365-2745.13454) 
 # Except: all trait values for Schedonnardus paniculatus, root trait values for Sitanion hystrix, Stipa comata RDMC, Allium textile RDMC and root diameter values, and all trait values for Vicia americana
+
 CO_traits <- read.csv("./CO_mean_traits.csv", stringsAsFactors = FALSE)
 
+<<<<<<< HEAD
 ## load quadrat information
 CO_quads <- read.csv("./quad_info_CO.csv")
 >>>>>>> cf7f924... cleaned up file loading
+=======
+>>>>>>> 80dfe2b... updating script 2
 #load climate information
 CO_climate <- read.csv("./CO_Climate_All.csv")
 
@@ -128,19 +132,16 @@ CO_climate <- read.csv("./CO_Climate_All.csv")
 #merge survival data with trait data
 CO_poly_surv_traits <- left_join(poly, CO_traits, by=c("species"="species"))
 #merge quadrat data with trait/survival data
-CO_poly_surv_traits_quads <- left_join(CO_poly_surv_traits,CO_quads[CO_quads$Site=="CO",], by=c("quad"="quad"))
+CO_poly_all <- CO_poly_surv_traits
 
 
 #### merge datasets for point (forb) data ####
 # merge trait data with the survival data ###
-CO_point_surv_traits <- left_join (points, all_CO_traits, by=c("species"="species"))
-# merge trait/survival data with quadrat data ### 
-CO_point_surv_traits_quads <- left_join(CO_point_surv_traits, CO_quads, by=c("quad"="quad"))
-
-CO_point_surv_traits_quads
+CO_point_surv_traits <- left_join (points, CO_traits, by=c("species"="species"))
+CO_point_all <- CO_point_surv_traits
 
 #### save workspace image for next script ####
-rm(list = ls()[!(ls() %in% c('CO_point_surv_traits_quads','CO_poly_surv_traits_quads'))])
+rm(list = ls()[!(ls() %in% c('CO_point_all','CO_poly_all'))])
 
 ## for next script, need CO_point_surv_traits_quads and CO_poly_surv_traits_quads data.frames
 #save as an .RData file 
