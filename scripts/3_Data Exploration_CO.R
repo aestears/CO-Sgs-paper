@@ -333,6 +333,7 @@ CO_poly_all$SLA_s <- as.numeric(scale(CO_poly_all$SLA_adj_cm2_g))
 CO_poly_all$RDMC_s <- as.numeric(scale(CO_poly_all$RDMC_g_g))
 CO_poly_all$RTD_s <- as.numeric(scale(CO_poly_all$RTD_g_cm3))
 CO_poly_all$RDiam_s <- as.numeric(scale(CO_poly_all$AvgDiam_mm))
+CO_poly_all$SRL_s <- as.numeric(scale(CO_poly_all$SRL_best_m_g))
 #log transform area
 CO_poly_all$area_s <- as.numeric((log(CO_poly_all$area_t)))
 CO_poly_all$area_tplus1_s <- as.numeric(log(CO_poly_all$area_tplus1))
@@ -349,6 +350,7 @@ CO_point_all$neighbors_20_s <- as.numeric(scale(CO_point_all$neighbors_20))
 CO_point_all$RDMC_s <- as.numeric(scale(CO_point_all$RDMC_g_g))
 CO_point_all$RTD_s <- as.numeric(scale(CO_point_all$RTD_g_cm3))
 CO_point_all$RDiam_s <- as.numeric(scale(CO_point_all$AvgDiam_mm))
+CO_point_all$SRL_s <- as.numeric(scale(CO_point_all$SRL_best_m_g))
 
 
 #### save workspace image for next script ####
