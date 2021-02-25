@@ -28,7 +28,7 @@ Load model output data
 #### set wd ####
 setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis")
 #get model result data into the environment
-load("./SCRIPTS/models_11232020.RData") #change the file name to the most current version of model runs
+load("./SCRIPTS_OLD/models_11232020.RData") #change the file name to the most current version of model runs
 ```
 
 Make a figure of model results for LDMC, RDMC, and TLP for forb and gram survival
@@ -267,8 +267,8 @@ GrowthExtraFig <- ggplot(data = GrowthDat) +
   labs(title = "Graminoid Growth") +
   xlab(NULL) +
   ylab(expression("Graminoid Growth: log" ~ bgroup("(",frac(size[year_t+1],size[year_t]),")")))  +
-  scale_color_manual(labels = c("dry year", "wet year"), values = c("#e78ac3", "#8da0cb")) +
-  scale_fill_manual(values = c("#e78ac3", "#8da0cb"), guide = FALSE) +
+  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
+  scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
   geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
   geom_text(data = dat_text, mapping = aes(x = x1, y = y1, label = sig), size = 3.5, fontface = "bold") +
   facet_wrap(vars(trait), scales = "free_x", strip.position =  "bottom", ncol = 1) +
