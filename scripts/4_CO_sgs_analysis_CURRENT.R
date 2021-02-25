@@ -48,9 +48,13 @@ mNeigh15 <- glmer(survives_tplus1 ~ area_s + neighbors_15_s + SPEI_s + (area_s|s
 mNeigh20 <- glmer(survives_tplus1 ~ area_s + neighbors_20_s + SPEI_s + (area_s|species) + (1|quad) + (1|year_t), data = CO_poly_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
 #compare the coefficients for the different radii
-NeCoeff <- data.frame(Radius = c(5,10,15,20), Coeff = c(-0.52799, -0.59496, -0.55743, -0.52326))
-
-plot(Coeff ~ Radius, data = NeCoeff, type = "l")
+NeCoeff <- data.frame(Radius = c(5,10,15,20), Coeff = c(
+  coeffs(mNeigh5)[which(names(coeffs(mNeigh5))=="neighbors_5_s")],
+  coeffs(mNeigh10)[which(names(coeffs(mNeigh10))=="neighbors_10_s")],
+  coeffs(mNeigh15)[which(names(coeffs(mNeigh15))=="neighbors_15_s")],
+  coeffs(mNeigh20)[which(names(coeffs(mNeigh20))=="neighbors_20_s")]
+  ))
+#plot fixed effect coefficients for each neighborhood radius model
 ggplot(data = NeCoeff) +
   geom_point(aes(Radius, Coeff)) +
   xlab("Neighborhood Radius From Focal Indivdiual (cm)") +
@@ -58,125 +62,11 @@ ggplot(data = NeCoeff) +
   theme_classic()
 #the coefficient for a radius of 10cm was the 'largest' (most negative), so use 10_cm
 
+#####Graminoid Survival Models #####
+### rename polygon dataset
+CO_grams <- CO_poly_all
 
-# #####Polygon Survival Models #####
-# ### TLP polygon model ###
-# #global model
-# m1 <- glmer(survives_tplus1 ~ area_s + neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year), data = CO_poly_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-# summary(m1)
-# rsquared_m1 <- piecewiseSEM::rsquared(m1)
-# 
-# #plot residuals to assess model fit
-# plot_model(m1, type = "diag") #get qqplots for random effects and fixed effects
-# 
-# #don't have to calculate overdispersion--not possible for bernoulli binomial variables
-# # https://stats.stackexchange.com/questions/206007/can-there-be-overdispersion-in-a-logistic-regression-model-where-each-observatio
-# 
-# #plot residuals vs. fitted data
-# ##tried to include Tribe as a random effect, but the model wouldn't converge--I think there is too much variation in Tribe (7 Tribes, 9 species)
-# #The r-squared is good enough to continue with this as a global model 
-# 
-# #test different random effect structures
-# m1A <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|species) + (1|quad) + (1|year), data = CO_poly_all, family = binomial(link = logit))
-# m1B <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|species) + (1|quad),  data = CO_poly_all, family = binomial(link = logit))
-# m1C <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|species) + (1|year), data = CO_poly_all, family = binomial(link = logit))
-# m1D <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|species) , data = CO_poly_all, family = binomial(link = logit))
-# m1E <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (area_s|species) + (1|year), data = CO_poly_all, family = binomial(link = logit))
-# m1F <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * TLP_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_poly_all, family = binomial(link = logit))
-# m1G <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * TLP_s + nearEdge_t + (area_s|species), data = CO_poly_all, family = binomial(link = logit))
-# m1H <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * TLP_s + nearEdge_t + (1|quad) , data = CO_poly_all, family = binomial(link = logit))
-# m1I <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * TLP_s + nearEdge_t + (1|year), data = CO_poly_all, family = binomial(link = logit))
-# m1Q <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * TLP_s + nearEdge_t + (area_s|species) + (1|year) + (1|quad),  data = CO_poly_all, family = binomial(link = logit))
-# m1U <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * TLP_s + nearEdge_t , 
-#              data = CO_poly_all, family = binomial(link = logit))
-# #using AIC to compare models 
-# #compare the random effect structures using AIC
-# #can't cahnge REML for glmer models, so...  not an issue?
-# #want to use marginal AIC (AICc) https://onlinelibrary.wiley.com/doi/full/10.1111/j.1420-9101.2010.02210.x?
-# 
-# m1_AIC <- MuMIn::AICc(m1, m1A, m1B, m1C, m1D, m1E, m1F, m1G, m1H, m1I, m1Q, m1U)
-# m1_AIC[m1_AIC$AICc==min(m1_AIC$AICc),]
-# 
-# #m1Q (same as m1) has the lowest AIC, so use the random effects structure without a random intercept for Tribe
-# #Look at the QQ Plot for m1
-# #The model fits pretty well! 
-# 
-# #for selection of fixed effects, use a global model with REML = FALSE (actually not possible, REML is not defined for GLMER models) http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html 
-# 
-# options(na.action = "na.fail")
-# 
-# mslist <- dredge(m1)
-# # here you can see all of the models compared and they are ranked in order
-# # here we see we have multiple models <2 delta AIC from the top model 
-# topmod<-get.models(mslist, subset=cumsum(weight) <= .95)
-# topmod <- get.models(mslist, subset = 1) # here you can see all of the models that make up 95% of the model weight
-# #avgm1 <- model.avg(topmod)
-# #best model statement (survives_tplus1 ~ area_s + neighbors_10_s + SPEI_s + TLP_s +  SPEI_s:TLP_s + (area_s | species) + (1 | quad) + (1 | year) )--same as model 1, but w/out term for nearest edge
-# bestMod1 <- glmer(survives_tplus1 ~ area_s + neighbors_10_s + SPEI_s * TLP_s  + (area_s|species) + (1|quad) + (1|year) ,
-#                   data = CO_poly_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-# summary(bestMod1)
-# # tells you which models went into this and gives model-averaged coefficients with p-values
-# # also gives relative importance
-# # use full average, not conditional
-# m1conf <- lme4::confint.merMod(bestMod1)
-# # gives confidence intervals
-# #The confidence intervals suggest that area is the only significant coefficient (95% CI doesn't overlap 0)
-# 
-# plot_model(bestMod1, type = "diag")
-# 
-# #/////////////////////////////////
-# 
-# ### LDMC polygon model ###
-# m2 <- glmer(survives_tplus1 ~ SPEI_s * LDMC_s +  area_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year), data=CO_poly_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-# 
-# plot_model(m2, type = "diag")
-# 
-# #test different random effect structures
-# m2A <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) + (1|quad) + (1|year), data = CO_poly_all, family = binomial(link = logit))
-# m2B <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) + (1|quad),  data = CO_poly_all, family = binomial(link = logit))
-# m2C <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) + (1|year), data = CO_poly_all, family = binomial(link = logit))
-# m2D <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) , data = CO_poly_all, family = binomial(link = logit))
-# m2E <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (area_s|species) + (1|year), data = CO_poly_all, family = binomial(link = logit))
-# m2F <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_poly_all, family = binomial(link = logit))
-# m2G <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t + (area_s|species), data = CO_poly_all, family = binomial(link = logit))
-# m2H <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t + (1|quad) , data = CO_poly_all, family = binomial(link = logit))
-# m2I <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t + (1|year), data = CO_poly_all, family = binomial(link = logit))
-# m2Q <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t + (area_s|species) + (1|year) + (1|quad),  data = CO_poly_all, family = binomial(link = logit))
-# m2U <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t , 
-#              data = CO_poly_all, family = binomial(link = logit))
-# #using AIC to compare models 
-# #compare the random effect structures using AIC
-# m2_AIC <- MuMIn::AICc(m2, m2A, m2B, m2C, m2D, m2E, m2F, m2G, m2H, m2I, m2Q, m2U)
-# m2_AIC[m2_AIC$AICc==min(m2_AIC$AICc),]
-# #the global model is the best 
-# 
-# #QQ Plot for m2
-# qqnorm(resid(m2))
-# qqline(resid(m2))
-#    
-# #dredge for model selection                                                                             
-# options(na.action = "na.fail")
-# mslist2 <- dredge(m2)
-# # here you can see all of the models compared and they are ranked in order
-# # here we see we have multiple models <2 delta AIC from the top model 
-# topmod2<-get.models(mslist2, subset=delta=="0")
-# topmod2 # here you can see all of the models that make up 95% of the model weight
-# #don't need to do model averaging, since there is only one model
-# #testing both random effect structures and fixed effect structures tells us the global model fixed effect structure is best
-# summary(m2)
-# # gives confidence intervals
-# m2conf <- lme4::confint.merMod(m2)
-# rsquaredm2 <- rsquared(m2)
-# plot_model(m2, type = "diag")
-
-#/////////////////////////////////
-#### test models for polygons w/out C. lanata and E. effusum data ####
-# (so it is just graminoids)
-
-### subset polygon dataset
-CO_grams <- CO_poly_all[CO_poly_all$species %in% c("Aristida longiseta", "Bouteloua gracilis", "Buchloe dactyloides","Carex eleocharis", "Schedonnardus paniculatus", "Sitanion hystrix", "Sporobolus cryptandrus", "Stipa comata" ) , ]
-
-### TLP polygon model ###
+### TLP graminoid model ###
 #global model
 CO_poly_TLP <- CO_grams %>% 
   filter(!is.na(TLP_s))
@@ -191,8 +81,8 @@ plot_model(m1_grams, type = "diag") #get qqplots for random effects and fixed ef
 #don't have to calculate overdispersion--not possible for bernoulli binomial variables
 # https://stats.stackexchange.com/questions/206007/can-there-be-overdispersion-in-a-logistic-regression-model-where-each-observatio
 
-#plot residuals vs. fitted data
-##tried to include Tribe as a random effect, but the model wouldn't converge--I think there is too much variation in Tribe (7 Tribes, 9 species)
+##tried to include Tribe as a random effect, but the model wouldn't converge--I think there is too much variation in Tribe (7 Tribes, 9 species) --> remove tribe as a covariate
+
 #The r-squared is good enough to continue with this as a global model 
 
 #test different random effect structures
@@ -208,28 +98,21 @@ m1I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * TLP_s + n
 m1Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * TLP_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_grams, family = binomial(link = logit))
 m1U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * TLP_s + nearEdge_t , 
              data = CO_grams, family = binomial(link = logit))
-#using AIC to compare models 
 #compare the random effect structures using AIC
-#can't cahnge REML for glmer models, so...  not an issue?
-#want to use marginal AIC (AICc) https://onlinelibrary.wiley.com/doi/full/10.1111/j.1420-9101.2010.02210.x?
-
 m1_AIC_grams <- MuMIn::AICc(m1_grams, m1A_grams, m1B_grams, m1C_grams, m1D_grams, m1E_grams, m1F_grams, m1G_grams, m1H_grams, m1I_grams, m1Q_grams, m1U_grams)
 m1_AIC_grams[m1_AIC_grams$AICc==min(m1_AIC_grams$AICc),]
 
 #m1Q (same as m1) has the lowest AIC, so use the random effects structure without a random intercept for Tribe
-#Look at the QQ Plot for m1
-#The model fits pretty well! 
+
+#calculate R2 
+rsquaredm1 <- piecewiseSEM::rsquared(m1_grams)
 
 
-#/////////////////////////////////
-
-### LDMC polygon model ###
+### LDMC graminoid model ###
 CO_poly_LDMC <- CO_grams %>% 
   filter(!is.na(LDMC_s))
 
 m2_grams <- glmer(survives_tplus1 ~ SPEI_s * LDMC_s +  area_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data=CO_poly_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-plot_model(m2, type = "diag")
 
 #test different random effect structures
 m2A_grams <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t+ (1|species) + (1|quad) + (1|year_t), data = CO_grams, family = binomial(link = logit))
@@ -244,42 +127,157 @@ m2I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + 
 m2Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_grams, family = binomial(link = logit))
 m2U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t , 
              data = CO_grams, family = binomial(link = logit))
-#using AIC to compare models 
 #compare the random effect structures using AIC
 m2_AIC_grams <- MuMIn::AICc(m2_grams, m2A_grams, m2B_grams, m2C_grams, m2D_grams, m2E_grams, m2F_grams, m2G_grams, m2H_grams, m2I_grams, m2Q_grams, m2U_grams)
 m2_AIC_grams[m2_AIC_grams$AICc==min(m2_AIC_grams$AICc),]
-#the global model is the best 
-
-#QQ Plot for m2
-qqnorm(resid(m2_grams))
-qqline(resid(m2_grams))
-
-# #dredge for model selection                                                                             
-# options(na.action = "na.fail")
-# mslist2 <- dredge(m2)
-# # here you can see all of the models compared and they are ranked in order
-# # here we see we have multiple models <2 delta AIC from the top model 
-# topmod2<-get.models(mslist2, subset=delta=="0")
-# topmod2 # here you can see all of the models that make up 95% of the model weight
-# #don't need to do model averaging, since there is only one model
-# #testing both random effect structures and fixed effect structures tells us the global model fixed effect structure is best
-# summary(m2)
-# # gives confidence intervals
-# m2conf <- lme4::confint.merMod(m2)
+#the global model is the best (m2_grams)
+#calculate the R2 
 rsquaredm2 <- piecewiseSEM::rsquared(m2_grams)
-# plot_model(m2, type = "diag")
+
+### SLA graminoid model ###
+CO_poly_SLA <- CO_grams %>% 
+  filter(is.na(SLA_s)==FALSE)
+
+m5 <- glmer(survives_tplus1 ~ area_s + SPEI_s * SLA_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t) , data = CO_poly_SLA, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+summary(m5)
+#test different random effect structures
+m5A_grams <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * SLA_s + nearEdge_t+ (1|species) + (1|quad) + (1|year_t), data = CO_poly_SLA, family = binomial(link = logit))
+m5B_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (1|species) + (1|quad),  data = CO_poly_SLA, family = binomial(link = logit))
+m5C_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (1|species) + (1|year_t), data = CO_poly_SLA, family = binomial(link = logit))
+m5D_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (1|species) , data = CO_poly_SLA, family = binomial(link = logit))
+m5E_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (area_s|species) + (1|year_t), data = CO_poly_SLA, family = binomial(link = logit))
+m5F_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SLA_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_poly_SLA, family = binomial(link = logit))
+m5G_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SLA_s + nearEdge_t + (area_s|species), data = CO_poly_SLA, family = binomial(link = logit))
+m5H_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SLA_s + nearEdge_t + (1|quad) , data = CO_poly_SLA, family = binomial(link = logit))
+m5I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SLA_s + nearEdge_t + (1|year_t), data = CO_poly_SLA, family = binomial(link = logit))
+m5Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SLA_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_poly_SLA, family = binomial(link = logit))
+m5U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SLA_s + nearEdge_t , 
+                 data = CO_poly_SLA, family = binomial(link = logit))
+#compare the random effect structures using AIC
+m5_AIC_grams <- MuMIn::AICc(m5, m5A_grams, m5B_grams, m5C_grams, m5D_grams, m5E_grams, m5F_grams, m5G_grams, m5H_grams, m5I_grams, m5Q_grams, m5U_grams)
+m5_AIC_grams[m5_AIC_grams$AICc==min(m5_AIC_grams$AICc),] #find the lowest AIC
+m5_AIC_grams
+
+#the global model is the best (m5_grams)
+#calculate the R2 
+rsquaredm5 <- piecewiseSEM::rsquared(m5_grams)
+
+### RDMC graminoid model ###
+CO_poly_RDMC <-
+  CO_grams %>% 
+  filter(is.na(RDMC_s)==FALSE)
+
+m9 <- glmer(survives_tplus1 ~ area_s + SPEI_s * RDMC_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+summary(m9)
+
+#test different random effect structures
+m9A_grams <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * RMDC_s + nearEdge_t+ (1|species) + (1|quad) + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit))
+m9B_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RMDC_s + nearEdge_t + (1|species) + (1|quad),  data = CO_poly_RDMC, family = binomial(link = logit))
+m9C_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RMDC_s + nearEdge_t + (1|species) + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit))
+m9D_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RMDC_s + nearEdge_t + (1|species) , data = CO_poly_RDMC, family = binomial(link = logit))
+m9E_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RMDC_s + nearEdge_t + (area_s|species) + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit))
+m9F_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RMDC_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_poly_RDMC, family = binomial(link = logit))
+m9G_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RMDC_s + nearEdge_t + (area_s|species), data = CO_poly_RDMC, family = binomial(link = logit))
+m9H_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RMDC_s + nearEdge_t + (1|quad) , data = CO_poly_RDMC, family = binomial(link = logit))
+m9I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RMDC_s + nearEdge_t + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit))
+m9Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RMDC_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_poly_RDMC, family = binomial(link = logit))
+m9U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RMDC_s + nearEdge_t , 
+                 data = CO_poly_RDMC, family = binomial(link = logit))
+#compare the random effect structures using AIC
+m9_AIC_grams <- MuMIn::AICc(m9, m9A_grams, m9B_grams, m9C_grams, m9D_grams, m9E_grams, m9F_grams, m9G_grams, m9H_grams, m9I_grams, m9Q_grams, m9U_grams)
+m9_AIC_grams[m9_AIC_grams$AICc==min(m9_AIC_grams$AICc),]
+#the global model is the best (m9_grams)
+#calculate the R2 
+rsquaredm9 <- piecewiseSEM::rsquared(m9)
+
+### RTD graminoid model ###
+CO_poly_RTD <-
+  CO_grams %>% 
+  filter(is.na(RTD_s)==FALSE)
+
+m10 <- glmer(survives_tplus1 ~ area_s + SPEI_s * RTD_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t) , data = CO_poly_RTD, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+summary(m10)
+#test different random effect structures
+m10A_grams <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * RTD_s + nearEdge_t+ (1|species) + (1|quad) + (1|year_t), data = CO_poly_RTD, family = binomial(link = logit))
+m10B_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (1|species) + (1|quad),  data = CO_poly_RTD, family = binomial(link = logit))
+m10C_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (1|species) + (1|year_t), data = CO_poly_RTD, family = binomial(link = logit))
+m10D_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (1|species) , data = CO_poly_RTD, family = binomial(link = logit))
+m10E_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (area_s|species) + (1|year_t), data = CO_poly_RTD, family = binomial(link = logit))
+m10F_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RTD_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_poly_RTD, family = binomial(link = logit))
+m10G_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RTD_s + nearEdge_t + (area_s|species), data = CO_poly_RTD, family = binomial(link = logit))
+m10H_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RTD_s + nearEdge_t + (1|quad) , data = CO_poly_RTD, family = binomial(link = logit))
+m10I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RTD_s + nearEdge_t + (1|year_t), data = CO_poly_RTD, family = binomial(link = logit))
+m10Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RTD_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_poly_RTD, family = binomial(link = logit))
+m10U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RTD_s + nearEdge_t , 
+                 data = CO_poly_RTD, family = binomial(link = logit))
+#compare the random effect structures using AIC
+m10_AIC_grams <- MuMIn::AICc(m10, m10A_grams, m10B_grams, m10C_grams, m10D_grams, m10E_grams, m10F_grams, m10G_grams, m10H_grams, m10I_grams, m10Q_grams, m10U_grams)
+m10_AIC_grams[m10_AIC_grams$AICc==min(m10_AIC_grams$AICc),]
+#the global model is the best (m10_grams)
+#calculate the R2 
+rsquaredm10 <- piecewiseSEM::rsquared(m10)
+
+### SRL graminoid model ###
+CO_poly_SRL <-
+  CO_grams %>% 
+  filter(is.na(SRL_s)==FALSE)
+
+m13 <- glmer(survives_tplus1 ~ area_s + SPEI_s * SRL_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t) , data = CO_poly_SRL, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+#test different random effect structures
+m13A_grams <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * SRL_s + nearEdge_t+ (1|species) + (1|quad) + (1|year_t), data = CO_poly_SRL, family = binomial(link = logit))
+m13B_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (1|species) + (1|quad),  data = CO_poly_SRL, family = binomial(link = logit))
+m13C_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (1|species) + (1|year_t), data = CO_poly_SRL, family = binomial(link = logit))
+m13D_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (1|species) , data = CO_poly_SRL, family = binomial(link = logit))
+m13E_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (area_s|species) + (1|year_t), data = CO_poly_SRL, family = binomial(link = logit))
+m13F_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SRL_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_poly_SRL, family = binomial(link = logit))
+m13G_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SRL_s + nearEdge_t + (area_s|species), data = CO_poly_SRL, family = binomial(link = logit))
+m13H_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SRL_s + nearEdge_t + (1|quad) , data = CO_poly_SRL, family = binomial(link = logit))
+m13I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SRL_s + nearEdge_t + (1|year_t), data = CO_poly_SRL, family = binomial(link = logit))
+m13Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SRL_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_poly_SRL, family = binomial(link = logit))
+m13U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SRL_s + nearEdge_t , 
+                 data = CO_poly_SRL, family = binomial(link = logit))
+#compare the random effect structures using AIC
+m13_AIC_grams <- MuMIn::AICc(m13, m13A_grams, m13B_grams, m13C_grams, m13D_grams, m13E_grams, m13F_grams, m13G_grams, m13H_grams, m13I_grams, m13Q_grams, m13U_grams)
+m13_AIC_grams[m13_AIC_grams$AICc==min(m13_AIC_grams$AICc),]
+#the global model is the best (m13)
+#calculate the R2 
+rsquaredm13 <- piecewiseSEM::rsquared(m13)
+
+### RDiam graminoid model ###
+CO_poly_Diam <-
+  CO_grams %>% 
+  filter(is.na(RDiam_s)==FALSE)
+
+m14 <- glmer(survives_tplus1 ~ area_s + SPEI_s * RDiam_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t) , data = CO_poly_Diam, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+#test different random effect structures
+m14A_grams <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t+ (1|species) + (1|quad) + (1|year_t), data = CO_poly_Diam, family = binomial(link = logit))
+m14B_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (1|species) + (1|quad),  data = CO_poly_Diam, family = binomial(link = logit))
+m14C_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (1|species) + (1|year_t), data = CO_poly_Diam, family = binomial(link = logit))
+m14D_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (1|species) , data = CO_poly_Diam, family = binomial(link = logit))
+m14E_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (area_s|species) + (1|year_t), data = CO_poly_Diam, family = binomial(link = logit))
+m14F_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RDiam_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_poly_Diam, family = binomial(link = logit))
+m14G_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RDiam_s + nearEdge_t + (area_s|species), data = CO_poly_Diam, family = binomial(link = logit))
+m14H_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RDiam_s + nearEdge_t + (1|quad) , data = CO_poly_Diam, family = binomial(link = logit))
+m14I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RDiam_s + nearEdge_t + (1|year_t), data = CO_poly_Diam, family = binomial(link = logit))
+m14Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RDiam_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_poly_Diam, family = binomial(link = logit))
+m14U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RDiam_s + nearEdge_t , 
+                 data = CO_poly_Diam, family = binomial(link = logit))
+#compare the random effect structures using AIC
+m14_AIC_grams <- MuMIn::AICc(m14, m14A_grams, m14B_grams, m14C_grams, m14D_grams, m14E_grams, m14F_grams, m14G_grams, m14H_grams, m14I_grams, m14Q_grams, m14U_grams)
+m14_AIC_grams[m14_AIC_grams$AICc==min(m14_AIC_grams$AICc),]
+#the global model is the best (m14_grams)
+#calculate the R2 
+rsquaredm14 <- piecewiseSEM::rsquared(m14)
 
 #### Models for points ####
-##can't use stems, since there is no variation in that variable in the scaled-down dataset!
 ### TLP point model ###
 CO_point_TLP <- CO_point_all %>% 
   filter(!is.na(TLP_s))
 m3 <- glmer(survives_tplus1 ~ SPEI_s*TLP_s + neighbors_10_s + nearEdge_t 
               + (1|species) + (1|quad) + (1|year_t), 
             data=CO_point_TLP, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-summary(m3)
-rsquared(m3)
-#the conditional R-squared is crazy good (.949!), but the marginal R-squared is pretty bad
+
 
 #test different random effect structures
 m3A <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|species) + (1|quad) + (1|year), data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -296,10 +294,6 @@ m3F <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1
 m3_AIC <- MuMIn::AICc(m3, m3A, m3B, m3C, m3D, m3E, m3F)
 m3_AIC[m3_AIC$AICc==min(m3_AIC$AICc),]
 #the model m3A (without a random intercept for family) has the lowest AIC
-
-#QQ Plot for m3
-qqnorm(resid(m3A))
-qqline(resid(m3A))
                 
 #Dredge for model selection                                                                
 options(na.action = "na.fail")
@@ -311,13 +305,6 @@ topmod3 # the first model is the one that has the most variation, so we don't ne
 #The best model is the one with fixed effects for TLP:SPEI and stems and nearEdge_t (no random effect for Tribe (Family))
 m3Final<-glmer(survives_tplus1 ~ SPEI_s * TLP_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year), data = CO_point_all, family = binomial(link = logit),control=glmerControl(optimizer="bobyqa"))
 
-summary(m3Final)
-
-m3conf <- lme4::confint.merMod(m3Final)
-rsquared3 <- rsquared(m3Final)
-#the conditional r-squared is quite good!
-qqnorm(resid(m3Final))                                                                        
-qqline(resid(m3Final))
 
 plot_model(m3Final, type = "diag")
 # the qqplot is definitely better!  
@@ -368,51 +355,8 @@ rsquared4 <- rsquared(m4Final)
 
 plot_model(m4Final, type = "diag")
 
-#### Summary of model results #### 
-#polygon TLP
-summary(bestMod1)
-rsquared1 <- piecewiseSEM::rsquared(bestMod1)
-m1conf <- lme4::confint.merMod(bestMod1)
-
-#polygon LDMC
-m2
-summary(m2)
-rsquared2 <- piecewiseSEM::rsquared(m2)
-m2conf <- lme4::confint.merMod(m2)
-
-#point TLP
-m3   
-summary(m3)
-rsquared3 <- piecewiseSEM::rsquared(m3)  
-m3conf <- lme4::confint.merMod(m3)
-
-#point LDMC
-summary(m4Final)
-rsquared4 <- piecewiseSEM::rsquared(m4)
-m4conf <- lme4::confint.merMod(m4)
-
-#### visualize the survival model results #### 
-visreg::visreg2d(fit=m1, xvar="TLP_s", yvar="SPEI_s", 
-                 scale="response", plot.type="persp", phi=20, theta=60, 
-                 xlab="\n\nTLP (scaled)", 
-                 ylab="\n\nSPEI index (scaled)", 
-                 zlab="\n\nSurvival Probability", cex.axis=1, cex.lab=1.2, 
-                 col=adjustcolor("#019E73",alpha.f=.5))
-                                                                 
-visreg::visreg2d(fit=m2, xvar="LDMC_s", yvar="SPEI_s", 
-                 scale="response", plot.type="persp", phi=20, theta=55, 
-                 xlab="\n\nLDMC (scaled)", 
-                 ylab="\n\nSPEI index (scaled)", 
-                 zlab="\n\nSurvival Probability", cex.axis=1, cex.lab=1.2, 
-                 col=adjustcolor("#019E73",alpha.f=.5))
 
 ##### Test survival models for non-water related traits####
-# SLA for GRAMINOIDS
-CO_poly_SLA <- CO_grams %>% 
-  filter(is.na(SLA_s)==FALSE)
-
-m5 <- glmer(survives_tplus1 ~ area_s + SPEI_s * SLA_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t) , data = CO_poly_SLA, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-summary(m5)
 
 
 #SLA for forbs
@@ -423,36 +367,7 @@ summary(m6)
 
 
 #### test survival root traits ####
-##Subset data for root traits (remove NA's for species that don't have root data)
-CO_poly_RDMC <-
-  CO_grams %>% 
-  filter(is.na(RDMC_s)==FALSE)
 
-#rdmc for graminoids
-m9 <- glmer(survives_tplus1 ~ area_s + SPEI_s * RDMC_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-summary(m9)
-
-#rtd for graminoids
-CO_poly_RTD <-
-  CO_grams %>% 
-  filter(is.na(RTD_s)==FALSE)
-
-m10 <- glmer(survives_tplus1 ~ area_s + SPEI_s * RTD_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t) , data = CO_poly_RTD, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-summary(m10)
-
-#SRL for graminoids
-CO_poly_SRL <-
-  CO_grams %>% 
-  filter(is.na(SRL_s)==FALSE)
-
-m13 <- glmer(survives_tplus1 ~ area_s + SPEI_s * SRL_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t) , data = CO_poly_SRL, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-#root diameter for graminoids
-CO_poly_Diam <-
-  CO_grams %>% 
-  filter(is.na(RDiam_s)==FALSE)
-
-m14 <- glmer(survives_tplus1 ~ area_s + SPEI_s * RDiam_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t) , data = CO_poly_Diam, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
   
 
 #rdmc for forbs
