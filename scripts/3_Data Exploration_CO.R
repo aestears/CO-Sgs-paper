@@ -19,7 +19,7 @@ require(corrplot) #v0.84
 rm(list=ls())
 
 ## set working directory
-datWD <- setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper") #set path for the location of the environment image of script 2 output
+datWD <- c("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper") #set path for the location of the environment image of script 2 output
 setwd(datWD)
 #load data from previous 
 load("./scripts/script2_output.RData")
@@ -334,6 +334,7 @@ CO_poly_all$RDMC_s <- as.numeric(scale(CO_poly_all$RDMC_g_g))
 CO_poly_all$RTD_s <- as.numeric(scale(CO_poly_all$RTD_g_cm3))
 CO_poly_all$RDiam_s <- as.numeric(scale(CO_poly_all$AvgDiam_mm))
 CO_poly_all$SRL_s <- as.numeric(scale(CO_poly_all$SRL_best_m_g))
+CO_poly_all$SPEI_uniform_s <- as.numeric(scale(CO_poly_all$SPEI_uniform))
 #log transform area
 CO_poly_all$area_s <- as.numeric((log(CO_poly_all$area_t)))
 CO_poly_all$area_tplus1_s <- as.numeric(log(CO_poly_all$area_tplus1))
@@ -351,6 +352,7 @@ CO_point_all$RDMC_s <- as.numeric(scale(CO_point_all$RDMC_g_g))
 CO_point_all$RTD_s <- as.numeric(scale(CO_point_all$RTD_g_cm3))
 CO_point_all$RDiam_s <- as.numeric(scale(CO_point_all$AvgDiam_mm))
 CO_point_all$SRL_s <- as.numeric(scale(CO_point_all$SRL_best_m_g))
+CO_point_all$SPEI_uniform_s <- as.numeric(scale(CO_point_all$SPEI_uniform))
 
 
 #### save workspace image for next script ####
