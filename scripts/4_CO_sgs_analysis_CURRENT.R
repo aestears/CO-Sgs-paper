@@ -114,23 +114,8 @@ CO_poly_LDMC <- CO_grams %>%
 
 m2_grams <- glmer(survives_tplus1 ~ SPEI_s * LDMC_s +  area_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data=CO_poly_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
-#test different random effect structures
-m2A_grams <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t+ (1|species) + (1|quad) + (1|year_t), data = CO_grams, family = binomial(link = logit))
-m2B_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) + (1|quad),  data = CO_grams, family = binomial(link = logit))
-m2C_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) + (1|year_t), data = CO_grams, family = binomial(link = logit))
-m2D_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) , data = CO_grams, family = binomial(link = logit))
-m2E_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (area_s|species) + (1|year_t), data = CO_grams, family = binomial(link = logit))
-m2F_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_grams, family = binomial(link = logit))
-m2G_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t + (area_s|species), data = CO_grams, family = binomial(link = logit))
-m2H_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t + (1|quad) , data = CO_grams, family = binomial(link = logit))
-m2I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t + (1|year_t), data = CO_grams, family = binomial(link = logit))
-m2Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_grams, family = binomial(link = logit))
-m2U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * LDMC_s + nearEdge_t , 
-             data = CO_grams, family = binomial(link = logit))
-#compare the random effect structures using AIC
-m2_AIC_grams <- MuMIn::AICc(m2_grams, m2A_grams, m2B_grams, m2C_grams, m2D_grams, m2E_grams, m2F_grams, m2G_grams, m2H_grams, m2I_grams, m2Q_grams, m2U_grams)
-m2_AIC_grams[m2_AIC_grams$AICc==min(m2_AIC_grams$AICc),]
-#the global model is the best (m2_grams)
+summary(m2_grams)
+
 #calculate the R2 
 rsquaredm2 <- piecewiseSEM::rsquared(m2_grams)
 
@@ -140,27 +125,9 @@ CO_poly_SLA <- CO_grams %>%
 
 m5 <- glmer(survives_tplus1 ~ area_s + SPEI_s * SLA_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t) , data = CO_poly_SLA, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 summary(m5)
-#test different random effect structures
-m5A_grams <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * SLA_s + nearEdge_t+ (1|species) + (1|quad) + (1|year_t), data = CO_poly_SLA, family = binomial(link = logit))
-m5B_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (1|species) + (1|quad),  data = CO_poly_SLA, family = binomial(link = logit))
-m5C_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (1|species) + (1|year_t), data = CO_poly_SLA, family = binomial(link = logit))
-m5D_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (1|species) , data = CO_poly_SLA, family = binomial(link = logit))
-m5E_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (area_s|species) + (1|year_t), data = CO_poly_SLA, family = binomial(link = logit))
-m5F_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SLA_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_poly_SLA, family = binomial(link = logit))
-m5G_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SLA_s + nearEdge_t + (area_s|species), data = CO_poly_SLA, family = binomial(link = logit))
-m5H_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SLA_s + nearEdge_t + (1|quad) , data = CO_poly_SLA, family = binomial(link = logit))
-m5I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SLA_s + nearEdge_t + (1|year_t), data = CO_poly_SLA, family = binomial(link = logit))
-m5Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SLA_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_poly_SLA, family = binomial(link = logit))
-m5U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SLA_s + nearEdge_t , 
-                 data = CO_poly_SLA, family = binomial(link = logit))
-#compare the random effect structures using AIC
-m5_AIC_grams <- MuMIn::AICc(m5, m5A_grams, m5B_grams, m5C_grams, m5D_grams, m5E_grams, m5F_grams, m5G_grams, m5H_grams, m5I_grams, m5Q_grams, m5U_grams)
-m5_AIC_grams[m5_AIC_grams$AICc==min(m5_AIC_grams$AICc),] #find the lowest AIC
-m5_AIC_grams
 
-#the global model is the best (m5_grams)
 #calculate the R2 
-rsquaredm5 <- piecewiseSEM::rsquared(m5_grams)
+rsquaredm5 <- piecewiseSEM::rsquared(m5)
 
 ### RDMC graminoid model ###
 CO_poly_RDMC <-
@@ -170,23 +137,6 @@ CO_poly_RDMC <-
 m9 <- glmer(survives_tplus1 ~ area_s + SPEI_s * RDMC_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 summary(m9)
 
-#test different random effect structures
-m9A_grams <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * RMDC_s + nearEdge_t+ (1|species) + (1|quad) + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit))
-m9B_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RMDC_s + nearEdge_t + (1|species) + (1|quad),  data = CO_poly_RDMC, family = binomial(link = logit))
-m9C_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RMDC_s + nearEdge_t + (1|species) + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit))
-m9D_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RMDC_s + nearEdge_t + (1|species) , data = CO_poly_RDMC, family = binomial(link = logit))
-m9E_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RMDC_s + nearEdge_t + (area_s|species) + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit))
-m9F_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RMDC_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_poly_RDMC, family = binomial(link = logit))
-m9G_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RMDC_s + nearEdge_t + (area_s|species), data = CO_poly_RDMC, family = binomial(link = logit))
-m9H_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RMDC_s + nearEdge_t + (1|quad) , data = CO_poly_RDMC, family = binomial(link = logit))
-m9I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RMDC_s + nearEdge_t + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit))
-m9Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RMDC_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_poly_RDMC, family = binomial(link = logit))
-m9U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RMDC_s + nearEdge_t , 
-                 data = CO_poly_RDMC, family = binomial(link = logit))
-#compare the random effect structures using AIC
-m9_AIC_grams <- MuMIn::AICc(m9, m9A_grams, m9B_grams, m9C_grams, m9D_grams, m9E_grams, m9F_grams, m9G_grams, m9H_grams, m9I_grams, m9Q_grams, m9U_grams)
-m9_AIC_grams[m9_AIC_grams$AICc==min(m9_AIC_grams$AICc),]
-#the global model is the best (m9_grams)
 #calculate the R2 
 rsquaredm9 <- piecewiseSEM::rsquared(m9)
 
@@ -196,26 +146,22 @@ CO_poly_RTD <-
   filter(is.na(RTD_s)==FALSE)
 
 m10 <- glmer(survives_tplus1 ~ area_s + SPEI_s * RTD_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t) , data = CO_poly_RTD, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+# removed random slope for area, since the model didn't converge
 summary(m10)
-#test different random effect structures
-m10A_grams <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * RTD_s + nearEdge_t+ (1|species) + (1|quad) + (1|year_t), data = CO_poly_RTD, family = binomial(link = logit))
-m10B_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (1|species) + (1|quad),  data = CO_poly_RTD, family = binomial(link = logit))
-m10C_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (1|species) + (1|year_t), data = CO_poly_RTD, family = binomial(link = logit))
-m10D_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (1|species) , data = CO_poly_RTD, family = binomial(link = logit))
-m10E_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (area_s|species) + (1|year_t), data = CO_poly_RTD, family = binomial(link = logit))
-m10F_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RTD_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_poly_RTD, family = binomial(link = logit))
-m10G_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RTD_s + nearEdge_t + (area_s|species), data = CO_poly_RTD, family = binomial(link = logit))
-m10H_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RTD_s + nearEdge_t + (1|quad) , data = CO_poly_RTD, family = binomial(link = logit))
-m10I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RTD_s + nearEdge_t + (1|year_t), data = CO_poly_RTD, family = binomial(link = logit))
-m10Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RTD_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_poly_RTD, family = binomial(link = logit))
-m10U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RTD_s + nearEdge_t , 
-                 data = CO_poly_RTD, family = binomial(link = logit))
-#compare the random effect structures using AIC
-m10_AIC_grams <- MuMIn::AICc(m10, m10A_grams, m10B_grams, m10C_grams, m10D_grams, m10E_grams, m10F_grams, m10G_grams, m10H_grams, m10I_grams, m10Q_grams, m10U_grams)
-m10_AIC_grams[m10_AIC_grams$AICc==min(m10_AIC_grams$AICc),]
-#the global model is the best (m10_grams)
 #calculate the R2 
 rsquaredm10 <- piecewiseSEM::rsquared(m10)
+
+mslist <- dredge(m10)
+mslist
+# here you can see all of the models compared and they are ranked in order
+# here we see we have multiple models <2 delta AIC from the top model 
+topmod<-get.models(mslist, subset=cumsum(weight) <= .95)
+
+
+out.put<-model.sel(m1,m2,m3,m4,m5)
+out.put #models 4 and 5 are the best by a lot. 
+
+
 
 ### SRL graminoid model ###
 CO_poly_SRL <-
@@ -223,24 +169,8 @@ CO_poly_SRL <-
   filter(is.na(SRL_s)==FALSE)
 
 m13 <- glmer(survives_tplus1 ~ area_s + SPEI_s * SRL_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t) , data = CO_poly_SRL, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+#removed random slope for area, since the model doesn't converge with it
 
-#test different random effect structures
-m13A_grams <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * SRL_s + nearEdge_t+ (1|species) + (1|quad) + (1|year_t), data = CO_poly_SRL, family = binomial(link = logit))
-m13B_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (1|species) + (1|quad),  data = CO_poly_SRL, family = binomial(link = logit))
-m13C_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (1|species) + (1|year_t), data = CO_poly_SRL, family = binomial(link = logit))
-m13D_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (1|species) , data = CO_poly_SRL, family = binomial(link = logit))
-m13E_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (area_s|species) + (1|year_t), data = CO_poly_SRL, family = binomial(link = logit))
-m13F_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SRL_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_poly_SRL, family = binomial(link = logit))
-m13G_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SRL_s + nearEdge_t + (area_s|species), data = CO_poly_SRL, family = binomial(link = logit))
-m13H_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SRL_s + nearEdge_t + (1|quad) , data = CO_poly_SRL, family = binomial(link = logit))
-m13I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SRL_s + nearEdge_t + (1|year_t), data = CO_poly_SRL, family = binomial(link = logit))
-m13Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SRL_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_poly_SRL, family = binomial(link = logit))
-m13U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * SRL_s + nearEdge_t , 
-                 data = CO_poly_SRL, family = binomial(link = logit))
-#compare the random effect structures using AIC
-m13_AIC_grams <- MuMIn::AICc(m13, m13A_grams, m13B_grams, m13C_grams, m13D_grams, m13E_grams, m13F_grams, m13G_grams, m13H_grams, m13I_grams, m13Q_grams, m13U_grams)
-m13_AIC_grams[m13_AIC_grams$AICc==min(m13_AIC_grams$AICc),]
-#the global model is the best (m13)
 #calculate the R2 
 rsquaredm13 <- piecewiseSEM::rsquared(m13)
 
@@ -250,23 +180,7 @@ CO_poly_Diam <-
   filter(is.na(RDiam_s)==FALSE)
 
 m14 <- glmer(survives_tplus1 ~ area_s + SPEI_s * RDiam_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t) , data = CO_poly_Diam, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-#test different random effect structures
-m14A_grams <- glmer(survives_tplus1 ~ area_s +  neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t+ (1|species) + (1|quad) + (1|year_t), data = CO_poly_Diam, family = binomial(link = logit))
-m14B_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (1|species) + (1|quad),  data = CO_poly_Diam, family = binomial(link = logit))
-m14C_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (1|species) + (1|year_t), data = CO_poly_Diam, family = binomial(link = logit))
-m14D_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (1|species) , data = CO_poly_Diam, family = binomial(link = logit))
-m14E_grams <- glmer(survives_tplus1 ~ area_s+ neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (area_s|species) + (1|year_t), data = CO_poly_Diam, family = binomial(link = logit))
-m14F_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RDiam_s + nearEdge_t + (area_s|species) + (1|quad) ,  data = CO_poly_Diam, family = binomial(link = logit))
-m14G_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RDiam_s + nearEdge_t + (area_s|species), data = CO_poly_Diam, family = binomial(link = logit))
-m14H_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RDiam_s + nearEdge_t + (1|quad) , data = CO_poly_Diam, family = binomial(link = logit))
-m14I_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RDiam_s + nearEdge_t + (1|year_t), data = CO_poly_Diam, family = binomial(link = logit))
-m14Q_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RDiam_s + nearEdge_t + (area_s|species) + (1|year_t) + (1|quad),  data = CO_poly_Diam, family = binomial(link = logit))
-m14U_grams <- glm(survives_tplus1 ~ area_s + neighbors_10_s+ SPEI_s * RDiam_s + nearEdge_t , 
-                 data = CO_poly_Diam, family = binomial(link = logit))
-#compare the random effect structures using AIC
-m14_AIC_grams <- MuMIn::AICc(m14, m14A_grams, m14B_grams, m14C_grams, m14D_grams, m14E_grams, m14F_grams, m14G_grams, m14H_grams, m14I_grams, m14Q_grams, m14U_grams)
-m14_AIC_grams[m14_AIC_grams$AICc==min(m14_AIC_grams$AICc),]
-#the global model is the best (m14_grams)
+
 #calculate the R2 
 rsquaredm14 <- piecewiseSEM::rsquared(m14)
 
@@ -277,24 +191,8 @@ CO_point_TLP <- CO_point_all %>%
 m3 <- glmer(survives_tplus1 ~ SPEI_s*TLP_s + neighbors_10_s + nearEdge_t 
               + (1|species) + (1|quad) + (1|year_t), 
             data=CO_point_TLP, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+ summary(m3)
 
-
-#test different random effect structures
-m3A <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|species) + (1|quad) + (1|year), data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-m3B <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|species) + (1|quad), 
-data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-m3C <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|species) + (1|year), 
-data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-m3D <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|species) , 
-data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-m3E <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|quad) ,data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-m3F <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|year), data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-#compare the random effect structures using AIC
-m3_AIC <- MuMIn::AICc(m3, m3A, m3B, m3C, m3D, m3E, m3F)
-m3_AIC[m3_AIC$AICc==min(m3_AIC$AICc),]
-#the model m3A (without a random intercept for family) has the lowest AIC
-                
 #Dredge for model selection                                                                
 options(na.action = "na.fail")
 mslist3 <- dredge(m3A)
@@ -321,23 +219,6 @@ m4 <- glmer(survives_tplus1 ~ SPEI_s*LDMC_s + neighbors_10_s + nearEdge_t +
             data=CO_point_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
 summary(m4)
-plot_model(m4, type = "diag") 
-
-#test different random effect structures                              
-m4A <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) + (1|quad) + (1|year), data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-m4B <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) + (1|quad), 
-             data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-m4C <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) + (1|year), 
-             data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-m4D <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) , 
-             data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-m4E <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|quad) ,data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-m4F <- glmer(survives_tplus1 ~ neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|year), data = CO_point_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-#compare the random effect structures using AIC
-m4_AIC <- MuMIn::AICc(m4, m4A, m4B, m4C, m4D, m4E, m4F)
-m4_AIC[m4_AIC$AICc==min(m4_AIC$AICc),]
-#m4A model is best--the same as the global intercept
 
 #dredge for model selection of fixed efects
 options(na.action = "na.fail")
@@ -356,8 +237,7 @@ rsquared4 <- rsquared(m4Final)
 plot_model(m4Final, type = "diag")
 
 
-##### Test survival models for non-water related traits####
-
+##### Test forb survival models for non-water related traits####
 
 #SLA for forbs
 CO_point_SLA <- CO_point_all %>% 
@@ -365,10 +245,7 @@ CO_point_SLA <- CO_point_all %>%
 m6 <- glmer(survives_tplus1 ~ SPEI_s*SLA_s + neighbors_10_s + nearEdge_t  + (1|species) + (1|quad) + (1|year_t), data = CO_point_SLA, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 summary(m6)
 
-
-#### test survival root traits ####
-
-  
+#### test forb survival root traits ####
 
 #rdmc for forbs
 CO_point_RDMC <-
@@ -493,12 +370,6 @@ diff(AIC(m16, m16_NO)$AIC) #RDiam
 # differences in logs of area 
   #add '3' to each value after log transformation, so that there is no 'negative' log(size)
 CO_grams$logDiffArea <- (log(CO_grams$area_tplus1)) - (log(CO_grams$area_t))
-#strait differences in areas
-#CO_grams$diffAreaPlain <- CO_grams$area_tplus1 - CO_grams$area_t
-#ratio of size in next year to size in current year (log transformed)
-#CO_grams$diffAreaRatio <- log(CO_grams$area_t/CO_grams$area_tplus1)
-
-
 #subset the datasets to only include observations that have growth data (for those plants that survived)
 CO_poly_growth <- CO_grams %>% 
   filter(!is.na(CO_grams$logDiffArea))
@@ -543,29 +414,6 @@ CO_grow_RDiam<-
   filter(is.na(RDiam_s)==FALSE)
 mGrowRDiam  <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RDiam , control=lmerControl(optimizer="bobyqa"))
 
-##Plot growth model results using the effects package ##
-#check correlation of predictors
-pairs(CO_poly_growth[,c( "neighbors_10_s", "SPEI_s", "TLP_s", "nearEdge_t")], lower.panel = panel.cor)
-
-#visualize results
-plot(predictorEffect("TLP_s", mGrowTLP, xlevels=list(SPEI_s=c(-2.22,1.72))), lines = list(multiline = TRUE),confint = list(style = "auto"),
-     axes = list(y=list(type="response")))
-
-plot(predictorEffect("LDMC_s", mGrowLDMC, xlevels=list(SPEI_s=c(-2.22,1.72))), lines = list(multiline = TRUE),confint = list(style = "auto"),
-     axes = list(y=list(type="response")))
-
-plot(predictorEffect("SLA_s", mGrowSLA, xlevels=list(SPEI_s=c(-2.22,1.72))), lines = list(multiline = TRUE),confint = list(style = "auto"),
-     axes = list(y=list(type="response")))
-
-plot(predictorEffect("RDMC_s", mGrowRDMC, xlevels=list(SPEI_s=c(-2.22,1.72))), lines = list(multiline = TRUE),confint = list(style = "auto"),
-     axes = list(y=list(type="response")))
-
-plot(predictorEffect("RDiam_s", mGrowRDiam, xlevels=list(SPEI_s=c(-2.22,1.72))), lines = list(multiline = TRUE),confint = list(style = "auto"),
-     axes = list(y=list(type="response")))
-
-plot(predictorEffect("SRL_s", mGrowSRL, xlevels=list(SPEI_s=c(-2.22,1.72))), lines = list(multiline = TRUE),confint = list(style = "auto"),
-     axes = list(y=list(type="response")))
-
 #### make growth models without traits for comparison ####
 #fit models
 
@@ -592,16 +440,7 @@ diff(AIC(mGrowRTD, mGrowRTD_NO)$AIC) #RTD
 diff(AIC(mGrowSRL, mGrowSRL_NO)$AIC) #SRL
 diff(AIC(mGrowRDiam, mGrowRDiam_NO)$AIC) #RDiam
 
-# 
-# diff(AIC(mGrowTLP_ratio, mGrowTLP_NO)$AIC) #TLP
-# diff(AIC(mGrowLDMC_ratio, mGrowLDMC_NO)$AIC) #LDMC
-# diff(AIC(mGrowSLA_ratio, mGrowSLA_NO)$AIC) #SLA
-# diff(AIC(mGrowRDMC_ratio, mGrowRDMC_NO)$AIC) #RDMC
-# diff(AIC(mGrowRTD_ratio, mGrowRTD_NO)$AIC) #RTD
-# diff(AIC(mGrowSRL_ratio, mGrowSRL_NO)$AIC) #SRL
-# diff(AIC(mGrowRDiam_ratio, mGrowRDiam_NO)$AIC) #RDiam
-
-
+#calculate R2 values
 piecewiseSEM::rsquared(mGrowTLP)
 piecewiseSEM::rsquared(mGrowTLP_ratio)
 piecewiseSEM::rsquared(mGrowTLP_NO)
@@ -610,364 +449,6 @@ piecewiseSEM::rsquared(mGrowLDMC_NO)
 piecewiseSEM::rsquared(mGrowSLA)
 piecewiseSEM::rsquared(mGrowSLA_NO)
 # 
-# #### Growth Models 2.0####
-# #using size in t+1 as a response variable, and size in t as the predictor variable
-# #subset the datasets to only include observations that have growth data (for those plants that survived)
-# CO_poly_growth_2 <- CO_grams %>% 
-#   filter(!is.na(area_tplus1)) %>% 
-#   mutate(area_tplus1_s = log(area_tplus1))
-# 
-# #log-transform the response variable
-# 
-# 
-# ## TLP model
-# #global model
-# options(na.action = "na.omit")
-# 
-# CO_grow_TLP_2 <-
-#   CO_poly_growth_2 %>% 
-#   filter(is.na(TLP_s)==FALSE)
-# 
-# mGrowTLP_2<- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + TLP_s + SPEI_s * TLP_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_TLP_2 , control=lmerControl(optimizer="bobyqa"))
-# 
-# summary(mGrowTLP_2)
-# 
-# CO_grow_LDMC_2<-
-#   CO_poly_growth_2 %>% 
-#   filter(is.na(LDMC_s)==FALSE)
-# mGrowLDMC_2 <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + LDMC_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_LDMC_2 , control=lmerControl(optimizer="bobyqa"))
-# 
-# CO_grow_SLA_2 <-
-#   CO_poly_growth_2 %>% 
-#   filter(is.na(SLA_s)==FALSE)
-# mGrowSLA_2 <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + SLA_s + SPEI_s * SLA_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_SLA_2, control=lmerControl(optimizer="bobyqa"))
-# 
-# CO_grow_RDMC_2 <-
-#   CO_poly_growth_2 %>% 
-#   filter(is.na(RDMC_s)==FALSE)
-# mGrowRDMC_2 <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + RDMC_s + SPEI_s * RDMC_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RDMC_2 , control=lmerControl(optimizer="bobyqa"))
-# 
-# CO_grow_SRL_2 <-
-#   CO_poly_growth_2 %>% 
-#   filter(is.na(SRL_s)==FALSE)
-# mGrowSRL_2 <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + SRL_s + SPEI_s * SRL_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_SRL_2 , control=lmerControl(optimizer="bobyqa"))
-# 
-# CO_grow_RTD_2<-
-#   CO_poly_growth_2 %>% 
-#   filter(is.na(RTD_s)==FALSE)
-# mGrowRTD_2  <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + RTD_s + SPEI_s * RTD_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RTD_2 , control=lmerControl(optimizer="bobyqa"))
-# 
-# CO_grow_RDiam_2 <-
-#   CO_poly_growth_2 %>% 
-#   filter(is.na(RDiam_s)==FALSE)
-# mGrowRDiam_2  <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + RDiam_s + SPEI_s * RDiam_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RDiam_2 , control=lmerControl(optimizer="bobyqa"))
-# 
-# #### make growth models without traits for comparison ####
-# #fit models
-# 
-# mGrowTLP_NO_2 <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + SPEI_s  + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_TLP_2, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
-# 
-# mGrowLDMC_NO_2 <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + SPEI_s  + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_LDMC_2, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
-# 
-# mGrowSLA_NO_2 <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + SPEI_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_SLA_2, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
-# 
-# mGrowRDMC_NO_2 <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + SPEI_s  + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RDMC_2, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
-# 
-# mGrowSRL_NO_2 <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + SPEI_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_SRL_2 , control=lmerControl(optimizer="bobyqa"))
-# 
-# mGrowRTD_NO_2  <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + SPEI_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RTD_2 , control=lmerControl(optimizer="bobyqa"))
-# 
-# mGrowRDiam_NO_2  <- lme4::lmer(area_tplus1 ~ area_s + neighbors_10_s + SPEI_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RDiam_2 , control=lmerControl(optimizer="bobyqa"))
-# 
-# #compare AIC of models with and without traits
-# diff(AIC(mGrowTLP_2, mGrowTLP_NO_2)$AIC) #TLP
-# diff(AIC(mGrowLDMC_2, mGrowLDMC_NO_2)$AIC) #LDMC
-# diff(AIC(mGrowSLA_2, mGrowSLA_NO_2)$AIC) #SLA
-# diff(AIC(mGrowRDMC_2, mGrowRDMC_NO_2)$AIC) #RDMC
-# diff(AIC(mGrowRTD_2, mGrowRTD_NO_2)$AIC) #RTD
-# diff(AIC(mGrowSRL_2, mGrowSRL_NO_2)$AIC) #SRL
-# diff(AIC(mGrowRDiam_2, mGrowRDiam_NO_2)$AIC) #RDiam
-# 
-# #assess significance of the model terms in the TLP model (using a likelihood ratio test)
-# drop1(mGrowTLP_2,test="Chisq")
-# drop1(mGrowLDMC_2,test="Chisq")
-# drop1(mGrowSLA_2,test="Chisq")
-# drop1(mGrowRDMC_2,test="Chisq")
-# drop1(mGrowSRL_2,test="Chisq")
-# drop1(mGrowRDiam_2,test="Chisq")
-# drop1(mGrowRTD_2,test="Chisq")
-# 
-#### make model result figures ####
-#TLP
-#m1 <- glmer(survives ~ area_s + neighbors_10_s + SPEI_s * TLP_s + (area_s|species) + (1|quad) + (1|year) + (1|nearEdge_t), data = CO_grams, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-#effect of interaction on survival
-
-#get 2.5 and 97.5 percentiles of the distribution
-meanSPEI_G <- mean(CO_grams$SPEI_s)
-sdSPEI_G <- sd(CO_grams$SPEI_s)
-#get 97.5 quantile of the distribution
-SPEI_97_5_G <- qnorm(.975, meanSPEI_G, sdSPEI_G) #2.10
-SPEI_2_5_G <- qnorm(.025, meanSPEI_G, sdSPEI_G) #-1.48
-
-#for TLP_s
-
-plot(predictorEffect("TLP_s", m1_grams, xlevels=list(SPEI_s=c(round(SPEI_2_5_G,2), round(SPEI_97_5_G,2)))), lines = list(multiline = TRUE, col = c("goldenrod1", "green3")),
-     confint = list(style = "auto"),
-     axes = list(y=list(type="response", lab = "P(Grass Survival)", ticks=list(at=c(0,.2,.4,.6,.8,1.0))), x = list(TLP_s=list(lab = "scaled(Turgor Loss Point)"))),
-     ylim = c(0,1),
-     lattice=list(key.args=list(x=.05, y=.83, corner=c(0, 0), columns=1, cex=.9, cex.title=1, text = list(lab = c("Dry Year","Wet Year")),title = ""),
-                  array=list(row=1, col=1, nrow=2, ncol=2, more=TRUE)), main = NA)
-
-#for LDMC_s
-plot(predictorEffect("LDMC_s", m2_grams, xlevels=list(SPEI_s=c(round(SPEI_2_5_G,2), round(SPEI_97_5_G,2)))), lines = list(multiline = TRUE, col = c("goldenrod1", "green3")),
-     confint = list(style = "auto"),
-     axes = list(y=list(type="response", lab = "P(Grass Survival)", ticks=list(at=c(0,.2,.4,.6,.8,1.0))), x = list(LDMC_s=list(lab = "scaled(Leaf Dry Matter Content)"))),
-     ylim = c(0,1),
-     lattice=list(key.args=list(x=.05, y=.83, corner=c(0, 0), columns=1, cex=.9, cex.title=1, text = list(lab = c("Dry Year","Wet Year")),title = ""),
-                  array=list(row=1, col=2, nrow=2, ncol=2, more=TRUE)),
-     main = NA)
-
-
-#for forbs
-#get 2.5 and 97.5 percentiles of the distribution
-meanSPEI <- mean(CO_point_all$SPEI_s)
-sdSPEI <- sd(CO_point_all$SPEI_s)
-#get 97.5 quantile of the distribution
-SPEI_97_5 <- qnorm(.975, meanSPEI, sdSPEI) 
-SPEI_2_5 <- qnorm(.025, meanSPEI, sdSPEI)
-
-#for TLP_s
-
-plot(predictorEffect("TLP_s", m3Final, xlevels=list(SPEI_s=c(round(SPEI_2_5,2), round(SPEI_97_5,2)))), lines = list(multiline = TRUE, col = c("goldenrod1", "green3")),
-     confint = list(style = "auto"),
-     axes = list(y=list(type="response", lab = "P(Forb Survival)", ticks=list(at=c(0,.2,.4,.6,.8,1.0))), x = list(TLP_s=list(lab = "scaled(Turgor Loss Point)"))),
-     ylim = c(0,1),lattice=list(key.args=list(x=.05, y=.83, corner=c(0, 0),
-                                              columns=1,
-                                              cex=.9,
-                                              cex.title=1,
-                                              text = list(lab = c("Dry Year","Wet Year")),title = ""),array=list(row=2, col=1, nrow=2, ncol=2, more=TRUE)),
-     main = NA)
-
-#for LDMC_s
-plot(predictorEffect("LDMC_s", m4Final, xlevels=list(SPEI_s=c(round(SPEI_2_5,2), round(SPEI_97_5,2)))), lines = list(multiline = TRUE, col = c("goldenrod1", "green3")),
-     confint = list(style = "auto"),
-     axes = list(y=list(type="response", lab = "P(Forb Survival)", ticks=list(at=c(0,.2,.4,.6,.8,1.0))), x = list(LDMC_s=list(lab = "scaled(Leaf Dry Matter Content)"))),
-     ylim = c(0,1),lattice=list(key.args=list(x=.05, y=.83, corner=c(0, 0),
-                                              columns=1,
-                                              cex=.9,
-                                              cex.title=1,
-                                              text = list(lab = c("Dry Year","Wet Year")),title = ""),array=list(row=2, col=2, nrow=2, ncol=2, more=FALSE)),
-     main = NA)
-
-
-
-#visreg figure
-dev.off()
-visreg::visreg2d(fit=m1, xvar="SPEI_s", yvar="TLP_s", 
-                 scale="response", plot.type="persp", phi=20, theta=60, 
-                 xlab="\n\nSPEI (scaled)", 
-                 ylab="\n\nTLP index (scaled)", 
-                 zlab="\n\nSurvival Probability", cex.axis=1, cex.lab=1.2, 
-                 col=adjustcolor("#019E73",alpha.f=.5))
-
-#still don't entirely trust it...
-#manually calculate results and plot them 
-#make data.frame for new data
-grid.l_1 <- list(seq(min(CO_grams$SPEI_s), max(CO_grams$SPEI_s), length = 100),
-                 seq(min(CO_grams$TLP_s), max(CO_grams$TLP_s), length = 100))
-TLP.SPEI <- make.surface.grid(grid.l_1)  
-#make linear predictions using m1 model results
-TLP.SPEI_linear.pred_1 <- as.surface(TLP.SPEI,
-                                     -0.25598 +   2.20333*mean(CO_grams$area_s) + -0.53731 * mean(CO_grams$neighbors_10_s) + 0.24638*TLP.SPEI[,1] + -0.05653*TLP.SPEI[,2] + 0.05561 *TLP.SPEI[,1] * TLP.SPEI[,2])
-#model coefficients for m1: -0.25266 +  2.25437*newdata_1$area_s + -0.66912 * newdata_1$neighbors_10_s + 0.33210*newdata_1$SPEI_s + -0.06302*newdata_1$TLP_s + 0.07029 *newdata_1$SPEI_s * newdata_1$TLP_s
-#plot lienar predictors
-persp(TLP.SPEI_linear.pred_1$x, TLP.SPEI_linear.pred_1$y, TLP.SPEI_linear.pred_1$z, phi = 20, theta = 60)
-#transform to response (not linear)
-TLP.SPEI_prob.pred_1 <- as.surface(TLP.SPEI,
-                                   1/(1+exp(-(-0.25598 +   2.20333*mean(CO_grams$area_s) + -0.53731 * mean(CO_grams$neighbors_10_s) + 0.24638*TLP.SPEI[,1] + -0.05653*TLP.SPEI[,2] + 0.05561 *TLP.SPEI[,1] * TLP.SPEI[,2]))))
-#plot probabilites
-persp(TLP.SPEI_prob.pred_1$x, TLP.SPEI_prob.pred_1$y, TLP.SPEI_prob.pred_1$z, phi = 20, theta = 60,
-      ticktype = "detailed",
-      main = "Impact of TLP and SPEI on grass survival",
-      zlab = "\n\nsurvival",
-      ylab = "\n\nTLP_s",
-      xlab = "\n\nSPEI_s")
-
-#plot the values at extremes manually
-newdata_1 <- data.frame(TLP_s = seq(min(CO_grams$TLP_s), max(CO_grams$TLP_s), length = 100))
-
-#predict values for low SPEI value
-newdata_1$linear.preds_low <- -0.25598 + 2.20333*mean(CO_grams$area_s) +  -0.05653 * newdata_1$TLP_s +  0.24638 * min(CO_grams$SPEI_s) + -0.53731 * mean(CO_grams$neighbors_10_s) + 0.05561 * min(CO_grams$SPEI_s) * newdata_1$TLP_s
-#predict values for high SPEI value
-newdata_1$linear.preds_high <- -0.25598 + 2.20333*mean(CO_grams$area_s) +  -0.05653 * newdata_1$TLP_s +  0.24638 * max(CO_grams$SPEI_s) + -0.53731 * mean(CO_grams$neighbors_10_s) + 0.05561 * max(CO_grams$SPEI_s) * newdata_1$TLP_s
-
-#transform to probabilites
-newdata_1$probs_low <- 1/(1+exp(-newdata_1$linear.preds_low))
-newdata_1$probs_high <- 1/(1+exp(-newdata_1$linear.preds_high))
-
-plot(probs_high ~ TLP_s, data = newdata_1, type = "l",
-     ylim = c(0.1,0.6))
-lines(probs_low ~ TLP_s, data = newdata_1)
-
-#LDMC
-#effect of SPEI_s on survival
-plot(effect("SPEI_s",m2))
-plot(predictorEffect("LDMC_s", m2, xlevels=list(SPEI_s=c(-2.22,1.72))), lines = list(multiline = TRUE),
-     confint = list(style = "auto"),
-     axes = list(y=list(type="response")))
-
-
-dev.off()
-visreg::visreg2d(fit=m2, xvar="SPEI_s", yvar="LDMC_s", 
-                 scale="response", plot.type="persp", phi=20, theta=55, 
-                 xlab="\n\nSPEI (scaled)", 
-                 ylab="\n\nTLP index (scaled)", 
-                 zlab="\n\nSurvival Probability", cex.axis=1, cex.lab=1.2, 
-                 col=adjustcolor("#019E73",alpha.f=.5))
-
-#still don't entirely trust it...
-#manually calculate results and plot them 
-#make data.frame for new data
-grid.l_2 <- list(seq(min(CO_grams$SPEI_s), max(CO_grams$SPEI_s), length = 100),
-                 seq(min(CO_grams$LDMC_s), max(CO_grams$LDMC_s), length = 100))
-LDMC.SPEI <- make.surface.grid(grid.l_2)  
-#make linear predictions using m1 model results
-LDMC.SPEI_linear.pred_2 <- as.surface(TLP.SPEI,
-                                     -0.27309 +   2.18676*mean(CO_grams$area_s) + -0.67083 * mean(CO_grams$neighbors_10_s) + 0.223318*LDMC.SPEI[,1] + 0.08580*LDMC.SPEI[,2] + -0.12379 *LDMC.SPEI[,1] * LDMC.SPEI[,2])
-
-#plot linear predictors
-persp(LDMC.SPEI_linear.pred_2$x, LDMC.SPEI_linear.pred_2$y, LDMC.SPEI_linear.pred_2$z, phi = 20, theta = 60)
-#transform to response (not linear)
-LDMC.SPEI_prob.pred_2 <- as.surface(LDMC.SPEI,
-                                   1/(1+exp(-(-0.27309 +   2.18676*mean(CO_grams$area_s) + -0.67083 * mean(CO_grams$neighbors_10_s) + 0.223318*LDMC.SPEI[,1] + 0.08580*LDMC.SPEI[,2] + -0.12379 *LDMC.SPEI[,1] * LDMC.SPEI[,2]))))
-#plot probabilites
-persp(LDMC.SPEI_prob.pred_2$x, LDMC.SPEI_prob.pred_2$y, LDMC.SPEI_prob.pred_2$z, phi = 20, theta = 60,
-      ticktype = "detailed",
-      main = "Impact of LDMC and SPEI on grass survival",
-      zlab = "\n\nsurvival",
-      ylab = "\n\nLDMC_s",
-      xlab = "\n\nSPEI_s")
-
-#try to make the effects plot manually
-#make new data
-newdata_2 <- data.frame(LDMC_s = seq(min(CO_grams$LDMC_s), max(CO_grams$LDMC_s), length = 100))
-#predict values for low SPEI value
-newdata_2$linear.preds_low <- -0.27309 + 0.08580 * newdata_2$LDMC_s +  0.22331 * min(CO_grams$SPEI_s) + -0.67083 * mean(CO_grams$neighbors_10_s) + -0.12379 * min(CO_grams$SPEI_s) * newdata_2$LDMC_s
-#predict values for high SPEI value
-newdata_2$linear.preds_high <- -0.27309 + 0.08580 * newdata_2$LDMC_s +  0.22331 * max(CO_grams$SPEI_s) + -0.67083 * mean(CO_grams$neighbors_10_s) + -0.12379 * max(CO_grams$SPEI_s) * newdata_2$LDMC_s
-#transform to probabilites
-newdata_2$probs_low <- 1/(1+exp(-newdata_2$linear.preds_low))
-newdata_2$probs_high <- 1/(1+exp(-newdata_2$linear.preds_high))
-
-plot(probs_high ~ LDMC_s, data = newdata_2, type = "l",
-     ylim = c(0.1,0.8))
-lines(probs_low ~ LDMC_s, data = newdata_2)
-
-##Forbs (points)
-#TLP
-#visreg figure
-dev.off()
-visreg::visreg2d(fit=m3Final, xvar="SPEI_s", yvar="TLP_s", 
-                 scale="response", plot.type="persp", phi=20, theta=55, 
-                 xlab="\n\nSPEI (scaled)", 
-                 ylab="\n\nTLP index (scaled)", 
-                 zlab="\n\nSurvival Probability", cex.axis=1, cex.lab=1.2, 
-                 col=adjustcolor("#019E73",alpha.f=.5))
-#effects plot
-hist(fitted(m3Final))
-plot(predictorEffect("TLP_s", m3, xlevels=list(SPEI_s=c(-2.22,1.72))), lines = list(multiline = TRUE),confint = list(style = "auto"),
-     axes = list(y=list(type="response")))
-
-#still don't entirely trust it...
-#manually calculate results and plot them 
-#make data.frame for new data
-grid.l_3 <- list(seq(min(CO_point_all$SPEI_s), max(CO_point_all$SPEI_s), length = 100),
-                 seq(min(CO_point_all$TLP_s), max(CO_point_all$TLP_s), length = 100))
-TLP.SPEI_3 <- make.surface.grid(grid.l_3)  
-#make linear predictions using m1 model results
-TLP.SPEI_linear.pred_3 <- as.surface(TLP.SPEI_3,
-                                     -0.28276 + -0.37654 * mean(CO_point_all$neighbors_10_s) + -0.15083*TLP.SPEI_3[,1] + -0.31563*TLP.SPEI_3[,2] + 0.18950 *TLP.SPEI_3[,1] * TLP.SPEI_3[,2])
-
-#plot linear predictors
-persp(TLP.SPEI_linear.pred_3$x, TLP.SPEI_linear.pred_3$y, TLP.SPEI_linear.pred_3$z, phi = 20, theta = 60)
-#transform to response (not linear)
-TLP.SPEI_prob.pred_3 <- as.surface(TLP.SPEI_3,
-                                   1/(1+exp(-(-0.28276 + -0.37654 * mean(CO_point_all$neighbors_10_s) + -0.15083*TLP.SPEI_3[,1] + -0.31563*TLP.SPEI_3[,2] + 0.18950 *TLP.SPEI_3[,1] * TLP.SPEI_3[,2]))))
-#plot probabilites
-persp(TLP.SPEI_prob.pred_3$x, TLP.SPEI_prob.pred_3$y, TLP.SPEI_prob.pred_3$z, phi = 20, theta = 60,
-      ticktype = "detailed",
-      main = "Impact of TLP and SPEI on forb survival",
-      zlab = "\n\nsurvival",
-      ylab = "\n\nTLP_s",
-      xlab = "\n\nSPEI_s")
-
-#try to make the effects plot manually
-#make new data
-newdata_3 <- data.frame(TLP_s = seq(min(CO_point_all$TLP_s, na.rm = TRUE), max(CO_point_all$TLP_s, na.rm = TRUE), length = 100))
-#predict values for low SPEI value
-newdata_3$linear.preds_low <- -0.28276 + -0.31563 * newdata_3$TLP_s +  -0.15083 * min(CO_point_all$SPEI_s, na.rm = TRUE) + -0.37654 * mean(CO_point_all$neighbors_10_s, na.rm = TRUE) + 0.18950 * min(CO_point_all$SPEI_s, na.rm = TRUE) * newdata_3$TLP_s
-#predict values for high SPEI value
-newdata_3$linear.preds_high <- -0.28276 + -0.31563 * newdata_3$TLP_s +  -0.15083 * max(CO_point_all$SPEI_s, na.rm = TRUE) + -0.37654 * mean(CO_point_all$neighbors_10_s, na.rm = TRUE) + 0.18950 * max(CO_point_all$SPEI_s, na.rm = TRUE) * newdata_3$TLP_s
-#transform to probabilites
-newdata_3$probs_low <- 1/(1+exp(-newdata_3$linear.preds_low))
-newdata_3$probs_high <- 1/(1+exp(-newdata_3$linear.preds_high))
-
-plot(probs_low ~ TLP_s, data = newdata_3, type = "l", ylim = c(0,1))
-lines(probs_high ~ TLP_s, data = newdata_3)
-
-
-#LDMC
-dev.off()
-visreg::visreg2d(fit=m4Final, xvar="SPEI_s", yvar="LDMC_s", 
-                 scale="response", plot.type="persp", phi=20, theta=55, 
-                 xlab="\n\nSPEI (scaled)", 
-                 ylab="\n\nLDMC index (scaled)", 
-                 zlab="\n\nSurvival Probability", cex.axis=1, cex.lab=1.2, 
-                 col=adjustcolor("#019E73",alpha.f=.5))
-#effects plot
-hist(fitted(m4Final))
-plot(predictorEffect("LDMC_s", m4Final, xlevels=list(SPEI_s=c(-2.22,1.72))), lines = list(multiline = TRUE),
-     confint = list(style = "auto"),
-     axes = list(y=list(type="response")))
-
-#still don't entirely trust it...
-#manually calculate results and plot them 
-#make data.frame for new data
-grid.l_4 <- list(seq(min(CO_point_all$SPEI_s), max(CO_point_all$SPEI_s), length = 100),
-                 seq(min(CO_point_all$LDMC_s), max(CO_point_all$LDMC_s), length = 100))
-LDMC.SPEI_4 <- make.surface.grid(grid.l_4)  
-#make linear predictions using m1 model results
-LDMC.SPEI_linear.pred_4 <- as.surface(LDMC.SPEI_4,
-                                      -2.09072 + -0.27846 * mean(CO_point_all$neighbors_15_s) + -0.15254*LDMC.SPEI_4[,1] + -0.15247*LDMC.SPEI_4[,2] + -0.18801 *LDMC.SPEI_4[,1] * LDMC.SPEI_4[,2])
-
-#plot linear predictors
-persp(LDMC.SPEI_linear.pred_4$x, LDMC.SPEI_linear.pred_4$y, LDMC.SPEI_linear.pred_4$z, phi = 20, theta = 60)
-#transform to response (not linear)
-LDMC.SPEI_prob.pred_4 <- as.surface(LDMC.SPEI_4,
-                                   1/(1+exp(-(-2.09072 + -0.27846 * mean(CO_point_all$neighbors_15_s) + -0.15254*LDMC.SPEI_4[,1] + -0.15247*LDMC.SPEI_4[,2] + -0.18801 *LDMC.SPEI_4[,1] * LDMC.SPEI_4[,2]))))
-#plot probabilites
-persp(LDMC.SPEI_prob.pred_4$x, LDMC.SPEI_prob.pred_4$y, LDMC.SPEI_prob.pred_4$z, phi = 20, theta = 60,
-      ticktype = "detailed",
-      main = "Impact of LDMC and SPEI on forb survival",
-      zlab = "\n\nsurvival",
-      ylab = "\n\nLDMC_s",
-      xlab = "\n\nSPEI_s")
-##DOESN'T MATCH VISREG2D PLOT...
-#try to make the effects plot manually
-#make new data
-newdata_4 <- data.frame(LDMC_s = seq(min(CO_point_all$LDMC_s), max(CO_point_all$LDMC_s), length = 100))
-#predict values for low SPEI value
-newdata_4$linear.preds_low <- -2.09072 + -0.15247 * newdata_4$LDMC_s +  -0.15254 * min(CO_point_all$SPEI_s) + -0.27846 * mean(CO_point_all$neighbors_15_s) + -0.18801 * min(CO_point_all$SPEI_s) * newdata_4$LDMC_s
-#predict values for high SPEI value
-newdata_4$linear.preds_high <- -2.09072 + -0.15247 * newdata_4$LDMC_s +  -0.15254 * max(CO_point_all$SPEI_s) + -0.27846 * mean(CO_point_all$neighbors_15_s) + -0.18801 * max(CO_point_all$SPEI_s) * newdata_4$LDMC_s
-#transform to probabilites
-newdata_4$probs_low <- 1/(1+exp(-newdata_4$linear.preds_low))
-newdata_4$probs_high <- 1/(1+exp(-newdata_4$linear.preds_high))
-
-plot(probs_high ~ LDMC_s, data = newdata_4, type = "l")
-lines(probs_low ~ LDMC_s, data = newdata_4)
-
-
 #### table of model results ####
 #for graminoid models
 require(stargazer)
