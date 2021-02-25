@@ -19,10 +19,6 @@ nearWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analys
 setwd(nearWD)
 load("./scripts/script0_output.RData")
 
-# data source: Flora of Colorado, Jennifer Ackerfield 
-datWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files" #set working directory for location of flowering time data file
-setwd(datWD)
-
 ##load trait data 
 # data source: Blumenthal, 2020 (https://doi.org/10.1111/1365-2745.13454) 
 # Except: all trait values for Schedonnardus paniculatus, root trait values for Sitanion hystrix, Stipa comata RDMC, Allium textile RDMC and root diameter values, and all trait values for Vicia americana
@@ -52,5 +48,4 @@ rm(list = ls()[!(ls() %in% c('CO_point_all','CO_poly_all'))])
 path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
 setwd(path)
 save.image('script1_output.RData')
-
 
