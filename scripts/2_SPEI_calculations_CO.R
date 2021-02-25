@@ -167,7 +167,7 @@ CO_SPEI_all$Year[1:1188] <- CO_SPEI_all$Year[1:1188]+1900
 CO_SPEI_all$Year[1189:1380] <- CO_SPEI_all$Year[1189:1380] + 2000
 lubridate::year(CO_SPEI_all$Date) <- CO_SPEI_all$Year
 
-#### Calculate SPEI for CO Dataset #####
+#### Calculate SPEI for CO Dataset (by species) #####
 ### Set up Julian day/month info ###
 
 ## make a data.frame for first days of the month in the Julian Year
@@ -363,6 +363,18 @@ for (i in 1:nrow(CO_point_all)){
                                          paste("SPEI_",CO_point_all$SPEI_duration[i], sep="")))[1,1]
 }
 CO_point_all$SPEI_unique <- unlist(CO_point_all$SPEI_unique)
+
+#### calculate SPEI for CO Dataset (uniformly for all species) ####
+## get correct SPEI variables ##
+# peak 'greenness' occurs around 215 DOY (according to CPER data)--beginning of August
+# calculate SPEI with an interval from May to Sept. , SEPT w/ a 4 month interval
+# get the appropriate SPEI data
+CO_SPEI_uniform <- CO_SPEI_all[lubridate::month(CO_SPEI_all$Date)==9,c("Date","SPEI_4", "Year")]
+names(CO_SPEI_uniform) <- c("Date", "SPEI_uniform", "Year")
+#combine w/ poly and point datasets
+CO_poly_all <- left_join(CO_poly_all, CO_SPEI_uniform[,c("SPEI_uniform", "Year")], by = c("year_t"= "Year"))
+
+CO_point_all <- left_join(CO_point_all, CO_SPEI_uniform[,c("SPEI_uniform", "Year")], by = c("year"= "Year"))
 
 #### save workspace image for next script ####
 rm(list = ls()[!(ls() %in% c('CO_point_all','CO_poly_all'))])

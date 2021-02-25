@@ -109,10 +109,6 @@ CO_quads <- read.csv("./quad_info_all.csv")
 =======
 load("./scripts/script0_output.RData")
 
-# data source: Flora of Colorado, Jennifer Ackerfield 
-datWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files" #set working directory for location of flowering time data file
-setwd(datWD)
-
 ##load trait data 
 # data source: Blumenthal, 2020 (https://doi.org/10.1111/1365-2745.13454) 
 # Except: all trait values for Schedonnardus paniculatus, root trait values for Sitanion hystrix, Stipa comata RDMC, Allium textile RDMC and root diameter values, and all trait values for Vicia americana
@@ -150,9 +146,12 @@ setwd(path)
 save.image('script1_output.RData')
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 write.csv(CO_poly_all, "./Intermediate Analysis Files/poly_demo_Traits_2_24_20.csv", row.names = FALSE)
 write.csv(CO_point_all, "./Intermediate Analysis Files/point_demo_Traits_2_24_20.csv", row.names = FALSE)
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
 >>>>>>> b92c320... finishing update of script 1
 
+=======
+>>>>>>> f170c74... checked models with uniform SPEI

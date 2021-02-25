@@ -36,10 +36,14 @@ rm(list=ls())
 ##### Load Data Files #####
 ## set working directory
 <<<<<<< HEAD
+<<<<<<< HEAD
 # datWD <-  set path for the location of the environment image of script 3 output
 =======
 datWD <- setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper") #set path for the location of the environment image of script 3 output
 >>>>>>> a4403b8... update modeling script
+=======
+datWD <- c("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper") #set path for the location of the environment image of script 3 output
+>>>>>>> f170c74... checked models with uniform SPEI
 setwd(datWD)
 #load data from previous 
 load("./scripts/script3_output.RData")
@@ -58,11 +62,15 @@ CO_point_all <- CO_point_all %>% dplyr::select(species, quad, year, survives, ne
 =======
 #### ensure that the structure of the variables is correct ####
 CO_poly_all <- CO_poly_all %>% 
-  dplyr::select(species, quad, year_t, area_t, survives_tplus1, nearEdge_t, area_tplus1, neighbors_5_s, neighbors_10_s, neighbors_15_s, neighbors_20_s, area_s, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s) %>% 
+  dplyr::select(species, quad, year_t, area_t, survives_tplus1, nearEdge_t, area_tplus1, neighbors_5_s, neighbors_10_s, neighbors_15_s, neighbors_20_s, area_s, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s, SPEI_uniform_s, SPEI_uniform, SPEI_unique) %>% 
   mutate(species = as.factor(species), quad = as.factor(quad), year_t = as.factor(year_t), nearEdge_t = as.factor(nearEdge_t))
 
+<<<<<<< HEAD
 CO_point_all <- CO_point_all %>% dplyr::select(species, quad, year, survives, nearEdge,  neighbors_10_s, neighbors_15_s, neighbors_20_s, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s) %>% 
 >>>>>>> a4403b8... update modeling script
+=======
+CO_point_all <- CO_point_all %>% dplyr::select(species, quad, year, survives, nearEdge,  neighbors_10_s, neighbors_15_s, neighbors_20_s, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s, SPEI_uniform_s, SPEI_uniform, SPEI_unique) %>% 
+>>>>>>> f170c74... checked models with uniform SPEI
   mutate(species = as.factor(species), quad = as.factor(quad), year_t = as.factor(year), survives_tplus1 = as.integer(survives), nearEdge_t = as.integer(nearEdge)) 
   
 #### testing viability of different neighborhood distance radii####
@@ -153,6 +161,7 @@ m1_grams <- glmer(survives_tplus1 ~ area_s + neighbors_10_s + SPEI_s * TLP_s + n
 summary(m1_grams)
 rsquared_m1_grams <- piecewiseSEM::rsquared(m1_grams)
 
+<<<<<<< HEAD
 #plot residuals to assess model fit
 plot_model(m1_grams, type = "diag") #get qqplots for random effects and fixed effects
 >>>>>>> a4403b8... update modeling script
@@ -185,6 +194,11 @@ m1_AIC_grams[m1_AIC_grams$AICc==min(m1_AIC_grams$AICc),]
 
 #m1Q (same as m1) has the lowest AIC, so use the random effects structure without a random intercept for Tribe
 
+=======
+#don't have to calculate overdispersion--not possible for bernoulli binomial variables
+# https://stats.stackexchange.com/questions/206007/can-there-be-overdispersion-in-a-logistic-regression-model-where-each-observatio
+
+>>>>>>> f170c74... checked models with uniform SPEI
 #calculate R2 
 rsquaredm1 <- piecewiseSEM::rsquared(m1_grams)
 
@@ -310,28 +324,15 @@ m14 <- glmer(survives_tplus1 ~ area_s + SPEI_s * RDiam_s + neighbors_10_s + near
 #calculate the R2 
 rsquaredm14 <- piecewiseSEM::rsquared(m14)
 
-#### Models for points ####
+#### Point Survival Modelcs ####
 ### TLP point model ###
+options(na.action = na.omit)
 CO_point_TLP <- CO_point_all %>% 
   filter(!is.na(TLP_s))
 m3 <- glmer(survives_tplus1 ~ SPEI_s*TLP_s + neighbors_10_s + nearEdge_t 
               + (1|species) + (1|quad) + (1|year_t), 
             data=CO_point_TLP, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
  summary(m3)
-
-#Dredge for model selection                                                                
-options(na.action = "na.fail")
-mslist3 <- dredge(m3A)
-# here you can see all of the models compared and they are ranked in order
-# here we see we have multiple models <2 delta AIC from the top model 
-topmod3<-get.models(mslist3, subset=weight>.95)
-topmod3 # the first model is the one that has the most variation, so we don't need to average the model
-#The best model is the one with fixed effects for TLP:SPEI and stems and nearEdge_t (no random effect for Tribe (Family))
-m3Final<-glmer(survives_tplus1 ~ SPEI_s * TLP_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year), data = CO_point_all, family = binomial(link = logit),control=glmerControl(optimizer="bobyqa"))
-
-
-plot_model(m3Final, type = "diag")
-# the qqplot is definitely better!  
 
 #/////////////////////////////////
 
@@ -353,22 +354,6 @@ m4 <- glmer(survives_tplus1 ~ SPEI_s*LDMC_s + neighbors_10_s + nearEdge_t +
             data=CO_point_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
 summary(m4)
-
-#dredge for model selection of fixed efects
-options(na.action = "na.fail")
-mslist4 <- dredge(m4A)
-# here you can see all of the models compared and they are ranked in order
-# here we see we have multiple models <2 delta AIC from the top model 
-topmod4<-get.models(mslist4, subset=weight>.95)
-topmod4 # the first model is the one that has the most variation, so we don't need to average the model (with all fixed effects, but no random effect for Family (Tribe))
-m4Final <- glmer(survives_tplus1 ~  neighbors_10_s +  SPEI_s*LDMC_s + nearEdge_t +
-                   (1|species) + (1|quad) + (1|year), data=CO_point_all, 
-                 family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-summary(m4Final)
-m4conf <- lme4::confint.merMod(m4Final)
-rsquared4 <- rsquared(m4Final)    
-
-plot_model(m4Final, type = "diag")
 
 
 ##### Test forb survival models for non-water related traits####
@@ -582,10 +567,6 @@ diff(AIC(m16, m16_NO)$AIC) #RDiam
 #(only for graminoids, no size metric for forbs)
 
 ## Graminoid Models ##
-## Calculate growth variable
-# differences in logs of area 
-  #add '3' to each value after log transformation, so that there is no 'negative' log(size)
-CO_grams$logDiffArea <- (log(CO_grams$area_tplus1)) - (log(CO_grams$area_t))
 #subset the datasets to only include observations that have growth data (for those plants that survived)
 CO_poly_growth <- CO_grams %>% 
   filter(!is.na(CO_grams$logDiffArea))
@@ -922,4 +903,42 @@ polySpp_corMatrix <- cor(CO_traits[CO_traits$species %in% polySpp,traits], use="
 pointSpp_corMatrix <- cor(CO_traits[CO_traits$species %in% pointSpp,traits], use="complete.obs")
 
 
+<<<<<<< HEAD
 >>>>>>> a4403b8... update modeling script
+=======
+#### test models w/ uniform SPEI ####
+#models w/ species level SPEI
+summary(m1_grams)
+summary(m2_grams)
+summary(mGrowTLP)
+summary(mGrowLDMC)
+
+m1_SPEI <- glmer(survives_tplus1 ~ area_s + neighbors_10_s + SPEI_uniform_s * TLP_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_poly_TLP, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+m2_SPEI <- glmer(survives_tplus1 ~ area_s + neighbors_10_s + SPEI_uniform_s * LDMC_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_poly_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+mGrowTLP_SPEI <- lme4::lmer(logDiffArea ~ neighbors_10_s + SPEI_uniform_s * TLP_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
+
+mGrowLDMC_SPEI <- lme4::lmer(logDiffArea ~ neighbors_10_s + SPEI_uniform_s * LDMC_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_LDMC , control=lmerControl(optimizer="bobyqa"))
+
+#compare models with different SPEI
+
+plot(predictorEffect(mod = m1_grams, predictor = "TLP_s", response = TRUE))
+plot(predictorEffect(mod = m1_SPEI, predictor = "TLP_s", response = TRUE))
+visreg::visreg2d(m1_grams, xvar = "TLP_s", yvar =  "SPEI_s", scale = "response", plot.type = "persp")
+visreg::visreg2d(m1_SPEI, xvar = "TLP_s", yvar =  "SPEI_uniform_s", scale = "response", plot.type = "persp")
+
+visreg::visreg2d(m2_grams, xvar = "LDMC_s", yvar =  "SPEI_s", scale = "response", plot.type = "persp")
+visreg::visreg2d(m2_SPEI, xvar = "LDMC_s", yvar =  "SPEI_uniform_s", scale = "response", plot.type = "persp")
+
+visreg::visreg2d(mGrowTLP, xvar = "TLP_s", yvar =  "SPEI_s", scale = "response", plot.type = "persp")
+visreg::visreg2d(mGrowTLP_SPEI, xvar = "TLP_s", yvar =  "SPEI_uniform_s", scale = "response", plot.type = "persp")
+
+
+#### try a GAMM model for TLP survival ####
+require(gamm4)
+m1<-gamm(re~s(winterpc1,bs="cr")+logfrz,gamma=1.4,random=list(fem=~1), family=poisson, method="REML",data=end)
+glmer(survives_tplus1 ~ area_s + neighbors_10_s + SPEI_uniform_s * TLP_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_poly_TLP, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+m1GAMM <- gamm(survives_tplus1 ~ )
+>>>>>>> f170c74... checked models with uniform SPEI
