@@ -112,9 +112,11 @@ load("./scripts/script0_output.RData")
 ##load trait data 
 # data source: Blumenthal, 2020 (https://doi.org/10.1111/1365-2745.13454) 
 # Except: all trait values for Schedonnardus paniculatus, root trait values for Sitanion hystrix, Stipa comata RDMC, Allium textile RDMC and root diameter values, and all trait values for Vicia americana
-
+datWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files" #set working directory for location of flowering time data file
+setwd(datWD)
 CO_traits <- read.csv("./CO_mean_traits.csv", stringsAsFactors = FALSE)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 ## load quadrat information
 CO_quads <- read.csv("./quad_info_CO.csv")
@@ -122,19 +124,27 @@ CO_quads <- read.csv("./quad_info_CO.csv")
 =======
 >>>>>>> 80dfe2b... updating script 2
 #load climate information
+=======
+#load climate data
+>>>>>>> fa7c121... updating analysis and figure code
 CO_climate <- read.csv("./CO_Climate_All.csv")
+#reformat date
+CO_climate$Date <- as.POSIXct(CO_climate$Date, format = "%m/%d/%y")
+CO_climate$year <- lubridate::year(CO_climate$Date)
+#get dataset w/ just annual averages
+CO_climate<- CO_climate[is.na(CO_climate$Ann.Sum.Precip)==FALSE,c("Site", "Date", "year", "Ann.Sum.Precip", "Ann.Avg.T")]
 
 #### merge datasets for polygon (grass) data ####
 #merge survival data with trait data
 CO_poly_surv_traits <- left_join(poly, CO_traits, by=c("species"="species"))
-#merge quadrat data with trait/survival data
-CO_poly_all <- CO_poly_surv_traits
+#merge cliamte data with trait/survival data
+CO_poly_all <- left_join(CO_poly_surv_traits, CO_climate[,c("Ann.Sum.Precip", "Ann.Avg.T", "year")], by = c("year_t" = "year"))
 
 
 #### merge datasets for point (forb) data ####
 # merge trait data with the survival data ###
 CO_point_surv_traits <- left_join (points, CO_traits, by=c("species"="species"))
-CO_point_all <- CO_point_surv_traits
+CO_point_all <- left_join(CO_point_surv_traits, CO_climate[,c("Ann.Sum.Precip", "Ann.Avg.T", "year")], by = c("year" = "year"))
 
 #### save workspace image for next script ####
 rm(list = ls()[!(ls() %in% c('CO_point_all','CO_poly_all'))])

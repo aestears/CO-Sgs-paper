@@ -31,7 +31,8 @@ setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis")
 load("./SCRIPTS_OLD/models_11232020.RData") #change the file name to the most current version of model runs
 ```
 
-Make a figure of model results for LDMC, RDMC, and TLP for forb and gram survival
+Make a figure of model results for LDMC, RDMC, and TLP for forb and gram survival  
+Make figure for graminoids
 ```{r}
 #make figure for graminoid survival
 
@@ -613,4 +614,298 @@ ggplot( data = phenDat) +
         axis.text.y = element_blank()) 
 ```
 
+Figures for comparing unique to uniform SPEI (TLP and LDMC only)
+```{r}
+#model objects (unique SPEI): m1_grams, m2_grams, mGrow_TLP, mGrow_LDMC
+#model objects (uniform SPEI): m1_SPEI, m2_SPEI, mGrowTLP_SPEI, mGrowLDMC_SPEI 
 
+## Make figure of unique SPEI of TLP and LDMC survival
+#get 2.5 and 97.5 percentiles of the distribution
+meanSPEI<- mean(CO_poly_TLP$SPEI_s)
+sdSPEI <- sd(CO_poly_TLP$SPEI_s)
+#get 97.5 quantile of the distribution
+SPEI_97_5 <- qnorm(.975, meanSPEI, sdSPEI) 
+SPEI_2_5 <- qnorm(.025, meanSPEI, sdSPEI)
+
+spei_vals <- c(SPEI_2_5, SPEI_97_5)
+
+#for TLP
+TLP_vals <- seq(min(CO_poly_TLP$TLP_s, na.rm = TRUE), max(CO_poly_TLP$TLP_s, na.rm = TRUE), length.out = 20)
+TLP_surv_dat <- ggpredict(m1_grams, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+
+#for LDMC
+LDMC_vals <- seq(min(CO_poly_LDMC$LDMC_s, na.rm = TRUE), max(CO_poly_LDMC$LDMC_s, na.rm = TRUE), length.out = 20)
+LDMC_surv_dat <- ggpredict(m2_grams, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+
+
+#make a data.frame to contain all of the values for each trait
+UniqueSurvDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_surv_dat$x, Surv = TLP_surv_dat$predicted, CI_low = TLP_surv_dat$conf.low, CI_high = TLP_surv_dat$conf.high, SPEI = TLP_surv_dat$group)
+
+UniqueSurvDat <- rbind(UniqueSurvDat, data.frame(trait = c("scaled(Leaf Dry Matter Content) (g/g)"), x = LDMC_surv_dat$x, Surv = LDMC_surv_dat$predicted, CI_low = LDMC_surv_dat$conf.low, CI_high = LDMC_surv_dat$conf.high, SPEI = LDMC_surv_dat$group))
+
+#make data for rug plot
+RugDat_surv <-  data.frame(rug = CO_poly_TLP$TLP_s, trait = "scaled(Turgor Loss Point) (MPa)")
+RugDat_surv <- rbind(RugDat_surv, data.frame(rug = CO_poly_LDMC$LDMC_s, trait = "scaled(Leaf Dry Matter Content) (g/g)"))
+
+#make a multipanel figure that shows only the graminoid survival probs for 3 traits
+UniqueSPEI_Surv <- ggplot(data = UniqueSurvDat) +
+  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
+  geom_line(aes(x=x, y = Surv, col = SPEI))  + 
+  geom_rug(aes(x = rug), data = RugDat_surv) +
+  labs(title = "Unique SPEI Graminoid Survival") +
+  xlab(NULL) +
+  ylab("Probability of Graminoid Survival") +
+  scale_y_continuous(limits = c(0,1)) +
+  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
+  #geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
+  scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
+  facet_wrap(~trait, scales = "free_x", strip.position =  "bottom", ncol = 1) +
+  theme_classic()+
+  theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
+```
+
+```{r}
+## Make figure of unique SPEI of TLP and LDMC growth
+meanSPEI<- mean(CO_grow_TLP$SPEI_s)
+sdSPEI <- sd(CO_grow_TLP$SPEI_s)
+#get 97.5 quantile of the distribution
+SPEI_97_5 <- qnorm(.975, meanSPEI, sdSPEI) 
+SPEI_2_5 <- qnorm(.025, meanSPEI, sdSPEI)
+
+spei_vals <- c(SPEI_2_5, SPEI_97_5)
+
+#for TLP
+TLP_vals <- seq(min(CO_grow_TLP$TLP_s, na.rm = TRUE), max(CO_grow_TLP$TLP_s, na.rm = TRUE), length.out = 20)
+TLP_grow_dat <- ggpredict(mGrowTLP, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+
+#for LDMC
+LDMC_vals <- seq(min(CO_poly_LDMC$LDMC_s, na.rm = TRUE), max(CO_poly_LDMC$LDMC_s, na.rm = TRUE), length.out = 20)
+LDMC_grow_dat <- ggpredict(mGrowLDMC, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+
+
+#make a data.frame to contain all of the values for each trait
+UniqueGrowDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_grow_dat$x, grow = TLP_grow_dat$predicted, CI_low = TLP_grow_dat$conf.low, CI_high = TLP_grow_dat$conf.high, SPEI = TLP_grow_dat$group)
+
+UniqueGrowDat <- rbind(UniqueGrowDat, data.frame(trait = c("scaled(Leaf Dry Matter Content) (g/g)"), x = LDMC_grow_dat$x, grow = LDMC_grow_dat$predicted, CI_low = LDMC_grow_dat$conf.low, CI_high = LDMC_grow_dat$conf.high, SPEI = LDMC_grow_dat$group))
+
+#make data for rug plot
+RugDat_grow <-  data.frame(rug = CO_grow_TLP$TLP_s, trait = "scaled(Turgor Loss Point) (MPa)")
+RugDat_grow <- rbind(RugDat_grow, data.frame(rug = CO_poly_LDMC$LDMC_s, trait = "scaled(Leaf Dry Matter Content) (g/g)"))
+
+#make a multipanel figure that shows only the graminoid survival probs for 3 traits
+UniqueSPEI_Grow <- ggplot(data = UniqueGrowDat) +
+  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
+  geom_line(aes(x=x, y = grow, col = SPEI))  + 
+  geom_rug(aes(x = rug), data = RugDat_grow) +
+  labs(title = "Unique SPEI Graminoid Growth") +
+  xlab(NULL) +
+  ylab(expression("Graminoid Growth: log" ~ bgroup("(",frac(size[year_t+1],size[year_t]),")"))) +
+  #scale_y_continuous(limits = c(0,1)) +
+  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
+  #geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
+  scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
+  facet_wrap(~trait, scales = "free_x", strip.position =  "bottom", ncol = 1) +
+  theme_classic()+
+  theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
+```
+
+##Figures showing response of graminoid survival and growth using species-level SPEI
+```{r}
+plot_grid(UniqueSPEI_Surv, UniqueSPEI_Grow, ncol = 2, align = "h", axis = "tb", rel_widths = c(.9,1))
+```
+Figures for uniform SPEI
+```{r}
+#model objects (unique SPEI): m1_grams, m2_grams, mGrow_TLP, mGrow_LDMC
+#model objects (uniform SPEI): m1_SPEI, m2_SPEI, mGrowTLP_SPEI, mGrowLDMC_SPEI 
+
+## Make figure of unique SPEI of TLP and LDMC survival
+#get 2.5 and 97.5 percentiles of the distribution
+meanSPEI<- mean(CO_poly_TLP$SPEI_s)
+sdSPEI <- sd(CO_poly_TLP$SPEI_s)
+#get 97.5 quantile of the distribution
+SPEI_97_5 <- qnorm(.975, meanSPEI, sdSPEI) 
+SPEI_2_5 <- qnorm(.025, meanSPEI, sdSPEI)
+
+spei_vals <- c(SPEI_2_5, SPEI_97_5)
+
+#for TLP
+TLP_vals <- seq(min(CO_poly_TLP$TLP_s, na.rm = TRUE), max(CO_poly_TLP$TLP_s, na.rm = TRUE), length.out = 20)
+TLP_surv_dat <- ggpredict(m1_SPEI, terms = c("TLP_s[TLP_vals]", "SPEI_uniform_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+
+#for LDMC
+LDMC_vals <- seq(min(CO_poly_LDMC$LDMC_s, na.rm = TRUE), max(CO_poly_LDMC$LDMC_s, na.rm = TRUE), length.out = 20)
+LDMC_surv_dat <- ggpredict(m2_SPEI, terms = c("LDMC_s[LDMC_vals]", "SPEI_uniform_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+
+
+#make a data.frame to contain all of the values for each trait
+UniformSurvDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_surv_dat$x, Surv = TLP_surv_dat$predicted, CI_low = TLP_surv_dat$conf.low, CI_high = TLP_surv_dat$conf.high, SPEI = TLP_surv_dat$group)
+
+UniformSurvDat <- rbind(UniformSurvDat, data.frame(trait = c("scaled(Leaf Dry Matter Content) (g/g)"), x = LDMC_surv_dat$x, Surv = LDMC_surv_dat$predicted, CI_low = LDMC_surv_dat$conf.low, CI_high = LDMC_surv_dat$conf.high, SPEI = LDMC_surv_dat$group))
+
+#make data for rug plot
+RugDat_surv <-  data.frame(rug = CO_poly_TLP$TLP_s, trait = "scaled(Turgor Loss Point) (MPa)")
+RugDat_surv <- rbind(RugDat_surv, data.frame(rug = CO_poly_LDMC$LDMC_s, trait = "scaled(Leaf Dry Matter Content) (g/g)"))
+
+#make a multipanel figure that shows only the graminoid survival probs for 3 traits
+UniformSPEI_Surv <- ggplot(data = UniformSurvDat) +
+  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
+  geom_line(aes(x=x, y = Surv, col = SPEI))  + 
+  geom_rug(aes(x = rug), data = RugDat_surv) +
+  labs(title = "Uniform SPEI Graminoid Survival") +
+  xlab(NULL) +
+  ylab("Probability of Graminoid Survival") +
+  scale_y_continuous(limits = c(0,1)) +
+  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
+  #geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
+  scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
+  facet_wrap(~trait, scales = "free_x", strip.position =  "bottom", ncol = 1) +
+  theme_classic()+
+  theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
+```
+
+```{r}
+## Make figure of unique SPEI of TLP and LDMC growth
+meanSPEI<- mean(CO_grow_TLP$SPEI_s)
+sdSPEI <- sd(CO_grow_TLP$SPEI_s)
+#get 97.5 quantile of the distribution
+SPEI_97_5 <- qnorm(.975, meanSPEI, sdSPEI) 
+SPEI_2_5 <- qnorm(.025, meanSPEI, sdSPEI)
+
+spei_vals <- c(SPEI_2_5, SPEI_97_5)
+
+#for TLP
+TLP_vals <- seq(min(CO_grow_TLP$TLP_s, na.rm = TRUE), max(CO_grow_TLP$TLP_s, na.rm = TRUE), length.out = 20)
+TLP_grow_dat <- ggpredict(mGrowTLP_SPEI, terms = c("TLP_s[TLP_vals]", "SPEI_uniform_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+
+#for LDMC
+LDMC_vals <- seq(min(CO_poly_LDMC$LDMC_s, na.rm = TRUE), max(CO_poly_LDMC$LDMC_s, na.rm = TRUE), length.out = 20)
+LDMC_grow_dat <- ggpredict(mGrowLDMC_SPEI, terms = c("LDMC_s[LDMC_vals]", "SPEI_uniform_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+
+
+#make a data.frame to contain all of the values for each trait
+UniformGrowDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_grow_dat$x, grow = TLP_grow_dat$predicted, CI_low = TLP_grow_dat$conf.low, CI_high = TLP_grow_dat$conf.high, SPEI = TLP_grow_dat$group)
+
+UniformGrowDat <- rbind(UniformGrowDat, data.frame(trait = c("scaled(Leaf Dry Matter Content) (g/g)"), x = LDMC_grow_dat$x, grow = LDMC_grow_dat$predicted, CI_low = LDMC_grow_dat$conf.low, CI_high = LDMC_grow_dat$conf.high, SPEI = LDMC_grow_dat$group))
+
+#make data for rug plot
+RugDat_grow <-  data.frame(rug = CO_grow_TLP$TLP_s, trait = "scaled(Turgor Loss Point) (MPa)")
+RugDat_grow <- rbind(RugDat_grow, data.frame(rug = CO_poly_LDMC$LDMC_s, trait = "scaled(Leaf Dry Matter Content) (g/g)"))
+
+#make a multipanel figure that shows only the graminoid survival probs for 3 traits
+UniformSPEI_Grow <- ggplot(data = UniformGrowDat) +
+  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
+  geom_line(aes(x=x, y = grow, col = SPEI))  + 
+  geom_rug(aes(x = rug), data = RugDat_grow) +
+  labs(title = "Uniform SPEI Graminoid Growth") +
+  xlab(NULL) +
+  ylab(expression("Graminoid Growth: log" ~ bgroup("(",frac(size[year_t+1],size[year_t]),")"))) +
+  #scale_y_continuous(limits = c(0,1)) +
+  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
+  #geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
+  scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
+  facet_wrap(~trait, scales = "free_x", strip.position =  "bottom", ncol = 1) +
+  theme_classic()+
+  theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
+```
+
+##Figures showing response of graminoid survival and growth using uniform SPEI
+```{r}
+plot_grid(UniformSPEI_Surv, UniformSPEI_Grow, ncol = 2, align = "h", axis = "tb", rel_widths = c(.9,1))
+```
+
+Figures for models using precip instead of SPEI
+```{r}
+## Make figure of unique SPEI of TLP and LDMC survival
+#get 2.5 and 97.5 percentiles of the distribution
+meanSPEI<- mean(CO_poly_TLP$SPEI_s)
+sdSPEI <- sd(CO_poly_TLP$SPEI_s)
+#get 97.5 quantile of the distribution
+SPEI_97_5 <- qnorm(.975, meanSPEI, sdSPEI) 
+SPEI_2_5 <- qnorm(.025, meanSPEI, sdSPEI)
+
+spei_vals <- c(SPEI_2_5, SPEI_97_5)
+
+#for TLP
+TLP_vals <- seq(min(CO_poly_TLP$TLP_s, na.rm = TRUE), max(CO_poly_TLP$TLP_s, na.rm = TRUE), length.out = 20)
+TLP_surv_dat <- ggpredict(m1_precip, terms = c("TLP_s[TLP_vals]", "precip_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+
+#for LDMC
+LDMC_vals <- seq(min(CO_poly_LDMC$LDMC_s, na.rm = TRUE), max(CO_poly_LDMC$LDMC_s, na.rm = TRUE), length.out = 20)
+LDMC_surv_dat <- ggpredict(m2_precip, terms = c("LDMC_s[LDMC_vals]", "precip_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+
+
+#make a data.frame to contain all of the values for each trait
+PrecipSurvDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_surv_dat$x, Surv = TLP_surv_dat$predicted, CI_low = TLP_surv_dat$conf.low, CI_high = TLP_surv_dat$conf.high, SPEI = TLP_surv_dat$group)
+
+PrecipSurvDat <- rbind(PrecipSurvDat, data.frame(trait = c("scaled(Leaf Dry Matter Content) (g/g)"), x = LDMC_surv_dat$x, Surv = LDMC_surv_dat$predicted, CI_low = LDMC_surv_dat$conf.low, CI_high = LDMC_surv_dat$conf.high, SPEI = LDMC_surv_dat$group))
+
+#make data for rug plot
+RugDat_surv <-  data.frame(rug = CO_poly_TLP$TLP_s, trait = "scaled(Turgor Loss Point) (MPa)")
+RugDat_surv <- rbind(RugDat_surv, data.frame(rug = CO_poly_LDMC$LDMC_s, trait = "scaled(Leaf Dry Matter Content) (g/g)"))
+
+#make a multipanel figure that shows only the graminoid survival probs for 3 traits
+Precip_Surv <- ggplot(data = PrecipSurvDat) +
+  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
+  geom_line(aes(x=x, y = Surv, col = SPEI))  + 
+  geom_rug(aes(x = rug), data = RugDat_surv) +
+  labs(title = "Precip Graminoid Survival") +
+  xlab(NULL) +
+  ylab("Probability of Graminoid Survival") +
+  scale_y_continuous(limits = c(0,1)) +
+  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
+  #geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
+  scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
+  facet_wrap(~trait, scales = "free_x", strip.position =  "bottom", ncol = 1) +
+  theme_classic()+
+  theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
+```
+
+```{r}
+## Make figure of unique SPEI of TLP and LDMC growth
+meanSPEI<- mean(CO_grow_TLP$SPEI_s)
+sdSPEI <- sd(CO_grow_TLP$SPEI_s)
+#get 97.5 quantile of the distribution
+SPEI_97_5 <- qnorm(.975, meanSPEI, sdSPEI) 
+SPEI_2_5 <- qnorm(.025, meanSPEI, sdSPEI)
+
+spei_vals <- c(SPEI_2_5, SPEI_97_5)
+
+#for TLP
+TLP_vals <- seq(min(CO_grow_TLP$TLP_s, na.rm = TRUE), max(CO_grow_TLP$TLP_s, na.rm = TRUE), length.out = 20)
+TLP_grow_dat <- ggpredict(mGrowTLP_precip, terms = c("TLP_s[TLP_vals]", "precip_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+
+#for LDMC
+LDMC_vals <- seq(min(CO_poly_LDMC$LDMC_s, na.rm = TRUE), max(CO_poly_LDMC$LDMC_s, na.rm = TRUE), length.out = 20)
+LDMC_grow_dat <- ggpredict(mGrowLDMC_precip, terms = c("LDMC_s[LDMC_vals]", "precip_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+
+
+#make a data.frame to contain all of the values for each trait
+PrecipGrowDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_grow_dat$x, grow = TLP_grow_dat$predicted, CI_low = TLP_grow_dat$conf.low, CI_high = TLP_grow_dat$conf.high, SPEI = TLP_grow_dat$group)
+
+PrecipGrowDat <- rbind(PrecipGrowDat, data.frame(trait = c("scaled(Leaf Dry Matter Content) (g/g)"), x = LDMC_grow_dat$x, grow = LDMC_grow_dat$predicted, CI_low = LDMC_grow_dat$conf.low, CI_high = LDMC_grow_dat$conf.high, SPEI = LDMC_grow_dat$group))
+
+#make data for rug plot
+RugDat_grow <-  data.frame(rug = CO_grow_TLP$TLP_s, trait = "scaled(Turgor Loss Point) (MPa)")
+RugDat_grow <- rbind(RugDat_grow, data.frame(rug = CO_poly_LDMC$LDMC_s, trait = "scaled(Leaf Dry Matter Content) (g/g)"))
+
+#make a multipanel figure that shows only the graminoid survival probs for 3 traits
+Precip_Grow <- ggplot(data = PrecipGrowDat) +
+  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
+  geom_line(aes(x=x, y = grow, col = SPEI))  + 
+  geom_rug(aes(x = rug), data = RugDat_grow) +
+  labs(title = "Precip Graminoid Growth") +
+  xlab(NULL) +
+  ylab(expression("Graminoid Growth: log" ~ bgroup("(",frac(size[year_t+1],size[year_t]),")"))) +
+  #scale_y_continuous(limits = c(0,1)) +
+  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
+  #geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
+  scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
+  facet_wrap(~trait, scales = "free_x", strip.position =  "bottom", ncol = 1) +
+  theme_classic()+
+  theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
+```
+
+##Figures showing response of graminoid survival and growth using uniform SPEI
+```{r}
+plot_grid(Precip_Surv, Precip_Grow, ncol = 2, align = "h", axis = "tb", rel_widths = c(.9,1))
+```
