@@ -176,7 +176,7 @@ all_CO_traits_DEMO <- all_CO_traits[all_CO_traits$species %in% demoSP,]
 
 
 #write all trait data to file 
-write.csv(all_CO_traits_DEMO, file = "/Users/Alice/Dropbox/Grad School/Research/Trait Proj
+write.csv(all_CO_traits_DEMO, file = "/Users/Alice/Dropbox/Grad School/Research/Trait Proj/Data/CO Analysis Data Files")
 
 ####Clean-up the CO_quads dataset###
 ## make a new variable "grazing" in the CO_quads dataset that combines the grazing history into one vaiable
@@ -195,7 +195,7 @@ CO_quads <- mutate(CO_quads, grazing=grazing)
 ## Organize climate data set and create new growing season variables ##
 
 #change format of date column
-CO_climate$Date <- as.POSIXct(CO_climate$Date, format = "%m/%d/%Y")
+CO_climate$Date <- as.POSIXct(CO_climate$Date, format = "%m/%d/%y")
 #fix years 
 lubridate::year(CO_climate$Date)<- lubridate::year(CO_climate$Date)+1900
 lubridate::year(CO_climate$Date)[37:162] <- lubridate::year(CO_climate$Date)[37:162]+100
