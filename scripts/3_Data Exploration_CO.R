@@ -818,6 +818,7 @@ CO_poly_all$precip_s <- as.numeric(scale(CO_poly_all$Ann.Sum.Precip))
 CO_poly_all$area_s <- as.numeric((log(CO_poly_all$area_t)))
 CO_poly_all$area_tplus1_s <- as.numeric(log(CO_poly_all$area_tplus1))
 
+
 ## scale variables in point dataset
 CO_point_all$TLP_s <- as.numeric(scale(CO_point_all$TLP))
 CO_point_all$LDMC_s <- as.numeric(scale(CO_point_all$LDMC_g_g))
