@@ -187,13 +187,14 @@ Models of plant survival for forbs indicate that LDMC ($\beta_6=$-0.338,  \texti
  \textbf{SPEI:trait} & 0.082$^{***}$ & $-$0.139$^{***}$ & $-$0.071$^{***}$ & $-$ 0.114$^{***}$ & $-$0.063$^{**}$ & $-$0.010 & $-$0.076$^{***}$ \\ 
  \rowcolor[gray]{.95}SPEI & 0.354$^{***}$ & 0.238$^{***}$ & 0.369$^{***}$ & 0.246$^{***}$ & 0.498$^{***}$ & 0.495$^{***}$ & 0.167$^{**}$ \\ 
  \textbf{trait} & $-$0.020 & 0.223$^{**}$ & $-$0.087 & $-$0.099 & 0.344$^{***}$ & 0.149 & $-$0.010 \\ 
- \rowcolor[gray]{.95}Intercept & $-$1.388$^{***}$ & $-$1.203$^{***}$ & $-$1.358$^{***}$ & $-$1.256$^{***}$ & $-$1.006$^{***}$ & $-$0.836$^{**}$ & $-$1.285$^{***}$ \\   \hline \\[-1.8ex] 
+ \rowcolor[gray]{.95}Intercept & $-$1.388$^{***}$ & $-$1.203$^{***}$ & $-$1.358$^{***}$ & $-$1.256$^{***}$ & $-$1.006$^{***}$ & $-$0.836$^{**}$ & $-$1.285$^{***}$ \\   
+ \hline \\[-1.8ex] 
   $\tau_{00}$ & 0.12$_{quad}$ & 0.12$_{quad}$ & 0.12$_{quad}$ & 0.12$_{quad}$ & 0.11$_{quad}$ & 0.11$_{quad}$ & 0.12$_{quad}$ \\
   & 0.16$_{year}$ & 0.13$_{year}$ & 0.16$_{year}$ & 0.13$_{year}$ & 0.38$_{year}$ & 0.41$_{year}$ & 0.14$_{year}$ \\
   & 0.32$_{spp.}$ & 0.50$_{spp.}$ & 0.35$_{spp.}$ & 0.14$_{spp.}$ & 0.05$_{spp.}$ & 0.38$_{spp.}$ & 0.19$_{spp.}$\\
   \rowcolor[gray]{.95}$\tau_{11}$ & 1.95$_{size_t*spp}$ & 1.54$_{size_t*spp}$ & 1.98$_{size_t*spp}$ &
   0.79$_{size_t*spp}$ & & & 0.88$_{size_t*spp}$ \\
-  $\rho_{01}$ & $-$0.78$_{spp.}$ & $-$0.93$_{spp.}$ & $-$0.82$_{spp.}$ & $-$ 0.48$_{spp.}$ & & & $-$ 0.67$_{spp.}$ \\
+  $\rho_{01}$ & $-$0.78$_{spp.}$ & $-$0.93$_{spp.}$ & $-$0.82$_{spp.}$ & $-$0.48$_{spp.}$ & & & $-$0.67$_{spp.}$ \\
 \hline \\[-1.8ex] 
 \rowcolor[gray]{.95} Residual Variance & 3.29 & 3.29 & 3.29 & 3.29 & 3.29 & 3.29 & 3.29\\
 n & 18,827 & 18,827 & 18,827 & 18,474 & 16,618 & 16,618 & 17,190\\ 
@@ -210,44 +211,85 @@ AIC   & 14,832.090 & 14,807.940 & 14,835.920 & 14,804.750 & 13,315.520 & 13,326.
 \end{tabular}} 
 \end{table} 
 
-
 \begin{table}[h] \centering 
-  \caption{Graminoid Growth Model Results} 
-  \label{growth_ModResults} 
-  \resizebox{\textwidth}{!}{%
+  \caption{Graminoid Growth Model Coefficients} 
+  \label{ModResults} 
+  \resizebox{\textwidth}{!}{
 \begin{tabular}{lccccccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
  & \multicolumn{7}{c}{\textit{Trait Model}} \\ 
-\cline{2-8} 
-\\
+\cline{2-8} \\ 
 \\[-1.8ex] & TLP & LDMC & SLA & RDMC & RTD & SRL & RDiam\\ 
 \hline \\[-1.8ex] 
-  \rowcolor[gray]{.95} neighbors\_10 & $-$0.216$^{***}$ & $-$0.213$^{***}$ & $-$0.218$^{***}$ & $-$0.217$^{***}$ & $-$0.215$^{***}$ & $-$0.215$^{***}$ & $-$0.218$^{***}$ \\
- SPEI & 0.103$^{***}$ & 0.144$^{***}$ & 0.113$^{***}$ & 0.131$^{***}$ & 0.082$^{*}$ & 0.087$^{*}$ & 0.035  \\ 
- \rowcolor[gray]{.95}\textbf{trait} & $-$0.022 & $-$0.012 & 0.041$^{*}$  &  0.017  & 0.031 & 0.040$^{*}$ & $-$0.014\\ 
-  nearEdge & $-$0.115$^{***}$ & $-$0.114$^{***}$ & $-$0.117$^{***}$ & $-$0.116$^{***}$ & $-$0.118$^{***}$ & $-$0.119$^{***}$ & $-$0.119$^{***}$ \\ 
- \rowcolor[gray]{.95}\textbf{SPEI:trait} & $-$0.065$^{***}$ & 0.083$^{***}$ &  0.033$^{**}$ &  0.002  & $-$0.020 &  0.017  &  0.050$^{***}$ \\ 
- Intercept & 0.189$^{***}$ & 0.185$^{**}$ & 0.172$^{***}$ & 0.177$^{**}$ & 0.201$^{**}$ & 0.205$^{**}$ & 0.203$^{**}$  \\ 
-\hline\\[-1.8ex]
-  \rowcolor[gray]{.95}$\tau_{00}$ & 0.02 $_{quad}$ & 0.02  $_{quad}$ & 0.02 $_{quad}$ & 0.02  $_{quad}$ & 0.02 $_{quad}$ & 0.02 $_{quad}$ & 0.02 $_{quad}$ \\
-  \rowcolor[gray]{.95}&0.03$_{year}$ & 0.02$_{year}$ & 0.03$_{year}$ &0.03$_{year}$ & 0.04$_{year}$ & 0.04$_{year}$ & 0.04$_{year}$ \\
-  \rowcolor[gray]{.95}& 0.01 $_{spp.}$ & 0.01 $_{spp.}$ & 0.00 $_{spp.}$ &0.01$_{spp.}$ & 0.01$_{spp.}$ &0.01$_{spp.}$ & 0.01$_{spp.}$\\
+ \rowcolor[gray]{.95}size$_{t}$ & 0.512$^{***}$ & 0.513$^{***}$ & 0.509$^{***}$ & 0.510$^{***}$ & 0.561$^{***}$ & 0.562$^{***}$ & 0.489$^{***}$ \\
+ neighbors\_10 & $-$0.122$^{***}$ & $-$0.122$^{***}$ & $-$0.124$^{***}$ & $-$0.124$^{***}$ & $-$0.127$^{***}$ & $-$0.127$^{***}$ & $-$0.127$^{***}$ \\ 
+ \rowcolor[gray]{.95}nearEdge & $-$0.003 & $-$0.003 & $-$0.005 & $-$0.005 & $-$0.027 & $-$0.027 & $-$0.023  \\ 
+ \textbf{SPEI:trait} & $-$0.016 & 0.046$^{**}$ & $-$0.008 & $-$0.004 & $-$0.007  & 0.012 & 0.008 \\ 
+\rowcolor[gray]{.95} SPEI\_s & 0.111$^{***}$ & 0.124$^{***}$ & 0.123$^{***}$ & 0.117$^{***}$ & 0.071 & 0.073$^{*}$ & 0.048  \\ 
+ \textbf{trait} & $-$0.162$^{**}$ & 0.115 & 0.054 & 0.044 & $-$0.197$^{**}$ & $-$0.092 & 0.020  \\ 
+ \rowcolor[gray]{.95} Intercept & 1.338$^{***}$ & 1.403$^{***}$ & 1.247$^{***}$ & 1.300$^{***}$ & 1.071$^{***}$ & 0.973$^{**}$ & 1.301$^{***}$ \\ 
  \hline \\[-1.8ex] 
- Residual Variance  & 1.58 & 1.58 &	1.58 & 1.58 & 1.55 & 1.55 &	1.56 \\
-\rowcolor[gray]{.95} n & 9,497 & 9,497 & 9,497 & 9,497 & 8,802 & 8,802 & 9,018  \\  
- Marg./Cond. $R^2$ & 0.057/0.087 &	0.064/0.094&	0.059/0.087	&0.059/0.090&	0.054/0.094	& 0.054/0.090 &	0.049/0.089 \\
-\rowcolor[gray]{.95} AIC & 31,400.690 & 31,401.890 & 31,414.370 & 31,421.270 & 28,956.930 & 28,956.210 & 29,747.430  \\  
+  $\tau_{00}$ & 0.02$_{quad}$ & 0.02$_{quad}$ & 0.02$_{quad}$ & 0.02$_{quad}$ & 0.02$_{quad}$ & 0.02$_{quad}$ & 0.02$_{quad}$ \\
+  & 0.03$_{year}$ & 0.02$_{year}$ & 0.02$_{year}$ & 0.02$_{year}$ & 0.03$_{year}$ & 0.03$_{year}$ & 0.04$_{year}$ \\
+  & 0.71$_{spp.}$ & 0.57$_{spp.}$ & 0.54$_{spp.}$ & 0.53$_{spp.}$ & 0.34$_{spp.}$ & 0.49$_{spp.}$ & 0.76$_{spp.}$\\
+  \rowcolor[gray]{.95}$\tau_{11}$ & 0.06 $_{size_t*spp}$ & 0.06$_{size_t*spp}$ & 0.06$_{size_t*spp}$ &
+  0.06$_{size_t*spp}$ & 0.08$_{size_t*spp}$ & 0.07$_{size_t*spp}$ & 0.08$_{size_t*spp}$ \\
+  $\rho_{01}$ & $-$0.89$_{spp.}$ & $-$0.84$_{spp.}$ & $-$0.80$_{spp.}$ & $-$ 0.77$_{spp.}$ & $-$0.74$_{spp.}$ & $-$0.46$_{spp.}$ & $-$0.75$_{spp.}$ \\
+\hline \\[-1.8ex] 
+\rowcolor[gray]{.95} Residual Variance & 1.44 & 1.44 & 1.44 & 1.44 & 1.45 & 1.45 & 1.45 \\
+n & 9,497 & 9,497 & 9,497 & 9,497 & 8,802 & 8,802 & 9,018 \\ 
+\rowcolor[gray]{.95} Marg./Cond. R$^2$ & 0.23/0.38 & 0.23/0.39	& 0.20/0.40 & 0.20/0.41	& 0.24/0.49 & 0.19/0.53 & 0.17/0.45\\
+AIC & 30,593.670 & 30,589.140 & 30,596.520 & 30,596.140 & 28,432.570 & 28,435.290 & 29,111.930 \\ 
 \hline 
-$\Delta$ AIC$^\dagger$  & 5.18 & 3.98 & -8.49 & -15.40 & -13.28 & -12.57 & -5.56 \\
+\rowcolor[gray]{.95}$\Delta$ AIC$^\dagger$  & -10.32 & -5.79 & -13.17 & -12.79 & -9.48 & -12.19  & -13.17 \\
 \hline 
 \hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{7}{r}{$^{*}$ \textit{P}$<$0.1; $^{**}$ \textit{P}$<$0.05; $^{***}$ \textit{P}$<$0.01} \\ 
-\multicolumn{8}{r}{$\tau_{00}$=Rand. Intercept Variance}\\ 
+\textit{Note:}  & \multicolumn{7}{r}{$^{*}$ \textit{P} $<$0.1; $^{**}$ \textit{P} $<$0.05; $^{***}$ \textit{P} $<$0.01}\\
+\multicolumn{8}{r}{$\tau_{00}$=Rand. Intercept Variance; $\tau_{01}$=Rand. Slope Variance; $\rho_{01}$=Correlation of Rand. Slope \& Intercept}\\ 
 \multicolumn{8}{r}{$^\dagger$ = compares the AIC of a model with trait and trait:envi interaction as fixed effects to a model without}\\
 \multicolumn{8}{r}{trait and trait:envi effects. This serves as a relative metric of the predictive power of a given trait.}
-\end{tabular}}
+\end{tabular}} 
 \end{table} 
+
+% old version of growth model results
+%\begin{table}[h] \centering 
+%  \caption{Graminoid Growth Model Results} 
+%  \label{growth_ModResults} 
+%  \resizebox{\textwidth}{!}{%
+%\begin{tabular}{lccccccc} 
+%\\[-1.8ex]\hline 
+%\hline \\[-1.8ex] 
+% & \multicolumn{7}{c}{\textit{Trait Model}} \\ 
+%\cline{2-8} 
+%\\
+%\\[-1.8ex] & TLP & LDMC & SLA & RDMC & RTD & SRL & RDiam\\ 
+%\hline \\[-1.8ex] 
+%  \rowcolor[gray]{.95} neighbors\_10 & $-$0.216$^{***}$ & $-$0.213$^{***}$ & $-$0.218$^{***}$ & $-$0.217$^{***}$ & $-$0.215$^{***}$ & $-$0.215$^{***}$ & $-$0.218$^{***}$ \\
+% SPEI & 0.103$^{***}$ & 0.144$^{***}$ & 0.113$^{***}$ & 0.131$^{***}$ & 0.082$^{*}$ & 0.087$^{*}$ & 0.035  \\ 
+% \rowcolor[gray]{.95}\textbf{trait} & $-$0.022 & $-$0.012 & 0.041$^{*}$  &  0.017  & 0.031 & 0.040$^{*}$ & $-$0.014\\ 
+%  nearEdge & $-$0.115$^{***}$ & $-$0.114$^{***}$ & $-$0.117$^{***}$ & $-$0.116$^{***}$ & $-$0.118$^{***}$ & $-$0.119$^{***}$ & $-$0.119$^{***}$ \\ 
+ %\rowcolor[gray]{.95}\textbf{SPEI:trait} & $-$0.065$^{***}$ & 0.083$^{***}$ &  0.033$^{**}$ &  0.002  & $-$0.020 &  0.017  &  0.050$^{***}$ \\ 
+% Intercept & 0.189$^{***}$ & 0.185$^{**}$ & 0.172$^{***}$ & 0.177$^{**}$ & 0.201$^{**}$ & 0.205$^{**}$ & 0.203$^{**}$  \\ 
+%\hline\\[-1.8ex]
+%  \rowcolor[gray]{.95}$\tau_{00}$ & 0.02 $_{quad}$ & 0.02  $_{quad}$ & 0.02 $_{quad}$ & 0.02  $_{quad}$ & 0.02 $_{quad}$ & 0.02 $_{quad}$ & 0.02 $_{quad}$ \\
+%  \rowcolor[gray]{.95}&0.03$_{year}$ & 0.02$_{year}$ & 0.03$_{year}$ &0.03$_{year}$ & 0.04$_{year}$ & 0.04$_{year}$ & 0.04$_{year}$ \\
+%  \rowcolor[gray]{.95}& 0.01 $_{spp.}$ & 0.01 $_{spp.}$ & 0.00 $_{spp.}$ &0.01$_{spp.}$ & 0.01$_{spp.}$ &0.01$_{spp.}$ & 0.01$_{spp.}$\\
+% \hline \\[-1.8ex] 
+% Residual Variance  & 1.58 & 1.58 &	1.58 & 1.58 & 1.55 & 1.55 &	1.56 \\
+%\rowcolor[gray]{.95} n & 9,497 & 9,497 & 9,497 & 9,497 & 8,802 & 8,802 & 9,018  \\  
+% Marg./Cond. $R^2$ & 0.057/0.087 &	0.064/0.094&	0.059/0.087	&0.059/0.090&	0.054/0.094	& 0.054/0.090 &	0.049/0.089 \\
+%\rowcolor[gray]{.95} AIC & 31,400.690 & 31,401.890 & 31,414.370 & 31,421.270 & 28,956.930 & 28,956.210 & 29,747.430  \\  
+%\hline 
+%$\Delta$ AIC$^\dagger$  & 5.18 & 3.98 & -8.49 & -15.40 & -13.28 & -12.57 & -5.56 \\
+%\hline 
+%\hline \\[-1.8ex] 
+%\textit{Note:}  & \multicolumn{7}{r}{$^{*}$ \textit{P}$<$0.1; $^{**}$ \textit{P}$<$0.05; $^{***}$ \textit{P}$<$0.01} \\ 
+%\multicolumn{8}{r}{$\tau_{00}$=Rand. Intercept Variance}\\ 
+%\multicolumn{8}{r}{$^\dagger$ = compares the AIC of a model with trait and trait:envi interaction as fixed effects to a model without}\\
+%\multicolumn{8}{r}{trait and trait:envi effects. This serves as a relative metric of the predictive power of a given trait.}
+%\end{tabular}}
+% \end{table} 
 
 
 \begin{table}[h] \centering 
