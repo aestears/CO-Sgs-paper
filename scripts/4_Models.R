@@ -575,7 +575,8 @@ diff(AIC(m16, m16_NO)$AIC) #RDiam
 
 
 #### models w/ growth as response variable #### 
-#(only for graminoids, no size metric for forbs)
+# (only for graminoids, no size metric for forbs)
+# using size in year t+1 as response variable, w/ a random slope for size in year t
 
 ## Graminoid Models ##
 #subset the datasets to only include observations that have growth data (for those plants that survived)
@@ -591,6 +592,7 @@ CO_grow_TLP <-
   CO_poly_growth %>% 
   filter(is.na(TLP_s)==FALSE)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 mGrowTLP<- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
 
@@ -660,37 +662,45 @@ mGrow_GROWTH <- lme4::lmer(logDiffArea ~ size_t_log +neighbors_10_s + SPEI_s * T
 #compare the results of the above model to the model using size_t+1 as the response variable
 =======
 mGrowTLP<- lme4::lmer(logDiffArea ~ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
+=======
+mGrowTLP<- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
+>>>>>>> 1ea0fe1... udpate growth models to have size in t+1 as response variable
 
+#LDMC model
 CO_grow_LDMC<-
   CO_poly_growth %>% 
   filter(is.na(LDMC_s)==FALSE)
-mGrowLDMC <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_LDMC , control=lmerControl(optimizer="bobyqa"))
+mGrowLDMC <- lme4::lmer(area_tplus1_s ~  area_s + neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_LDMC , control=lmerControl(optimizer="bobyqa"))
 
 CO_grow_SLA <-
   CO_poly_growth %>% 
   filter(is.na(SLA_s)==FALSE)
-mGrowSLA <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_SLA, control=lmerControl(optimizer="bobyqa"))
+mGrowSLA <- lme4::lmer(area_tplus1_s ~  area_s + neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_SLA, control=lmerControl(optimizer="bobyqa"))
 
 CO_grow_RDMC <-
   CO_poly_growth %>% 
   filter(is.na(RDMC_s)==FALSE)
-mGrowRDMC <- lme4::lmer(logDiffArea ~ neighbors_10_s + SPEI_s * RDMC_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RDMC , control=lmerControl(optimizer="bobyqa"))
+mGrowRDMC <- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s * RDMC_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_RDMC , control=lmerControl(optimizer="bobyqa"))
 
 CO_grow_SRL <-
   CO_poly_growth %>% 
   filter(is.na(SRL_s)==FALSE)
-mGrowSRL <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_SRL , control=lmerControl(optimizer="bobyqa"))
+mGrowSRL <- lme4::lmer(area_tplus1_s ~  area_s + neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_SRL , control=lmerControl(optimizer="bobyqa"))
 
 CO_grow_RTD<-
   CO_poly_growth %>% 
   filter(is.na(RTD_s)==FALSE)
-mGrowRTD  <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RTD , control=lmerControl(optimizer="bobyqa"))
+mGrowRTD  <- lme4::lmer(area_tplus1_s ~  area_s + neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_RTD , control=lmerControl(optimizer="bobyqa"))
 
 CO_grow_RDiam<-
   CO_poly_growth %>% 
   filter(is.na(RDiam_s)==FALSE)
+<<<<<<< HEAD
 mGrowRDiam  <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RDiam , control=lmerControl(optimizer="bobyqa"))
 >>>>>>> a4403b8... update modeling script
+=======
+mGrowRDiam  <- lme4::lmer(area_tplus1_s ~  area_s + neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_RDiam , control=lmerControl(optimizer="bobyqa"))
+>>>>>>> 1ea0fe1... udpate growth models to have size in t+1 as response variable
 
 
 #### testing different growth response variables ####
@@ -698,7 +708,7 @@ mGrowRDiam  <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s * RDiam_s + nea
 ## log-transformed area in year t+1: area_tplus1_s
 
 #still using logDiffArea as response, but including a random slope for area_t
-mGrow_size <- lme4::lmer(logDiffArea ~ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
+mGrow_size <- lme4::lmer(logDiffArea ~ area_s +neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
 
 ## using area_t+1 as the response variable
 mSize_TLP <- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
@@ -719,6 +729,7 @@ diff(AIC(mSize_LDMC, mSize_LDMC_NO)$AIC) #LDMC
 #fit models
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 mGrowTLP_NO <- lme4::lmer(size_tplus1_log ~  size_t_log + neighbors_10_s + SPEI_s  + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_TLP, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
 
 mGrowLDMC_NO <- lme4::lmer(size_tplus1_log ~  size_t_log + neighbors_10_s + SPEI_s  + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_LDMC, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
@@ -737,44 +748,31 @@ mGrowRDiam_NO  <- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + SPE
 
 =======
 mGrowTLP_NO <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s  + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_TLP, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
+=======
+mGrowTLP_NO <- lme4::lmer(area_tplus1_s ~  area_s + neighbors_10_s + SPEI_s  + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_TLP, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
+>>>>>>> 1ea0fe1... udpate growth models to have size in t+1 as response variable
 
-mGrowLDMC_NO <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s  + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_LDMC, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
+mGrowLDMC_NO <- lme4::lmer(area_tplus1_s ~  area_s + neighbors_10_s + SPEI_s  + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_LDMC, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
 
-mGrowSLA_NO <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_SLA, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
+mGrowSLA_NO <- lme4::lmer(area_tplus1_s ~  area_s + neighbors_10_s + SPEI_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_SLA, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
 
-mGrowRDMC_NO <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s  + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RDMC, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
+mGrowRDMC_NO <- lme4::lmer(area_tplus1_s ~  area_s + neighbors_10_s + SPEI_s  + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_RDMC, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
 
-mGrowSRL_NO <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_SRL , control=lmerControl(optimizer="bobyqa"))
+mGrowSRL_NO <- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_SRL , control=lmerControl(optimizer="bobyqa"))
 
-mGrowRTD_NO  <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RTD , control=lmerControl(optimizer="bobyqa"))
+mGrowRTD_NO  <- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_RTD , control=lmerControl(optimizer="bobyqa"))
 
-mGrowRDiam_NO  <- lme4::lmer(logDiffArea ~  neighbors_10_s + SPEI_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_RDiam , control=lmerControl(optimizer="bobyqa"))
+mGrowRDiam_NO  <- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t), data = CO_grow_RDiam , control=lmerControl(optimizer="bobyqa"))
 
-#compare AIC of models with and without traits
-diff(AIC(mGrowTLP, mGrowTLP_NO)$AIC) #TLP
-diff(AIC(mGrowLDMC, mGrowLDMC_NO)$AIC) #LDMC
-diff(AIC(mGrowSLA, mGrowSLA_NO)$AIC) #SLA
-diff(AIC(mGrowRDMC, mGrowRDMC_NO)$AIC) #RDMC
-diff(AIC(mGrowRTD, mGrowRTD_NO)$AIC) #RTD
-diff(AIC(mGrowSRL, mGrowSRL_NO)$AIC) #SRL
-diff(AIC(mGrowRDiam, mGrowRDiam_NO)$AIC) #RDiam
+#compare AIC of models with and without traits-10
 
-#calculate R2 values
-piecewiseSEM::rsquared(mGrowTLP)
-piecewiseSEM::rsquared(mGrowTLP_ratio)
-piecewiseSEM::rsquared(mGrowTLP_NO)
-piecewiseSEM::rsquared(mGrowLDMC)
-piecewiseSEM::rsquared(mGrowLDMC_NO)
-piecewiseSEM::rsquared(mGrowSLA)
-piecewiseSEM::rsquared(mGrowSLA_NO)
-# 
 #### table of model results ####
-#for graminoid models
+#for graminoidsurvival  models
 require(stargazer)
 stargazer(m1_grams, m2_grams, m5, m9, m10, m13, m14)
 sjPlot::tab_model(m1_grams, m2_grams, m5, m9, m10, m13, m14, show.se = TRUE)
 
-#for forb models
+#for forb survival models
 stargazer(m3, m4, m6, m11, m12, m15, m16)
 sjPlot::tab_model(m3, m4, m6, m11, m12, m15, m16, show.se = TRUE)
 diff(AIC(m3, m3_NO)$AIC) #TLP
