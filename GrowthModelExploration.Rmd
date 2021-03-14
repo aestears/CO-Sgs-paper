@@ -493,7 +493,10 @@ mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Specific Leaf Area) (c
 mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Specific Leaf Area) (c"*m^2*"/g)"),x = .873, y = 5, size = 9))
 mainObs
 ```
-```{r, echo = FALSE, }
+
+
+
+```{r, echo = FALSE, fig.width=9, fig.height=10}
 
 #comparing size in year t+1 as repsonse scaled together, and scaled by species
 survCompare <- cowplot::plot_grid( GrowthExtraFig, GrowthExtraFig_spp, ncol = 2, align = "h", rel_widths = c(.9,1, .9)) %>% 
