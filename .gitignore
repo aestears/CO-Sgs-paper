@@ -9,6 +9,7 @@
 /scripts/script2_output.RData
 /scripts/script3_output.RData
 <<<<<<< HEAD
+<<<<<<< HEAD
 /scripts/script4_output.RData
 =======
 >>>>>>> 84a7e91... update the .gitignore file to prevent the saved .RData file from output of script 0 isn't saved in gitHub
@@ -18,3 +19,6 @@
 >>>>>>> aa56e37... update SPEI script
 =======
 >>>>>>> 6050f84... finishing update of script 3
+=======
+/scripts/script4_output.RData
+>>>>>>> e46be99... Making / updating R markdown for Dana, Peter, and Daniel
