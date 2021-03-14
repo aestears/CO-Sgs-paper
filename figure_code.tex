@@ -113,7 +113,6 @@ Load packages
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{require}\NormalTok{(cowplot)}
 \KeywordTok{require}\NormalTok{(effects)}
 \KeywordTok{require}\NormalTok{(lattice)}
 \KeywordTok{require}\NormalTok{(latticeExtra)}
@@ -123,6 +122,7 @@ Load packages
 \KeywordTok{require}\NormalTok{(lme4)}
 \KeywordTok{require}\NormalTok{(ggeffects)}
 \KeywordTok{require}\NormalTok{(tidyverse)}
+\KeywordTok{require}\NormalTok{(cowplot)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -131,22 +131,25 @@ Load model output data
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#\#\#\# set wd \#\#\#\#}
-\KeywordTok{setwd}\NormalTok{(}\StringTok{"/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO\_sgs Analysis"}\NormalTok{)}
+\CommentTok{\#set the path to the name of the file containing the \textquotesingle{}scripts\textquotesingle{} folder}
+\NormalTok{path \textless{}{-}}\StringTok{"/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO\_sgs Analysis/CO{-}Sgs{-}paper"}
+\KeywordTok{setwd}\NormalTok{(path)}
 \CommentTok{\#get model result data into the environment}
-\KeywordTok{load}\NormalTok{(}\StringTok{"./SCRIPTS/models\_11232020.RData"}\NormalTok{) }\CommentTok{\#change the file name to the most current version of model runs}
+\KeywordTok{load}\NormalTok{(}\StringTok{"./scripts/script4\_output.RData"}\NormalTok{) }\CommentTok{\#change the file name to the most current version of model runs}
 \end{Highlighting}
 \end{Shaded}
 
 Make a figure of model results for LDMC, RDMC, and TLP for forb and gram
-survival
+survival\\
+Make figure for graminoids
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#make figure for graminoid survival}
 
 \CommentTok{\#get 2.5 and 97.5 percentiles of the distribution}
-\NormalTok{meanSPEI\_G \textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{SPEI\_s)}
-\NormalTok{sdSPEI\_G \textless{}{-}}\StringTok{ }\KeywordTok{sd}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{SPEI\_s)}
+\NormalTok{meanSPEI\_G \textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{SPEI\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{sdSPEI\_G \textless{}{-}}\StringTok{ }\KeywordTok{sd}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{SPEI\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
 \CommentTok{\#get 97.5 quantile of the distribution}
 \NormalTok{SPEI\_}\DecValTok{97}\NormalTok{\_}\DecValTok{5}\NormalTok{\_G \textless{}{-}}\StringTok{ }\KeywordTok{qnorm}\NormalTok{(.}\DecValTok{975}\NormalTok{, meanSPEI\_G, sdSPEI\_G) }
 \NormalTok{SPEI\_}\DecValTok{2}\NormalTok{\_}\DecValTok{5}\NormalTok{\_G \textless{}{-}}\StringTok{ }\KeywordTok{qnorm}\NormalTok{(.}\DecValTok{025}\NormalTok{, meanSPEI\_G, sdSPEI\_G)}
@@ -156,7 +159,6 @@ survival
 \CommentTok{\#for TLP\_s}
 \NormalTok{TLP\_vals \textless{}{-}}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\KeywordTok{min}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{TLP\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\KeywordTok{max}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{TLP\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\DataTypeTok{length.out =} \DecValTok{20}\NormalTok{)}
 \NormalTok{TLP\_G\_dat \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(m1\_grams, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"TLP\_s[TLP\_vals]"}\NormalTok{, }\StringTok{"SPEI\_s[spei\_vals]"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"fixed"}\NormalTok{, }\DataTypeTok{back.transform =} \OtherTok{TRUE}\NormalTok{)}
-
 
 \CommentTok{\#for LDMC\_s}
 \NormalTok{LDMC\_vals \textless{}{-}}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\KeywordTok{min}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{LDMC\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\KeywordTok{max}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{LDMC\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\DataTypeTok{length.out =} \DecValTok{20}\NormalTok{)}
@@ -171,7 +173,7 @@ survival
 \NormalTok{RDiam\_G\_dat \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(m14, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"RDiam\_s[RDiam\_vals]"}\NormalTok{, }\StringTok{"SPEI\_s[spei\_vals]"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"fixed"}\NormalTok{, }\DataTypeTok{back.transform =} \OtherTok{TRUE}\NormalTok{)}
 
 \CommentTok{\# for SLA}
-\NormalTok{SLA\_vals \textless{}{-}}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\KeywordTok{min}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{SLA\_s), }\KeywordTok{max}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{SLA\_s), }\DataTypeTok{length.out =} \DecValTok{20}\NormalTok{)}
+\NormalTok{SLA\_vals \textless{}{-}}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\KeywordTok{min}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{SLA\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\KeywordTok{max}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{SLA\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\DataTypeTok{length.out =} \DecValTok{20}\NormalTok{)}
 \NormalTok{SLA\_G\_dat \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(m5, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"SLA\_s[SLA\_vals]"}\NormalTok{, }\StringTok{"SPEI\_s[spei\_vals]"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"fixed"}\NormalTok{, }\DataTypeTok{back.transform =} \OtherTok{TRUE}\NormalTok{)}
 
 \CommentTok{\#make a data.frame to contain all of the values for each trait}
@@ -206,7 +208,8 @@ survival
   \DataTypeTok{x1 =} \KeywordTok{c}\NormalTok{(}\KeywordTok{max}\NormalTok{(TLP\_G\_dat}\OperatorTok{$}\NormalTok{x), }\KeywordTok{max}\NormalTok{(LDMC\_G\_dat}\OperatorTok{$}\NormalTok{x), }\KeywordTok{max}\NormalTok{(RDMC\_G\_dat}\OperatorTok{$}\NormalTok{x), }\KeywordTok{max}\NormalTok{(RDiam\_G\_dat}\OperatorTok{$}\NormalTok{x), }\KeywordTok{max}\NormalTok{(SLA\_G\_dat}\OperatorTok{$}\NormalTok{x)),}
   \DataTypeTok{y1 =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{)}
 \NormalTok{)}
-\CommentTok{\#levels(dat\_text$trait) \textless{}{-} c("scaled(Turgor\textasciitilde{}Loss\textasciitilde{}Point)\textasciitilde{}(MPa)", "scaled(Leaf\textasciitilde{}Dry\textasciitilde{}Matter\textasciitilde{}Content)\textasciitilde{}(g/g)", "scaled(Root\textasciitilde{}Dry\textasciitilde{}Matter\textasciitilde{}Content)\textasciitilde{}(g/g)", "scaled(Average\textasciitilde{}Root\textasciitilde{}Diameter)\textasciitilde{}(cm)", expression(\textquotesingle{}scaled(Specific\textasciitilde{}Leaf\textasciitilde{}Area)\textasciitilde{}(g/c\textquotesingle{}*m\^{}\textquotesingle{}2\textquotesingle{}*\textquotesingle{})\textquotesingle{}))}
+
+\CommentTok{\#make \textquotesingle{}trait\textquotesingle{} into factor}
 
 
 \CommentTok{\#make a multipanel figure that shows only the graminoid survival probs for 3 traits}
@@ -220,7 +223,7 @@ survival
 \StringTok{  }\KeywordTok{scale\_y\_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{)) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"dry year"}\NormalTok{, }\StringTok{"wet year"}\NormalTok{), }\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"\#fc8d62"}\NormalTok{,}\StringTok{"\#66c2a5"}\NormalTok{)) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{scale\_fill\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"\#fc8d62"}\NormalTok{,}\StringTok{"\#66c2a5"}\NormalTok{), }\DataTypeTok{guide =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{facet\_wrap}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{trait, }\DataTypeTok{scales =} \StringTok{"free\_x"}\NormalTok{, }\DataTypeTok{strip.position =}  \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{ncol =}\DecValTok{1}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet\_wrap}\NormalTok{(.}\OperatorTok{\textasciitilde{}}\KeywordTok{factor}\NormalTok{(trait, }\DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"scaled(Turgor Loss Point) (MPa)"}\NormalTok{, }\StringTok{"scaled(Leaf Dry Matter Content) (g/g)"}\NormalTok{, }\StringTok{"scaled(Root Dry Matter Content) (g/g)"}\NormalTok{,}\StringTok{"scaled(Average Root Diameter) (cm)"}\NormalTok{, }\StringTok{"scaled(Specific Leaf Area) (g/cm2)"}\NormalTok{)), }\DataTypeTok{scales =} \StringTok{"free\_x"}\NormalTok{, }\DataTypeTok{strip.position =}  \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{ncol =}\DecValTok{1}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme\_classic}\NormalTok{()}\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{legend.title =} \KeywordTok{element\_blank}\NormalTok{(), }\DataTypeTok{legend.background =} \KeywordTok{element\_rect}\NormalTok{(}\DataTypeTok{fill=}\StringTok{"grey95"}\NormalTok{,}\DataTypeTok{size=}\FloatTok{0.5}\NormalTok{, }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{), }\DataTypeTok{strip.background =} \KeywordTok{element\_rect}\NormalTok{(}\DataTypeTok{colour=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{fill=}\OtherTok{NA}\NormalTok{), }\DataTypeTok{strip.placement =} \StringTok{"outside"}\NormalTok{, }\DataTypeTok{strip.text.x =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{margin =} \KeywordTok{margin}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FloatTok{1.5}\NormalTok{, }\DecValTok{0}\NormalTok{)), }\DataTypeTok{plot.title =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{size =} \DecValTok{13}\NormalTok{, }\DataTypeTok{face =} \StringTok{"bold"}\NormalTok{)) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_text}\NormalTok{(}\DataTypeTok{data=}\NormalTok{ dat\_text, }\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ y, }\DataTypeTok{label =}\NormalTok{ label), }\DataTypeTok{size =} \DecValTok{3}\NormalTok{, }\DataTypeTok{fontface =} \StringTok{"bold"}\NormalTok{) }\OperatorTok{+}
@@ -306,7 +309,7 @@ make figure for forb survival
 \StringTok{  }\KeywordTok{geom\_text}\NormalTok{(}\DataTypeTok{data=}\NormalTok{ dat\_text, }\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ y, }\DataTypeTok{label =}\NormalTok{ label), }\DataTypeTok{size =} \DecValTok{3}\NormalTok{, }\DataTypeTok{fontface =} \StringTok{"bold"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_text}\NormalTok{(}\DataTypeTok{data=}\NormalTok{ dat\_text, }\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x1, }\DataTypeTok{y =}\NormalTok{ y1, }\DataTypeTok{label =}\NormalTok{ sig), }\DataTypeTok{size =} \FloatTok{3.5}\NormalTok{, }\DataTypeTok{fontface =} \StringTok{"bold"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{scale\_fill\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"\#fc8d62"}\NormalTok{,}\StringTok{"\#66c2a5"}\NormalTok{), }\DataTypeTok{guide =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{facet\_wrap}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{trait, }\DataTypeTok{scales =} \StringTok{"free\_x"}\NormalTok{, }\DataTypeTok{strip.position =}  \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{1}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet\_wrap}\NormalTok{(}\OperatorTok{\textasciitilde{}}\KeywordTok{factor}\NormalTok{(trait, }\DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"scaled(Turgor Loss Point) (MPa)"}\NormalTok{, }\StringTok{"scaled(Leaf Dry Matter Content) (g/g)"}\NormalTok{, }\StringTok{"scaled(Root Dry Matter Content) (g/g)"}\NormalTok{,}\StringTok{"scaled(Average Root Diameter) (cm)"}\NormalTok{, }\StringTok{"scaled(Specific Leaf Area) (g/cm2)"}\NormalTok{)), }\DataTypeTok{scales =} \StringTok{"free\_x"}\NormalTok{, }\DataTypeTok{strip.position =}  \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{1}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme\_classic}\NormalTok{()}\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{legend.title =} \KeywordTok{element\_blank}\NormalTok{(), }\DataTypeTok{legend.background =} \KeywordTok{element\_rect}\NormalTok{(}\DataTypeTok{fill=}\StringTok{"grey95"}\NormalTok{,}\DataTypeTok{size=}\FloatTok{0.5}\NormalTok{, }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{), }\DataTypeTok{strip.background =} \KeywordTok{element\_rect}\NormalTok{(}\DataTypeTok{colour=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{fill=}\OtherTok{NA}\NormalTok{), }\DataTypeTok{strip.placement =} \StringTok{"outside"}\NormalTok{, }\DataTypeTok{strip.text.x =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{margin =} \KeywordTok{margin}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FloatTok{1.5}\NormalTok{, }\DecValTok{0}\NormalTok{)), }\DataTypeTok{plot.title =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{size =} \DecValTok{13}\NormalTok{, }\DataTypeTok{face =} \StringTok{"bold"}\NormalTok{))}
 \end{Highlighting}
@@ -364,12 +367,12 @@ Make figure for graminoid growth models
 \CommentTok{\#text for labels}
 \NormalTok{dat\_text \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
   \DataTypeTok{label =} \KeywordTok{c}\NormalTok{(}\StringTok{"B"}\NormalTok{, }\StringTok{"E"}\NormalTok{, }\StringTok{"H"}\NormalTok{, }\StringTok{"K"}\NormalTok{,}\StringTok{"N"}\NormalTok{),}
-  \DataTypeTok{sig =} \KeywordTok{c}\NormalTok{(}\StringTok{"*,§"}\NormalTok{, }\StringTok{"*,§"}\NormalTok{,}\StringTok{""}\NormalTok{, }\StringTok{"*"}\NormalTok{, }\StringTok{"*"}\NormalTok{ ), }
+  \DataTypeTok{sig =} \KeywordTok{c}\NormalTok{(}\StringTok{""}\NormalTok{, }\StringTok{"*"}\NormalTok{,}\StringTok{""}\NormalTok{, }\StringTok{""}\NormalTok{, }\StringTok{""}\NormalTok{ ), }
   \DataTypeTok{trait =} \KeywordTok{c}\NormalTok{(}\StringTok{"scaled(Turgor Loss Point) (MPa)"}\NormalTok{, }\StringTok{"scaled(Leaf Dry Matter Content) (g/g)"}\NormalTok{, }\StringTok{"scaled(Root Dry Matter Content) (g/g)"}\NormalTok{, }\StringTok{"scaled(Average Root Diameter) (cm)"}\NormalTok{, }\StringTok{"scaled(Specific Leaf Area) (g/cm2)"}\NormalTok{),}
   \DataTypeTok{x    =} \KeywordTok{c}\NormalTok{(}\KeywordTok{min}\NormalTok{(TLP\_grow\_dat}\OperatorTok{$}\NormalTok{x), }\KeywordTok{min}\NormalTok{(LDMC\_grow\_dat}\OperatorTok{$}\NormalTok{x), }\KeywordTok{min}\NormalTok{(RDMC\_grow\_dat}\OperatorTok{$}\NormalTok{x), }\KeywordTok{min}\NormalTok{(RDiam\_grow\_dat}\OperatorTok{$}\NormalTok{x), }\KeywordTok{min}\NormalTok{(SLA\_grow\_dat}\OperatorTok{$}\NormalTok{x)),}
-  \DataTypeTok{y     =} \KeywordTok{c}\NormalTok{(}\FloatTok{1.2}\NormalTok{,}\FloatTok{1.2}\NormalTok{,}\FloatTok{1.2}\NormalTok{,}\FloatTok{1.2}\NormalTok{,}\FloatTok{1.2}\NormalTok{),}
+  \DataTypeTok{y     =} \KeywordTok{c}\NormalTok{(}\FloatTok{4.4}\NormalTok{,}\FloatTok{4.4}\NormalTok{,}\FloatTok{4.4}\NormalTok{,}\FloatTok{4.4}\NormalTok{,}\FloatTok{4.4}\NormalTok{),}
   \DataTypeTok{x1 =} \KeywordTok{c}\NormalTok{(}\KeywordTok{max}\NormalTok{(TLP\_grow\_dat}\OperatorTok{$}\NormalTok{x), }\KeywordTok{max}\NormalTok{(LDMC\_grow\_dat}\OperatorTok{$}\NormalTok{x), }\KeywordTok{max}\NormalTok{(RDMC\_grow\_dat}\OperatorTok{$}\NormalTok{x), }\KeywordTok{max}\NormalTok{(RDiam\_grow\_dat}\OperatorTok{$}\NormalTok{x), }\KeywordTok{max}\NormalTok{(SLA\_grow\_dat}\OperatorTok{$}\NormalTok{x)),}
-  \DataTypeTok{y1 =} \KeywordTok{c}\NormalTok{(}\FloatTok{1.1}\NormalTok{,}\FloatTok{1.1}\NormalTok{,}\FloatTok{1.1}\NormalTok{,}\FloatTok{1.1}\NormalTok{,}\FloatTok{1.1}\NormalTok{)}
+  \DataTypeTok{y1 =} \KeywordTok{c}\NormalTok{(}\FloatTok{4.4}\NormalTok{,}\FloatTok{4.4}\NormalTok{,}\FloatTok{4.4}\NormalTok{,}\FloatTok{4.4}\NormalTok{,}\FloatTok{4.4}\NormalTok{)}
 \NormalTok{)}
 
 \CommentTok{\#make a multipanel figure}
@@ -380,11 +383,11 @@ Make figure for graminoid growth models
 \StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Graminoid Growth"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{xlab}\NormalTok{(}\OtherTok{NULL}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\StringTok{"Graminoid Growth: log"} \OperatorTok{\textasciitilde{}}\StringTok{ }\KeywordTok{bgroup}\NormalTok{(}\StringTok{"("}\NormalTok{,}\KeywordTok{frac}\NormalTok{(size[year\_t}\OperatorTok{+}\DecValTok{1}\NormalTok{],size[year\_t]),}\StringTok{")"}\NormalTok{)))  }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"dry year"}\NormalTok{, }\StringTok{"wet year"}\NormalTok{), }\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"\#e78ac3"}\NormalTok{, }\StringTok{"\#8da0cb"}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_fill\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"\#e78ac3"}\NormalTok{, }\StringTok{"\#8da0cb"}\NormalTok{), }\DataTypeTok{guide =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"dry year"}\NormalTok{, }\StringTok{"wet year"}\NormalTok{), }\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"\#fc8d62"}\NormalTok{,}\StringTok{"\#66c2a5"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_fill\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"\#fc8d62"}\NormalTok{,}\StringTok{"\#66c2a5"}\NormalTok{), }\DataTypeTok{guide =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_text}\NormalTok{(}\DataTypeTok{data=}\NormalTok{ dat\_text, }\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ y, }\DataTypeTok{label =}\NormalTok{ label), }\DataTypeTok{size =} \DecValTok{3}\NormalTok{, }\DataTypeTok{fontface =} \StringTok{"bold"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_text}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ dat\_text, }\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x1, }\DataTypeTok{y =}\NormalTok{ y1, }\DataTypeTok{label =}\NormalTok{ sig), }\DataTypeTok{size =} \FloatTok{3.5}\NormalTok{, }\DataTypeTok{fontface =} \StringTok{"bold"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{facet\_wrap}\NormalTok{(}\KeywordTok{vars}\NormalTok{(trait), }\DataTypeTok{scales =} \StringTok{"free\_x"}\NormalTok{, }\DataTypeTok{strip.position =}  \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{1}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet\_wrap}\NormalTok{(.}\OperatorTok{\textasciitilde{}}\KeywordTok{factor}\NormalTok{(trait, }\DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"scaled(Turgor Loss Point) (MPa)"}\NormalTok{, }\StringTok{"scaled(Leaf Dry Matter Content) (g/g)"}\NormalTok{, }\StringTok{"scaled(Root Dry Matter Content) (g/g)"}\NormalTok{,}\StringTok{"scaled(Average Root Diameter) (cm)"}\NormalTok{, }\StringTok{"scaled(Specific Leaf Area) (g/cm2)"}\NormalTok{)), }\DataTypeTok{scales =} \StringTok{"free\_x"}\NormalTok{, }\DataTypeTok{strip.position =}  \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{1}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme\_classic}\NormalTok{()}\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{legend.title =} \KeywordTok{element\_blank}\NormalTok{(), }\DataTypeTok{legend.background =} \KeywordTok{element\_rect}\NormalTok{(}\DataTypeTok{fill=}\StringTok{"grey95"}\NormalTok{,}\DataTypeTok{size=}\FloatTok{0.5}\NormalTok{, }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{), }\DataTypeTok{strip.background =} \KeywordTok{element\_rect}\NormalTok{(}\DataTypeTok{colour=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{fill=}\OtherTok{NA}\NormalTok{), }\DataTypeTok{strip.placement =} \StringTok{"outside"}\NormalTok{, }\DataTypeTok{strip.text.x =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{margin =} \KeywordTok{margin}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FloatTok{1.5}\NormalTok{, }\DecValTok{0}\NormalTok{)), }\DataTypeTok{plot.title =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{size =} \DecValTok{13}\NormalTok{, }\DataTypeTok{face =} \StringTok{"bold"}\NormalTok{))}
 \end{Highlighting}
@@ -394,8 +397,11 @@ Combine into one figure
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{mainObs \textless{}{-}}\StringTok{ }\KeywordTok{plot\_grid}\NormalTok{( gramSurvFigure, GrowthExtraFig, forbSurvFigure, }\DataTypeTok{ncol =} \DecValTok{3}\NormalTok{, }\DataTypeTok{align =} \StringTok{"h"}\NormalTok{, }\DataTypeTok{axis =} \StringTok{"tb"}\NormalTok{, }\DataTypeTok{rel\_widths =} \KeywordTok{c}\NormalTok{(.}\DecValTok{9}\NormalTok{,}\DecValTok{1}\NormalTok{, }\FloatTok{.9}\NormalTok{)) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
-\StringTok{  }\KeywordTok{ggdraw}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{draw\_grob}\NormalTok{(grid}\OperatorTok{::}\KeywordTok{rectGrob}\NormalTok{(}\DataTypeTok{gp =}\NormalTok{ grid}\OperatorTok{::}\KeywordTok{gpar}\NormalTok{(}\DataTypeTok{fill =} \StringTok{"white"}\NormalTok{, }\DataTypeTok{col =} \StringTok{"white"}\NormalTok{)) ,}\DataTypeTok{hjust =} \DecValTok{0}\NormalTok{, }\DataTypeTok{vjust =} \DecValTok{0}\NormalTok{, }\DataTypeTok{x =} \FloatTok{.07}\NormalTok{, }\DataTypeTok{y =} \FloatTok{.06}\NormalTok{, }\DataTypeTok{width =} \FloatTok{.92}\NormalTok{, }\DataTypeTok{height =} \FloatTok{.0225}\NormalTok{) }
+\NormalTok{mainObs \textless{}{-}}\StringTok{ }\NormalTok{cowplot}\OperatorTok{::}\KeywordTok{plot\_grid}\NormalTok{( gramSurvFigure, GrowthExtraFig, forbSurvFigure, }\DataTypeTok{ncol =} \DecValTok{3}\NormalTok{, }\DataTypeTok{align =} \StringTok{"h"}\NormalTok{, }\DataTypeTok{axis =} \StringTok{"tb"}\NormalTok{, }\DataTypeTok{rel\_widths =} \KeywordTok{c}\NormalTok{(.}\DecValTok{9}\NormalTok{,}\DecValTok{1}\NormalTok{, }\FloatTok{.9}\NormalTok{)) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\NormalTok{cowplot}\OperatorTok{::}\KeywordTok{ggdraw}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\NormalTok{cowplot}\OperatorTok{::}\KeywordTok{draw\_grob}\NormalTok{(grid}\OperatorTok{::}\KeywordTok{rectGrob}\NormalTok{(}\DataTypeTok{gp =}\NormalTok{ grid}\OperatorTok{::}\KeywordTok{gpar}\NormalTok{(}\DataTypeTok{fill =} \StringTok{"white"}\NormalTok{, }\DataTypeTok{col =} \StringTok{"white"}\NormalTok{)) ,}\DataTypeTok{hjust =} \DecValTok{0}\NormalTok{, }\DataTypeTok{vjust =} \DecValTok{0}\NormalTok{, }\DataTypeTok{x =} \FloatTok{.07}\NormalTok{, }\DataTypeTok{y =} \FloatTok{.059}\NormalTok{, }\DataTypeTok{width =} \FloatTok{.92}\NormalTok{, }\DataTypeTok{height =} \FloatTok{.0227}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\NormalTok{cowplot}\OperatorTok{::}\KeywordTok{draw\_grob}\NormalTok{(grid}\OperatorTok{::}\KeywordTok{rectGrob}\NormalTok{(}\DataTypeTok{gp =}\NormalTok{ grid}\OperatorTok{::}\KeywordTok{gpar}\NormalTok{(}\DataTypeTok{fill =} \StringTok{"white"}\NormalTok{, }\DataTypeTok{col =} \StringTok{"white"}\NormalTok{)) ,}\DataTypeTok{hjust =} \DecValTok{0}\NormalTok{, }\DataTypeTok{vjust =} \DecValTok{0}\NormalTok{, }\DataTypeTok{x =} \FloatTok{.07}\NormalTok{, }\DataTypeTok{y =} \FloatTok{.006}\NormalTok{, }\DataTypeTok{width =} \FloatTok{.33}\NormalTok{, }\DataTypeTok{height =} \FloatTok{.04}\NormalTok{) }\OperatorTok{+}\StringTok{ }\CommentTok{\#cover up left legend }
+\StringTok{  }\NormalTok{cowplot}\OperatorTok{::}\KeywordTok{draw\_grob}\NormalTok{(grid}\OperatorTok{::}\KeywordTok{rectGrob}\NormalTok{(}\DataTypeTok{gp =}\NormalTok{ grid}\OperatorTok{::}\KeywordTok{gpar}\NormalTok{(}\DataTypeTok{fill =} \StringTok{"white"}\NormalTok{, }\DataTypeTok{col =} \StringTok{"white"}\NormalTok{)) ,}\DataTypeTok{hjust =} \DecValTok{0}\NormalTok{, }\DataTypeTok{vjust =} \DecValTok{0}\NormalTok{, }\DataTypeTok{x =} \FloatTok{.75}\NormalTok{, }\DataTypeTok{y =} \FloatTok{.006}\NormalTok{, }\DataTypeTok{width =} \FloatTok{.33}\NormalTok{, }\DataTypeTok{height =} \FloatTok{.04}\NormalTok{) }\CommentTok{\#cover up right legend}
 
 \NormalTok{mainObs \textless{}{-}}\StringTok{ }\KeywordTok{ggdraw}\NormalTok{(}\KeywordTok{add\_sub}\NormalTok{(mainObs, }\DataTypeTok{label =} \KeywordTok{bquote}\NormalTok{(}\StringTok{"scaled(Specific Leaf Area) (c"}\OperatorTok{*}\NormalTok{m}\OperatorTok{\^{}}\DecValTok{2}\OperatorTok{*}\StringTok{"/g)"}\NormalTok{),}\DataTypeTok{x =} \FloatTok{.5}\NormalTok{, }\DataTypeTok{y =} \DecValTok{3}\NormalTok{, }\DataTypeTok{size =} \DecValTok{9}\NormalTok{))}
 \NormalTok{mainObs \textless{}{-}}\StringTok{ }\KeywordTok{ggdraw}\NormalTok{(}\KeywordTok{add\_sub}\NormalTok{(mainObs, }\DataTypeTok{label =} \KeywordTok{bquote}\NormalTok{(}\StringTok{"scaled(Specific Leaf Area) (c"}\OperatorTok{*}\NormalTok{m}\OperatorTok{\^{}}\DecValTok{2}\OperatorTok{*}\StringTok{"/g)"}\NormalTok{),}\DataTypeTok{x =} \FloatTok{.19}\NormalTok{, }\DataTypeTok{y =} \DecValTok{4}\NormalTok{, }\DataTypeTok{size =} \DecValTok{9}\NormalTok{))}
@@ -406,44 +412,28 @@ Combine into one figure
 
 \includegraphics{figures/mainObservationsFig-1.pdf}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#as\_gtable(mainObs)}
-
-\CommentTok{\#add\_sub(as\_gtable(mainObs), label = bquote("scaled(Specific Leaf Area) (g/c"*m\^{}2*")"),x = .5, y = 3, size = 9) \%\textgreater{}\% }
-\CommentTok{\#add\_sub(label = bquote("scaled(Specific Leaf Area) (g/c"*m\^{}2*")"),x = .19, y = 4, size = 9) \%\textgreater{}\% }
-\CommentTok{\#add\_sub(label = bquote("scaled(Specific Leaf Area) (g/c"*m\^{}2*")"),x = .873, y = 5, size = 9)  \%\textgreater{}\% }
-\CommentTok{\#ggdraw()}
-\end{Highlighting}
-\end{Shaded}
-
 Make climate variability figure for use in the conceptual diagram
 (fig.~1)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{source}\NormalTok{(}\StringTok{"/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Climate Data/CrossSiteClimateComparison.R"}\NormalTok{)}
-
-
-\CommentTok{\#figure of annual precip variability at CO site}
-\NormalTok{CO\_precip \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ CO[}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(CO}\OperatorTok{$}\NormalTok{Ann.Sum.Precip),])}\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Year, }\DataTypeTok{y =}\NormalTok{ Ann.Sum.Precip), }\DataTypeTok{col =} \StringTok{"gray25"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\StringTok{"MAP (mm)"} \OperatorTok{\%{-}\textgreater{}\%}\StringTok{ ""}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
-\StringTok{  }\KeywordTok{scale\_x\_continuous}\NormalTok{(}\DataTypeTok{labels =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{breaks =} \OtherTok{NULL}\NormalTok{) }\OperatorTok{+}\StringTok{ }
-\StringTok{  }\KeywordTok{scale\_y\_continuous}\NormalTok{(}\DataTypeTok{labels =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{breaks =} \OtherTok{NULL}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }
-
-\KeywordTok{setwd}\NormalTok{(}\StringTok{"/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO\_sgs Analysis"}\NormalTok{)}
-\KeywordTok{pdf}\NormalTok{(}\StringTok{"./Manuscript/Figures/CO\_MAP.pdf"}\NormalTok{, }\DataTypeTok{width =} \DecValTok{3}\NormalTok{, }\DataTypeTok{height =} \DecValTok{3}\NormalTok{)}
-\NormalTok{CO\_precip}
-\KeywordTok{dev.off}\NormalTok{()}
+\CommentTok{\# source("/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Climate Data/CrossSiteClimateComparison.R")}
+\CommentTok{\# }
+\CommentTok{\# }
+\CommentTok{\# \#figure of annual precip variability at CO site}
+\CommentTok{\# CO\_precip \textless{}{-} ggplot(data = CO[!is.na(CO$Ann.Sum.Precip),])+}
+\CommentTok{\#   geom\_line(aes(x = Year, y = Ann.Sum.Precip), col = "gray25") +}
+\CommentTok{\#   ylab(expression("MAP (mm)" \%{-}\textgreater{}\% "")) + }
+\CommentTok{\#   scale\_x\_continuous(labels = NULL, breaks = NULL) + }
+\CommentTok{\#   scale\_y\_continuous(labels = NULL, breaks = NULL) +}
+\CommentTok{\#   theme\_classic() }
+\CommentTok{\# }
+\CommentTok{\# setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO\_sgs Analysis")}
+\CommentTok{\# pdf("./Manuscript/Figures/CO\_MAP.pdf", width = 3, height = 3)}
+\CommentTok{\# CO\_precip}
+\CommentTok{\# dev.off()}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## pdf 
-##   2
-\end{verbatim}
 
 Make a plot of random effects of individual plant size on survival for
 LDMC model (best model for graminoid survival)
@@ -554,8 +544,8 @@ survival for other traits
 \CommentTok{\#make figure for graminoid survival}
 
 \CommentTok{\#get 2.5 and 97.5 percentiles of the distribution}
-\NormalTok{meanSPEI\_G \textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{SPEI\_s)}
-\NormalTok{sdSPEI\_G \textless{}{-}}\StringTok{ }\KeywordTok{sd}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{SPEI\_s)}
+\NormalTok{meanSPEI\_G \textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{SPEI\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{sdSPEI\_G \textless{}{-}}\StringTok{ }\KeywordTok{sd}\NormalTok{(CO\_grams}\OperatorTok{$}\NormalTok{SPEI\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
 \CommentTok{\#get 97.5 quantile of the distribution}
 \NormalTok{SPEI\_}\DecValTok{97}\NormalTok{\_}\DecValTok{5}\NormalTok{\_G \textless{}{-}}\StringTok{ }\KeywordTok{qnorm}\NormalTok{(.}\DecValTok{975}\NormalTok{, meanSPEI\_G, sdSPEI\_G) }
 \NormalTok{SPEI\_}\DecValTok{2}\NormalTok{\_}\DecValTok{5}\NormalTok{\_G \textless{}{-}}\StringTok{ }\KeywordTok{qnorm}\NormalTok{(.}\DecValTok{025}\NormalTok{, meanSPEI\_G, sdSPEI\_G)}
@@ -777,5 +767,106 @@ make a plot of SPEI intervals
 \end{Shaded}
 
 \includegraphics{figures/uniqueSPEIfig-1.pdf}
+
+Figures for comparing unique to uniform SPEI (TLP and LDMC only)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#model objects (unique SPEI): m1\_grams, m2\_grams, mGrow\_TLP, mGrow\_LDMC}
+\CommentTok{\#model objects (uniform SPEI): m1\_SPEI, m2\_SPEI, mGrowTLP\_SPEI, mGrowLDMC\_SPEI }
+
+\CommentTok{\#\# Make figure of unique SPEI of TLP and LDMC survival}
+\CommentTok{\#get 2.5 and 97.5 percentiles of the distribution}
+\NormalTok{meanSPEI\textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(CO\_poly\_TLP}\OperatorTok{$}\NormalTok{SPEI\_s)}
+\NormalTok{sdSPEI \textless{}{-}}\StringTok{ }\KeywordTok{sd}\NormalTok{(CO\_poly\_TLP}\OperatorTok{$}\NormalTok{SPEI\_s)}
+\CommentTok{\#get 97.5 quantile of the distribution}
+\NormalTok{SPEI\_}\DecValTok{97}\NormalTok{\_}\DecValTok{5}\NormalTok{ \textless{}{-}}\StringTok{ }\KeywordTok{qnorm}\NormalTok{(.}\DecValTok{975}\NormalTok{, meanSPEI, sdSPEI) }
+\NormalTok{SPEI\_}\DecValTok{2}\NormalTok{\_}\DecValTok{5}\NormalTok{ \textless{}{-}}\StringTok{ }\KeywordTok{qnorm}\NormalTok{(.}\DecValTok{025}\NormalTok{, meanSPEI, sdSPEI)}
+
+\NormalTok{spei\_vals \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(SPEI\_}\DecValTok{2}\NormalTok{\_}\DecValTok{5}\NormalTok{, SPEI\_}\DecValTok{97}\NormalTok{\_}\DecValTok{5}\NormalTok{)}
+
+\CommentTok{\#for TLP}
+\NormalTok{TLP\_vals \textless{}{-}}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\KeywordTok{min}\NormalTok{(CO\_poly\_TLP}\OperatorTok{$}\NormalTok{TLP\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\KeywordTok{max}\NormalTok{(CO\_poly\_TLP}\OperatorTok{$}\NormalTok{TLP\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\DataTypeTok{length.out =} \DecValTok{20}\NormalTok{)}
+\NormalTok{TLP\_surv\_dat \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(m1\_grams, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"TLP\_s[TLP\_vals]"}\NormalTok{, }\StringTok{"SPEI\_s[spei\_vals]"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"fixed"}\NormalTok{, }\DataTypeTok{back.transform =} \OtherTok{TRUE}\NormalTok{)}
+
+\CommentTok{\#for LDMC}
+\NormalTok{LDMC\_vals \textless{}{-}}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\KeywordTok{min}\NormalTok{(CO\_poly\_LDMC}\OperatorTok{$}\NormalTok{LDMC\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\KeywordTok{max}\NormalTok{(CO\_poly\_LDMC}\OperatorTok{$}\NormalTok{LDMC\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\DataTypeTok{length.out =} \DecValTok{20}\NormalTok{)}
+\NormalTok{LDMC\_surv\_dat \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(m2\_grams, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"LDMC\_s[LDMC\_vals]"}\NormalTok{, }\StringTok{"SPEI\_s[spei\_vals]"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"fixed"}\NormalTok{, }\DataTypeTok{back.transform =} \OtherTok{TRUE}\NormalTok{)}
+
+
+\CommentTok{\#make a data.frame to contain all of the values for each trait}
+\NormalTok{UniqueSurvDat \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{trait =} \KeywordTok{c}\NormalTok{(}\StringTok{"scaled(Turgor Loss Point) (MPa)"}\NormalTok{), }\DataTypeTok{x =}\NormalTok{ TLP\_surv\_dat}\OperatorTok{$}\NormalTok{x, }\DataTypeTok{Surv =}\NormalTok{ TLP\_surv\_dat}\OperatorTok{$}\NormalTok{predicted, }\DataTypeTok{CI\_low =}\NormalTok{ TLP\_surv\_dat}\OperatorTok{$}\NormalTok{conf.low, }\DataTypeTok{CI\_high =}\NormalTok{ TLP\_surv\_dat}\OperatorTok{$}\NormalTok{conf.high, }\DataTypeTok{SPEI =}\NormalTok{ TLP\_surv\_dat}\OperatorTok{$}\NormalTok{group)}
+
+\NormalTok{UniqueSurvDat \textless{}{-}}\StringTok{ }\KeywordTok{rbind}\NormalTok{(UniqueSurvDat, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{trait =} \KeywordTok{c}\NormalTok{(}\StringTok{"scaled(Leaf Dry Matter Content) (g/g)"}\NormalTok{), }\DataTypeTok{x =}\NormalTok{ LDMC\_surv\_dat}\OperatorTok{$}\NormalTok{x, }\DataTypeTok{Surv =}\NormalTok{ LDMC\_surv\_dat}\OperatorTok{$}\NormalTok{predicted, }\DataTypeTok{CI\_low =}\NormalTok{ LDMC\_surv\_dat}\OperatorTok{$}\NormalTok{conf.low, }\DataTypeTok{CI\_high =}\NormalTok{ LDMC\_surv\_dat}\OperatorTok{$}\NormalTok{conf.high, }\DataTypeTok{SPEI =}\NormalTok{ LDMC\_surv\_dat}\OperatorTok{$}\NormalTok{group))}
+
+\CommentTok{\#make data for rug plot}
+\NormalTok{RugDat\_surv \textless{}{-}}\StringTok{  }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{rug =}\NormalTok{ CO\_poly\_TLP}\OperatorTok{$}\NormalTok{TLP\_s, }\DataTypeTok{trait =} \StringTok{"scaled(Turgor Loss Point) (MPa)"}\NormalTok{)}
+\NormalTok{RugDat\_surv \textless{}{-}}\StringTok{ }\KeywordTok{rbind}\NormalTok{(RugDat\_surv, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{rug =}\NormalTok{ CO\_poly\_LDMC}\OperatorTok{$}\NormalTok{LDMC\_s, }\DataTypeTok{trait =} \StringTok{"scaled(Leaf Dry Matter Content) (g/g)"}\NormalTok{))}
+
+\CommentTok{\#make a multipanel figure that shows only the graminoid survival probs for 3 traits}
+\NormalTok{UniqueSPEI\_Surv \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ UniqueSurvDat) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_ribbon}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{ymin =}\NormalTok{ CI\_low, }\DataTypeTok{ymax =}\NormalTok{ CI\_high, }\DataTypeTok{fill =}\NormalTok{ SPEI), }\DataTypeTok{alpha =} \FloatTok{0.3}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{x, }\DataTypeTok{y =}\NormalTok{ Surv, }\DataTypeTok{col =}\NormalTok{ SPEI))  }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom\_rug}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ rug), }\DataTypeTok{data =}\NormalTok{ RugDat\_surv) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Unique SPEI Graminoid Survival"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\OtherTok{NULL}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Probability of Graminoid Survival"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_y\_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"dry year"}\NormalTok{, }\StringTok{"wet year"}\NormalTok{), }\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"\#fc8d62"}\NormalTok{,}\StringTok{"\#66c2a5"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\CommentTok{\#geom\_text(data= dat\_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +}
+\StringTok{  }\KeywordTok{scale\_fill\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"\#fc8d62"}\NormalTok{,}\StringTok{"\#66c2a5"}\NormalTok{), }\DataTypeTok{guide =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet\_wrap}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{trait, }\DataTypeTok{scales =} \StringTok{"free\_x"}\NormalTok{, }\DataTypeTok{strip.position =}  \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{1}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme\_classic}\NormalTok{()}\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{legend.title =} \KeywordTok{element\_blank}\NormalTok{(), }\DataTypeTok{legend.background =} \KeywordTok{element\_rect}\NormalTok{(}\DataTypeTok{fill=}\StringTok{"grey95"}\NormalTok{,}\DataTypeTok{size=}\FloatTok{0.5}\NormalTok{, }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{), }\DataTypeTok{strip.background =} \KeywordTok{element\_rect}\NormalTok{(}\DataTypeTok{colour=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{fill=}\OtherTok{NA}\NormalTok{), }\DataTypeTok{strip.placement =} \StringTok{"outside"}\NormalTok{, }\DataTypeTok{strip.text.x =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{margin =} \KeywordTok{margin}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FloatTok{1.5}\NormalTok{, }\DecValTok{0}\NormalTok{)), }\DataTypeTok{plot.title =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{size =} \DecValTok{13}\NormalTok{, }\DataTypeTok{face =} \StringTok{"bold"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# Make figure of unique SPEI of TLP and LDMC growth}
+\NormalTok{meanSPEI\textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(CO\_grow\_TLP}\OperatorTok{$}\NormalTok{SPEI\_s)}
+\NormalTok{sdSPEI \textless{}{-}}\StringTok{ }\KeywordTok{sd}\NormalTok{(CO\_grow\_TLP}\OperatorTok{$}\NormalTok{SPEI\_s)}
+\CommentTok{\#get 97.5 quantile of the distribution}
+\NormalTok{SPEI\_}\DecValTok{97}\NormalTok{\_}\DecValTok{5}\NormalTok{ \textless{}{-}}\StringTok{ }\KeywordTok{qnorm}\NormalTok{(.}\DecValTok{975}\NormalTok{, meanSPEI, sdSPEI) }
+\NormalTok{SPEI\_}\DecValTok{2}\NormalTok{\_}\DecValTok{5}\NormalTok{ \textless{}{-}}\StringTok{ }\KeywordTok{qnorm}\NormalTok{(.}\DecValTok{025}\NormalTok{, meanSPEI, sdSPEI)}
+
+\NormalTok{spei\_vals \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(SPEI\_}\DecValTok{2}\NormalTok{\_}\DecValTok{5}\NormalTok{, SPEI\_}\DecValTok{97}\NormalTok{\_}\DecValTok{5}\NormalTok{)}
+
+\CommentTok{\#for TLP}
+\NormalTok{TLP\_vals \textless{}{-}}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\KeywordTok{min}\NormalTok{(CO\_grow\_TLP}\OperatorTok{$}\NormalTok{TLP\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\KeywordTok{max}\NormalTok{(CO\_grow\_TLP}\OperatorTok{$}\NormalTok{TLP\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\DataTypeTok{length.out =} \DecValTok{20}\NormalTok{)}
+\NormalTok{TLP\_grow\_dat \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(mGrowTLP, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"TLP\_s[TLP\_vals]"}\NormalTok{, }\StringTok{"SPEI\_s[spei\_vals]"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"fixed"}\NormalTok{, }\DataTypeTok{back.transform =} \OtherTok{TRUE}\NormalTok{)}
+
+\CommentTok{\#for LDMC}
+\NormalTok{LDMC\_vals \textless{}{-}}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\KeywordTok{min}\NormalTok{(CO\_poly\_LDMC}\OperatorTok{$}\NormalTok{LDMC\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\KeywordTok{max}\NormalTok{(CO\_poly\_LDMC}\OperatorTok{$}\NormalTok{LDMC\_s, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }\DataTypeTok{length.out =} \DecValTok{20}\NormalTok{)}
+\NormalTok{LDMC\_grow\_dat \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(mGrowLDMC, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"LDMC\_s[LDMC\_vals]"}\NormalTok{, }\StringTok{"SPEI\_s[spei\_vals]"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"fixed"}\NormalTok{, }\DataTypeTok{back.transform =} \OtherTok{TRUE}\NormalTok{)}
+
+
+\CommentTok{\#make a data.frame to contain all of the values for each trait}
+\NormalTok{UniqueGrowDat \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{trait =} \KeywordTok{c}\NormalTok{(}\StringTok{"scaled(Turgor Loss Point) (MPa)"}\NormalTok{), }\DataTypeTok{x =}\NormalTok{ TLP\_grow\_dat}\OperatorTok{$}\NormalTok{x, }\DataTypeTok{grow =}\NormalTok{ TLP\_grow\_dat}\OperatorTok{$}\NormalTok{predicted, }\DataTypeTok{CI\_low =}\NormalTok{ TLP\_grow\_dat}\OperatorTok{$}\NormalTok{conf.low, }\DataTypeTok{CI\_high =}\NormalTok{ TLP\_grow\_dat}\OperatorTok{$}\NormalTok{conf.high, }\DataTypeTok{SPEI =}\NormalTok{ TLP\_grow\_dat}\OperatorTok{$}\NormalTok{group)}
+
+\NormalTok{UniqueGrowDat \textless{}{-}}\StringTok{ }\KeywordTok{rbind}\NormalTok{(UniqueGrowDat, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{trait =} \KeywordTok{c}\NormalTok{(}\StringTok{"scaled(Leaf Dry Matter Content) (g/g)"}\NormalTok{), }\DataTypeTok{x =}\NormalTok{ LDMC\_grow\_dat}\OperatorTok{$}\NormalTok{x, }\DataTypeTok{grow =}\NormalTok{ LDMC\_grow\_dat}\OperatorTok{$}\NormalTok{predicted, }\DataTypeTok{CI\_low =}\NormalTok{ LDMC\_grow\_dat}\OperatorTok{$}\NormalTok{conf.low, }\DataTypeTok{CI\_high =}\NormalTok{ LDMC\_grow\_dat}\OperatorTok{$}\NormalTok{conf.high, }\DataTypeTok{SPEI =}\NormalTok{ LDMC\_grow\_dat}\OperatorTok{$}\NormalTok{group))}
+
+\CommentTok{\#make data for rug plot}
+\NormalTok{RugDat\_grow \textless{}{-}}\StringTok{  }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{rug =}\NormalTok{ CO\_grow\_TLP}\OperatorTok{$}\NormalTok{TLP\_s, }\DataTypeTok{trait =} \StringTok{"scaled(Turgor Loss Point) (MPa)"}\NormalTok{)}
+\NormalTok{RugDat\_grow \textless{}{-}}\StringTok{ }\KeywordTok{rbind}\NormalTok{(RugDat\_grow, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{rug =}\NormalTok{ CO\_poly\_LDMC}\OperatorTok{$}\NormalTok{LDMC\_s, }\DataTypeTok{trait =} \StringTok{"scaled(Leaf Dry Matter Content) (g/g)"}\NormalTok{))}
+
+\CommentTok{\#make a multipanel figure that shows only the graminoid survival probs for 3 traits}
+\NormalTok{UniqueSPEI\_Grow \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ UniqueGrowDat) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_ribbon}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{ymin =}\NormalTok{ CI\_low, }\DataTypeTok{ymax =}\NormalTok{ CI\_high, }\DataTypeTok{fill =}\NormalTok{ SPEI), }\DataTypeTok{alpha =} \FloatTok{0.3}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{x, }\DataTypeTok{y =}\NormalTok{ grow, }\DataTypeTok{col =}\NormalTok{ SPEI))  }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom\_rug}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ rug), }\DataTypeTok{data =}\NormalTok{ RugDat\_grow) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Unique SPEI Graminoid Growth"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\OtherTok{NULL}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\StringTok{"Graminoid Growth: log"} \OperatorTok{\textasciitilde{}}\StringTok{ }\KeywordTok{bgroup}\NormalTok{(}\StringTok{"("}\NormalTok{,}\KeywordTok{frac}\NormalTok{(size[year\_t}\OperatorTok{+}\DecValTok{1}\NormalTok{],size[year\_t]),}\StringTok{")"}\NormalTok{))) }\OperatorTok{+}
+\StringTok{  }\CommentTok{\#scale\_y\_continuous(limits = c(0,1)) +}
+\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"dry year"}\NormalTok{, }\StringTok{"wet year"}\NormalTok{), }\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"\#fc8d62"}\NormalTok{,}\StringTok{"\#66c2a5"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\CommentTok{\#geom\_text(data= dat\_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +}
+\StringTok{  }\KeywordTok{scale\_fill\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"\#fc8d62"}\NormalTok{,}\StringTok{"\#66c2a5"}\NormalTok{), }\DataTypeTok{guide =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet\_wrap}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{trait, }\DataTypeTok{scales =} \StringTok{"free\_x"}\NormalTok{, }\DataTypeTok{strip.position =}  \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{1}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme\_classic}\NormalTok{()}\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"bottom"}\NormalTok{, }\DataTypeTok{legend.title =} \KeywordTok{element\_blank}\NormalTok{(), }\DataTypeTok{legend.background =} \KeywordTok{element\_rect}\NormalTok{(}\DataTypeTok{fill=}\StringTok{"grey95"}\NormalTok{,}\DataTypeTok{size=}\FloatTok{0.5}\NormalTok{, }\DataTypeTok{linetype=}\StringTok{"solid"}\NormalTok{), }\DataTypeTok{strip.background =} \KeywordTok{element\_rect}\NormalTok{(}\DataTypeTok{colour=}\OtherTok{NA}\NormalTok{, }\DataTypeTok{fill=}\OtherTok{NA}\NormalTok{), }\DataTypeTok{strip.placement =} \StringTok{"outside"}\NormalTok{, }\DataTypeTok{strip.text.x =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{margin =} \KeywordTok{margin}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FloatTok{1.5}\NormalTok{, }\DecValTok{0}\NormalTok{)), }\DataTypeTok{plot.title =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{size =} \DecValTok{13}\NormalTok{, }\DataTypeTok{face =} \StringTok{"bold"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
 
 \end{document}
