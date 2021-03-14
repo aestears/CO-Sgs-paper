@@ -935,3 +935,36 @@ ggplot(data = forbsSPEI) +
 ## is the variation between years greater than the variation between species in one year?
 testM_forb <- lm(SPEI_unique ~ year_t + species, data = forbsSPEI)
 anova(testM_forb)
+
+#### try species-level growth models ####
+options(na.action = "na.omit")
+ 
+
+mGrowTLP_ARILON<- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP[CO_grow_TLP$species == "Aristida longiseta",] , control=lmerControl(optimizer="bobyqa"))
+
+mGrowTLP_BOUGRA<- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP[CO_grow_TLP$species == "Bouteloua gracilis",] , control=lmerControl(optimizer="bobyqa"))
+
+mGrowTLP_BOUDAC<- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP[CO_grow_TLP$species == "Buchloe dactyloides",] , control=lmerControl(optimizer="bobyqa"))
+
+mGrowTLP_SCHPAN<- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP[CO_grow_TLP$species == "Schedonnardus paniculatus",] , control=lmerControl(optimizer="bobyqa"))
+#fit is Singular (only 17 data points, so makes sense...)
+
+mGrowTLP_ELYELY<- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP[CO_grow_TLP$species == "Sitanion hystrix",] , control=lmerControl(optimizer="bobyqa"))
+
+mGrowTLP_SPOCRY<- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP[CO_grow_TLP$species == "Sporobolus cryptandrus",] , control=lmerControl(optimizer="bobyqa"))
+
+mGrowTLP_STICOM<- lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP[CO_grow_TLP$species == "Stipa comata",] , control=lmerControl(optimizer="bobyqa"))
+
+summary(as_lmerModLmerTest(mGrowTLP_ARILON))
+summary(as_lmerModLmerTest(mGrowTLP_BOUGRA))
+summary(as_lmerModLmerTest(mGrowTLP_BOUDAC))
+summary(as_lmerModLmerTest(mGrowTLP_SCHPAN))
+summary(as_lmerModLmerTest(mGrowTLP_ELYELY))
+summary(as_lmerModLmerTest(mGrowTLP_SPOCRY))
+summary(as_lmerModLmerTest(mGrowTLP_STICOM))
+
+
+#### save output to use in figure script ####
+path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
+setwd(path)
+save.image('script4_output.RData')
