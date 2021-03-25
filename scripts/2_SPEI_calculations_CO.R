@@ -148,24 +148,85 @@ require(tidyverse) #v1.3.0
 rm(list=ls())
 
 #### Load data files ####
-#set working directory
+### load data from previous script ###
+## set working directory ##
 datWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper"  #a path for the directory containing the /scripts folder
 setwd(datWD)
 load("./scripts/script1_output.RData")
 
-#load SPEI dataset
-# source: https://spei.csic.es/database.html
-climWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Climate Data/" #set wd to the location of the CO_SPEI.csv file
-setwd(climWD)
+### load climate data ###
+## set working directory  ##
+path <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data" ##file location of climate dataset
+setwd(path)
 
-CO_SPEI_all <- read.csv("./SPEI Dataframes/CO_SPEI.csv")
 
-#format dates correctly
-CO_SPEI_all$Date <- as.POSIXct(CO_SPEI_all$Date, tz="UTC", format="%m/%d/%Y %H:%M")
-CO_SPEI_all$Year <- lubridate::year(CO_SPEI_all$Date)
-CO_SPEI_all$Year[1:1188] <- CO_SPEI_all$Year[1:1188]+1900
-CO_SPEI_all$Year[1189:1380] <- CO_SPEI_all$Year[1189:1380] + 2000
-lubridate::year(CO_SPEI_all$Date) <- CO_SPEI_all$Year
+## read in climate data file ##
+# This climate data is measured at the LTER site
+clim <- read.csv("./CO_daily_climate_data.csv")
+
+#### Site-Data SPEI calculations ####
+# The following code calculates SPEI using the "SPEI" package and precip and temp data measured at the LTER site. PET is estimated using the thornthwaite method
+### Format data for SPEI function ###
+climMonth <- clim %>% 
+  group_by(year, month) %>% 
+  summarize(meanT = mean(meanT, na.rm = TRUE),
+            meanMaxT = mean(maxT, na.rm = TRUE),
+            meanMinT = mean(minT, na.rm = TRUE),
+            precip = sum(precip, na.rm = TRUE)) 
+
+
+climMonth$Date <- as.character(paste0(climMonth$year, "-", str_pad(climMonth$month, width = 2, side = "left", pad = "0"), "-15"))
+
+# format a date column as POSIXct
+climMonth$Date <- as.POSIXct(climMonth$Date, tz = "GMT", format = "%Y-%m-%d")
+
+### Compute potential evapotranspiration (PET) and climatic water balance (BAL) ####
+# Compute potential evapotranspiration (PET) using thornthwaite method
+climMonth$PET <- as.vector(thornthwaite(Tave = climMonth$meanT, lat = 40.86813765))
+# Compute climatic water balance (BAL)
+climMonth$BAL <- as.vector(climMonth$precip - climMonth$PET)
+
+### Calculate SPEI ###
+# for each month and each interval (from 1 to 12)
+for(i in 1:12) {
+  #get SPEI for specified interval
+  tmp <- spei(climMonth[,'BAL'], i)
+  #get out SPEI results
+  tmp2<- tmp$fitted %>% 
+    as.data.frame() 
+  #rename the column to reflect the SPEI interval
+  names(tmp2)  <- paste0("SPEI_",i)
+  #join to climMonth data.frame
+  climMonth <- cbind(climMonth, tmp2)
+}
+
+## trim data.frame to only have Date and SPEI values
+CO_SPEI_all <- climMonth  %>% 
+  as_tibble() %>% 
+  mutate(Site = "CO") %>% 
+  select(Site, Date, SPEI_1, SPEI_2, SPEI_3, SPEI_4, SPEI_5, SPEI_6, SPEI_7, SPEI_8, SPEI_9, SPEI_10, SPEI_11, SPEI_12)
+
+
+#### SPEIbase SPEI calculations ####
+# The following code imports SPEI values from the SPEIbase dataset (https://spei.csic.es/database.html), which uses PET values estimated using the Penman-Monteith method, which is far superior to the Thornthwaite method. This dataset uses modeled climate data. This might be a better SPEI value to use, even though we have site-level climate data available, since PM is a much better way of estimating PET. 
+# the lat/long of the modeled data is (-104.89, 40.50)
+# downloaded data is for a 4-month SPEI interval
+### load data ###
+## set wd
+path <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Climate Data/CO Climate" ##file location of climate dataset
+setwd(path)
+## load dataset
+SPEIbase_04 <- read.table("./SPEIbase_CO_LTER_NEG104.89_40.50_SPEI04.csv", sep = ";", header = TRUE) 
+names(SPEIbase_04) <- c("Date", "SPEI_04")
+# reformat date
+SPEIbase_04$Date <- as.POSIXct(SPEIbase_04$Date, tz = "GMT", format = "%Y-%m-%d")
+
+#### compare SPEI versions ####
+ggplot() +
+  geom_path(data = CO_SPEI_all, aes(x = Date, y = SPEI_4), col = "darkgreen") +
+  geom_path(data = SPEIbase_04[lubridate::year(SPEIbase_04$Date) %in% 1997:2010,], aes(x = Date, y = SPEI_04), col = "darkblue") +
+  theme_classic()
+
 
 #### Calculate SPEI for CO Dataset (by species) #####
 ### Set up Julian day/month info ###
