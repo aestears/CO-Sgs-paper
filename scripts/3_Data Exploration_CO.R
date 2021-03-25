@@ -68,6 +68,7 @@ poly_temp <- CO_poly_all
 MyVar <- c("species","quad","year_t","area_t","survives_tplus1","TLP",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
            "SPEI_uniform","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "AvgDiam_mm", "neighbor_area_5",
            "neighbor_area_15", "neighbor_area_10","neighbor_area_20")
 poly_temp <- poly_temp[,MyVar]
@@ -89,6 +90,9 @@ hist(poly_temp$SRL_m_g)
 =======
            "SPEI_unique","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "AvgDiam_mm", "neighbor_area_5",
 >>>>>>> b60fa6d... starting to update script 3
+=======
+           "SPEI_uniform","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "AvgDiam_mm", "neighbor_area_5",
+>>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
            "neighbor_area_15", "neighbor_area_10","neighbor_area_20")
 poly_temp <- poly_temp[,MyVar]
 
@@ -98,10 +102,14 @@ par(mfrow=c(3,4))
 hist(poly_temp$LDMC_g_g)
 hist(poly_temp$TLP)
 hist(poly_temp$survives)
+<<<<<<< HEAD
 hist(poly_temp$SPEI_unique)
 <<<<<<< HEAD
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
+=======
+hist(poly_temp$SPEI_uniform)
+>>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
 hist(poly_temp$SLA_adj_cm2_g)
 hist(poly_temp$RDMC_g_g)
 hist(poly_temp$RTD_g_cm3)
@@ -122,6 +130,7 @@ ylab = "LDMC_g_g", col=c("gray40", "gray60", "gray80"), data = poly_temp, pch=16
 #for TLP models
 par(mfrow = c(1,1))
 MyVar2 <- c("area_t","survives_tplus1","TLP","SPEI_uniform")
+<<<<<<< HEAD
 corrplot(cor(poly_temp[,MyVar2], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #There is some corrrelation between survival and area, but not enough to worry about (0.32)
 
@@ -183,36 +192,38 @@ corvif(poly_temp[,MyVar8])
 #for TLP models
 par(mfrow = c(1,1))
 MyVar2 <- c("area_t","survives_tplus1","TLP","SPEI_unique")
+=======
+>>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
 corrplot(cor(poly_temp[,MyVar2], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #There is some corrrelation between survival and area, but not enough to worry about (0.32)
 
 #for LDMC_g_g models
-MyVar3 <- c("area_t","survives_tplus1","LDMC_g_g","SPEI_unique")
+MyVar3 <- c("area_t","survives_tplus1","LDMC_g_g","SPEI_uniform")
 corrplot(cor(poly_temp[,MyVar3], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #There is some corrrelation between survival and area, but not enough to worry about (0.3)
 
 #for SLA models
-MyVar4 <- c("area_t","survives_tplus1","SLA_adj_cm2_g","SPEI_unique")
+MyVar4 <- c("area_t","survives_tplus1","SLA_adj_cm2_g","SPEI_uniform")
 corrplot(cor(poly_temp[,MyVar4], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #There is some corrrelation between survival and area, but not enough to worry about (0.3)
 
 #for SRL models
-MyVar5 <- c("area_t","survives_tplus1","SRL_m_g","SPEI_unique")
+MyVar5 <- c("area_t","survives_tplus1","SRL_m_g","SPEI_uniform")
 corrplot(cor(poly_temp[,MyVar5], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #There is some corrrelation between survival and area, but not enough to worry about (0.3)
 
 #for RDMC models
-MyVar6<- c("area_t","survives_tplus1","RDMC_g_g","SPEI_unique")
+MyVar6<- c("area_t","survives_tplus1","RDMC_g_g","SPEI_uniform")
 corrplot(cor(poly_temp[,MyVar6], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #There is some corrrelation between survival and area, but not enough to worry about (0.3)
 
 #for RTD models
-MyVar7 <- c("area_t","survives_tplus1","RTD_g_cm3","SPEI_unique")
+MyVar7 <- c("area_t","survives_tplus1","RTD_g_cm3","SPEI_uniform")
 corrplot(cor(poly_temp[,MyVar7], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #There is some corrrelation between survival and area, but not enough to worry about (0.3)
 
 #for RDiam models
-MyVar8 <- c("area_t","survives_tplus1","AvgDiam_mm","SPEI_unique")
+MyVar8 <- c("area_t","survives_tplus1","AvgDiam_mm","SPEI_uniform")
 corrplot(cor(poly_temp[,MyVar8], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #There is some corrrelation between survival and area, but not enough to worry about (0.3)
 
@@ -293,6 +304,7 @@ temp_point <- CO_point_all
 MyVar <- c("species","quad","year","stems","survives","TLP",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
            "SPEI_uniform","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "AvgDiam_mm",
            "neighbors_15", "neighbors_10","neighbors_20")
 temp_point <- temp_point[,MyVar]
@@ -313,6 +325,9 @@ hist(temp_point$SRL_m_g)
 =======
            "SPEI_unique","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "AvgDiam_mm",
 >>>>>>> b60fa6d... starting to update script 3
+=======
+           "SPEI_uniform","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "AvgDiam_mm",
+>>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
            "neighbors_15", "neighbors_10","neighbors_20")
 temp_point <- temp_point[,MyVar]
 
@@ -321,6 +336,7 @@ par(mfrow=c(3,3))
 hist(temp_point$LDMC_g_g)
 hist(temp_point$TLP)
 hist(temp_point$survives)
+<<<<<<< HEAD
 hist(temp_point$SPEI_unique)
 <<<<<<< HEAD
 boxplot(temp_point$stems,
@@ -329,6 +345,9 @@ boxplot(temp_point$stems,
         ylab = "LDMC_g_g", col=c("gray40", "gray60", "gray80"), data = temp_point, pch=16)
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
+=======
+hist(temp_point$SPEI_uniform)
+>>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
 hist(temp_point$SLA_adj_cm2_g)
 hist(temp_point$RDMC_g_g)
 hist(temp_point$RTD_g_cm3)
@@ -347,6 +366,7 @@ hist(temp_point$SRL_m_g)
 par(mfrow=c(1,1))
 #for LOP
 MyVar9 <-c("survives","TLP","SPEI_uniform")  
+<<<<<<< HEAD
 corrplot(cor(temp_point[,MyVar9], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #No correlation between covariates for LOP model
 
@@ -430,36 +450,38 @@ par(mfrow=c(1,1))
 >>>>>>> b60fa6d... starting to update script 3
 #for LOP
 MyVar9 <-c("survives","TLP","SPEI_unique")  
+=======
+>>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
 corrplot(cor(temp_point[,MyVar9], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #No correlation between covariates for LOP model
 
 #for LDMC_g_g
-MyVar10 <-c("survives","LDMC_g_g","SPEI_unique")  
+MyVar10 <-c("survives","LDMC_g_g","SPEI_uniform")  
 corrplot(cor(temp_point[,MyVar10], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #No significant correlation between covariates
 
 #for SLA
-MyVar15 <-c("survives","SLA_adj_cm2_g","SPEI_unique")  
+MyVar15 <-c("survives","SLA_adj_cm2_g","SPEI_uniform")  
 corrplot(cor(temp_point[,MyVar15], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #No significant correlation between covariates
 
 #for RDMC
-MyVar11 <-c("survives","RDMC_g_g","SPEI_unique")  
+MyVar11 <-c("survives","RDMC_g_g","SPEI_uniform")  
 corrplot(cor(temp_point[,MyVar11], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #No significant correlation between covariates
 
 #for SRL
-MyVar12 <-c("survives","SRL_m_g","SPEI_unique")  
+MyVar12 <-c("survives","SRL_m_g","SPEI_uniform")  
 corrplot(cor(temp_point[,MyVar12], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #No significant correlation between covariates
 
 #for RTD
-MyVar13 <-c("survives","RTD_g_cm3","SPEI_unique")  
+MyVar13 <-c("survives","RTD_g_cm3","SPEI_uniform")  
 corrplot(cor(temp_point[,MyVar13], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #No significant correlation between covariates
 
 #for RDiam
-MyVar14 <-c("survives","AvgDiam_mm","SPEI_unique")  
+MyVar14 <-c("survives","AvgDiam_mm","SPEI_uniform")  
 corrplot(cor(temp_point[,MyVar14], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #No significant correlation between covariates
 
@@ -490,7 +512,7 @@ CO_poly_all$logDiffArea <- (log(CO_poly_all$area_tplus1)) - (log(CO_poly_all$are
 poly_temp_growth <- CO_poly_all
 #variables to test
 MyVar <- c("species","quad","year_t","area_t","logDiffArea","TLP",
-           "SPEI_unique","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "neighbor_area_5", "AvgDiam_mm", 
+           "SPEI_uniform","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "neighbor_area_5", "AvgDiam_mm", 
            "neighbor_area_15", "neighbor_area_10","neighbor_area_20")
 poly_temp_growth <- poly_temp_growth[,MyVar]
 
@@ -501,10 +523,14 @@ par(mfrow=c(3,4))
 hist(poly_temp_growth$LDMC_g_g)
 hist(poly_temp_growth$TLP)
 hist(poly_temp_growth$logDiffArea)
+<<<<<<< HEAD
 hist(poly_temp_growth$SPEI_unique)
 <<<<<<< HEAD
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
+=======
+hist(poly_temp_growth$SPEI_uniform)
+>>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
 hist(poly_temp_growth$SLA_adj_cm2_g)
 hist(poly_temp_growth$RDMC_g_g)
 hist(poly_temp_growth$SRL_m_g)
@@ -593,37 +619,37 @@ temp <- poly_temp_growth[,MyVar8] %>%
 ###	Collinearity
 par(mfrow=c(1,1))
 #for TLP models
-MyVar2 <- c("area_t","logDiffArea","TLP","SPEI_unique")
+MyVar2 <- c("area_t","logDiffArea","TLP","SPEI_uniform")
 corrplot(cor(poly_temp_growth[,MyVar2], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 # no substantial correlations between covariates
 
 #for LDMC models
-MyVar3 <- c("area_t","logDiffArea","LDMC_g_g","SPEI_unique")
+MyVar3 <- c("area_t","logDiffArea","LDMC_g_g","SPEI_uniform")
 corrplot(cor(poly_temp_growth[,MyVar3], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 # no substantial correlations between covariates
 
 #for SLA models
-MyVar4 <- c("area_t","logDiffArea","SLA_adj_cm2_g","SPEI_unique")
+MyVar4 <- c("area_t","logDiffArea","SLA_adj_cm2_g","SPEI_uniform")
 corrplot(cor(poly_temp_growth[,MyVar4], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 # no substantial correlations between covariates
 
 #for RDMC models
-MyVar5 <- c("area_t","logDiffArea","RDMC_g_g","SPEI_unique")
+MyVar5 <- c("area_t","logDiffArea","RDMC_g_g","SPEI_uniform")
 corrplot(cor(poly_temp_growth[,MyVar5], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 # no substantial correlations between covariates
 
 #for SRL models
-MyVar6 <- c("area_t","logDiffArea","SRL_m_g","SPEI_unique")
+MyVar6 <- c("area_t","logDiffArea","SRL_m_g","SPEI_uniform")
 corrplot(cor(poly_temp_growth[,MyVar6], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 # no substantial correlations between covariates
 
 #for RTD models
-MyVar7 <- c("area_t","logDiffArea","RTD_g_cm3","SPEI_unique")
+MyVar7 <- c("area_t","logDiffArea","RTD_g_cm3","SPEI_uniform")
 corrplot(cor(poly_temp_growth[,MyVar7], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 # no substantial correlations between covariates
 
 #for RDiam models
-MyVar8 <- c("area_t","logDiffArea","AvgDiam_mm","SPEI_unique")
+MyVar8 <- c("area_t","logDiffArea","AvgDiam_mm","SPEI_uniform")
 corrplot(cor(poly_temp_growth[,MyVar8], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 # no substantial correlations between covariates
 
@@ -762,8 +788,12 @@ CO_point_all <- rbind(rbind(CO_point_SPHfew_3, CO_point_rest))
 #scale variables in polygon dataset
 CO_poly_all$TLP_s <- as.numeric(scale(CO_poly_all$TLP))
 CO_poly_all$LDMC_s <- as.numeric(scale(CO_poly_all$LDMC_g_g))
+<<<<<<< HEAD
 CO_poly_all$SPEI_s <- as.numeric(scale(CO_poly_all$SPEI_unique))
 >>>>>>> 56c8fd3... added scripts for data analysis
+=======
+CO_poly_all$SPEI_s <- as.numeric(scale(CO_poly_all$SPEI_uniform))
+>>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
 CO_poly_all$neighbors_5_s <- as.numeric(scale(CO_poly_all$neighbor_area_5))
 CO_poly_all$neighbors_10_s <- as.numeric(scale(CO_poly_all$neighbor_area_10))
 CO_poly_all$neighbors_15_s <- as.numeric(scale(CO_poly_all$neighbor_area_15))
@@ -822,7 +852,7 @@ CO_poly_all$area_tplus1_s <- as.numeric(log(CO_poly_all$area_tplus1))
 ## scale variables in point dataset
 CO_point_all$TLP_s <- as.numeric(scale(CO_point_all$TLP))
 CO_point_all$LDMC_s <- as.numeric(scale(CO_point_all$LDMC_g_g))
-CO_point_all$SPEI_s <- as.numeric(scale(CO_point_all$SPEI_unique))
+CO_point_all$SPEI_s <- as.numeric(scale(CO_point_all$SPEI_uniform))
 CO_point_all$SLA_s <- as.numeric(scale(CO_point_all$SLA_adj))
 CO_point_all$neighbors_5_s <- as.numeric(scale(CO_point_all$neighbors_5))
 CO_point_all$neighbors_10_s <- as.numeric(scale(CO_point_all$neighbors_10))
