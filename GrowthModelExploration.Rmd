@@ -47,7 +47,8 @@ spei_vals <- c(SPEI_2_5_G, SPEI_97_5_G)
 
 #for TLP_s
 TLP_vals <- seq(min(CO_grams$TLP_s, na.rm = TRUE), max(CO_grams$TLP_s, na.rm = TRUE), length.out = 20)
-TLP_G_dat <- ggpredict(m1_grams, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+TLP_G_dat<- ggpredict(m1_grams, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE, typical = "mean")
+  #the ggpredict() function uses mean values for each of the fixed effects that aren't specified, and population-level values for the random effects
 
 #for LDMC_s
 LDMC_vals <- seq(min(CO_grams$LDMC_s, na.rm = TRUE), max(CO_grams$LDMC_s, na.rm = TRUE), length.out = 20)
@@ -97,8 +98,6 @@ dat_text <- data.frame(
   x1 = c(max(TLP_G_dat$x), max(LDMC_G_dat$x), max(RDMC_G_dat$x), max(RDiam_G_dat$x), max(SLA_G_dat$x)),
   y1 = c(1,1,1,1,1)
 )
-
-#make 'trait' into factor
 
 
 #make a multipanel figure that shows only the graminoid survival probs for 3 traits
@@ -299,7 +298,7 @@ stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDi
 ```
 
 ## *However* there is a problem with this modeling approach that I'm not sure how to solve. 
-If we look at the relationship between trait values and size, we see a negative relationship between TLP and size$_{t+1}$, such that larger plants tend to have a more negative TLP. So this could get in the way of identifying the interative effect of SPEI and trait on size in year$_{t+1}$. 
+If we look at the relationship between trait values and size, we see a negative relationship between TLP and size$_{t+1}$, such that larger plants tend to have a more negative TLP. So this could get in the way of identifying the interactive effect of SPEI and trait on size in year$_{t+1}$. 
 ```{r}
 #fit a model
 modSizeTLP <- lm(CO_grams$area_tplus1_s ~ CO_grams$TLP_s + CO_grams$area_s)
@@ -316,30 +315,34 @@ summary(modSizeTLP)
 ### This is problematic. One way we could potentially get around this is to scale size uniquely for each species. 
 ```{r}
 # scale size_t and size_tplus1 for each species
-spp <- unique(CO_poly_growth$species)
+spp <- unique(CO_grams$species)
 
 
 #make an empty column for size in year t and year t+1 scaled per spp
-CO_poly_growth$area_t_scaleSpp <- NA
-CO_poly_growth$area_tplus1_scaleSpp <- NA
+CO_grams$area_t_scaleSpp <- NA
+CO_grams$area_tplus1_scaleSpp <- NA
 
 for(i in 1:length(spp)) {
-  #uscaled size in year t: CO_poly_growth$area_t
+  #uscaled size in year t: CO_grams$area_t
   #scale size in year t for each species 
-  CO_poly_growth[CO_poly_growth$species==spp[i],"area_t_scaleSpp"] <- 
-  scale(log(CO_poly_growth[CO_poly_growth$species==spp[i],"area_t"]), center = TRUE)
-  #unscaled size in year t+1: CO_poly_growth$area_tplus1
-  CO_poly_growth[CO_poly_growth$species==spp[i],"area_tplus1_scaleSpp"] <- 
-  scale(log(CO_poly_growth[CO_poly_growth$species==spp[i],"area_tplus1"]), center = TRUE)
+  CO_grams[CO_grams$species==spp[i],"area_t_scaleSpp"] <- 
+  scale(log(CO_grams[CO_grams$species==spp[i],"area_t"]), center = TRUE)
+  #unscaled size in year t+1: CO_grams$area_tplus1
+  CO_grams[CO_grams$species==spp[i],"area_tplus1_scaleSpp"] <- 
+  scale(log(CO_grams[CO_grams$species==spp[i],"area_tplus1"]), center = TRUE)
 }
 
 ## Then, scale the size variables again all together to make them normally distributed
-CO_poly_growth$area_t_scaleSpp <- scale(CO_poly_growth$area_t_scaleSpp, center = TRUE)
-CO_poly_growth$area_tplus1_scaleSpp <- scale(CO_poly_growth$area_tplus1_scaleSpp, center = TRUE)
+CO_grams$area_t_scaleSpp <- scale(CO_grams$area_t_scaleSpp, center = TRUE)
+CO_grams$area_tplus1_scaleSpp <- scale(CO_grams$area_tplus1_scaleSpp, center = TRUE)
 ```
 
 ### Now, redo the growth models using this new scaled size variable
 ```{r, echo = FALSE}
+CO_poly_growth <- 
+  CO_grams %>% 
+  filter(!is.na(CO_grams$logDiffArea))
+
 #models
 ## TLP model
 #global model
@@ -495,7 +498,6 @@ mainObs
 ```
 
 
-
 ```{r, echo = FALSE, fig.width=9, fig.height=10}
 
 #comparing size in year t+1 as repsonse scaled together, and scaled by species
@@ -522,6 +524,75 @@ stargazer(mGrowTLP_spp, mGrowLDMC_spp, mGrowSLA_spp, mGrowRDMC_spp, mGrowRTD_spp
 
 This doesn't seem to do much to make the model fit better... so not too sure how to feel about it except for that it makes more sense theoretically. (note: RDMC and RTD models didn't converge)
 
+## Now, fit the survival models with this new scaled size variable, and see how the results change (if at all)
+```{r, echo = FALSE}
+#models
+## TLP model
+#global model
+options(na.action = "na.omit")
+
+CO_surv_TLP_spp <-
+  CO_grams %>% 
+  filter(is.na(TLP_s)==FALSE)
+
+mSurvTLP_spp<- lme4::glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_TLP_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+ 
+
+#LDMC model
+CO_surv_LDMC_spp <-
+  CO_grams %>% 
+  filter(is.na(LDMC_s)==FALSE)
+
+mSurvLDMC_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_LDMC_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+  
+
+CO_surv_SLA_spp <-
+  CO_grams %>% 
+  filter(is.na(SLA_s)==FALSE)
+
+msurvSLA_spp <-  glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_SLA_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+CO_surv_RDMC_spp <-
+  CO_grams %>% 
+  filter(is.na(RDMC_s)==FALSE)
+msurvRDMC_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * RDMC_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_RDMC_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+# singular fit
+
+CO_surv_SRL_spp <-
+  CO_grams %>% 
+  filter(is.na(SRL_s)==FALSE)
+msurvSRL_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_SRL_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+CO_surv_RTD_spp<-
+  CO_grams %>% 
+  filter(is.na(RTD_s)==FALSE)
+msurvRTD_spp  <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_RTD_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+#singular fit 
+
+CO_surv_RDiam_spp<-
+  CO_grams %>% 
+  filter(is.na(RDiam_s)==FALSE)
+msurvRDiam_spp  <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_RDiam_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+#### make growth models without traits for comparison ####
+#fit models
+
+msurvTLP_NO_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_TLP_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+msurvLDMC_NO_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_LDMC_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+msurvSLA_NO_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_SLA_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+msurvRDMC_NO_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_RDMC_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+msurvSRL_NO_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_SRL_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+msurvRTD_NO_spp  <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_RTD_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+msurvRDiam_NO_spp  <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_RDiam_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+```
+
 ### Here's a comparison of TLP and size 
 ```{r}
 #fit a model
@@ -538,7 +609,18 @@ ggplot(data = CO_grow_TLP_spp) +
 summary(modSizeTLP_spp)
 ```
 
+Comparing uniform-scaled and species-scaled size used in survival models
+```{r}
+#uniformly scaled data
+visreg2d(m1_grams, xvar = "SPEI_s", yvar = "TLP_s", scale = "response", plot.type = "persp", zlim = c(0,1))
+
+#species-scaled data
+visreg2d(mSurvTLP_spp, xvar = "SPEI_s", yvar = "TLP_s", scale = "response", plot.type = "persp", zlim = c(0,1))
+```
+
+
 This species-level scaling has dealt with the issue of a significant relationship between TLP and size in t+1, which seems like a good sign. It would be great to get everyone's oppinion on this approach. 
+
 
 
 # Species-level growth models
@@ -838,3 +920,17 @@ ggplot(data = CO_clim) +
   xlab("Month") 
 ```
 I plotted these patterns to check if it makes sense that sometimes SPEI for C4 species is actually higher (wetter) than for C3 species. It does look like in some years, there is more precip later in the summer. So  maybe that pattern of SPEI does make sense. 
+
+
+# Comparing size_t and size_t+1 for each species
+```{r}
+## use CO_poly_growth dataset
+ggplot(data = CO_grow_TLP) +
+  #geom_point(aes(x = area_s, y = area_tplus1_s, col = species)) +
+  geom_smooth(aes(x = area_s, y = area_tplus1_s, col = species), method = "lm", se = FALSE) +
+  theme_classic() +
+  xlab("size_t") +
+  ylab("size_t+1")
+  
+```
+
