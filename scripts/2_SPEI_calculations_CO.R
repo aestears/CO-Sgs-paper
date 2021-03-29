@@ -77,6 +77,7 @@ CO_SPEI_all <- climMonth  %>%
 # The following code imports SPEI values from the SPEIbase dataset (https://spei.csic.es/database.html), which uses PET values estimated using the Penman-Monteith method, which is far superior to the Thornthwaite method. This dataset uses modeled climate data. This might be a better SPEI value to use, even though we have site-level climate data available, since PM is a much better way of estimating PET. 
 # the lat/long of the modeled data is (-104.89, 40.50)
 # downloaded data is for a 4-month SPEI interval
+## USE THIS METRIC ## (better estimate of PET)
 ### load data ###
 ## set wd
 path <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Climate Data/CO Climate" ##file location of climate dataset
@@ -88,10 +89,10 @@ names(SPEIbase_04) <- c("Date", "SPEI_04")
 SPEIbase_04$Date <- as.POSIXct(SPEIbase_04$Date, tz = "GMT", format = "%Y-%m-%d")
 
 #### compare SPEI versions ####
-ggplot() +
-  geom_path(data = CO_SPEI_all, aes(x = Date, y = SPEI_4), col = "darkgreen") +
-  geom_path(data = SPEIbase_04[lubridate::year(SPEIbase_04$Date) %in% 1997:2010,], aes(x = Date, y = SPEI_04), col = "darkblue") +
-  theme_classic()
+# ggplot() +
+#   geom_path(data = CO_SPEI_all, aes(x = Date, y = SPEI_4), col = "darkgreen") +
+#   geom_path(data = SPEIbase_04[lubridate::year(SPEIbase_04$Date) %in% 1997:2010,], aes(x = Date, y = SPEI_04), col = "darkblue") +
+#   theme_classic()
 
 # I think that the SPEIbase version is a bit more reliable, since it uses Penman-Monteith PET. I'll use those values in the rest of the analysis. 
 
