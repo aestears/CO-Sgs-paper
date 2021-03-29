@@ -842,7 +842,6 @@ CO_poly_all$RDMC_s <- as.numeric(scale(CO_poly_all$RDMC_g_g))
 CO_poly_all$RTD_s <- as.numeric(scale(CO_poly_all$RTD_g_cm3))
 CO_poly_all$RDiam_s <- as.numeric(scale(CO_poly_all$AvgDiam_mm))
 CO_poly_all$SRL_s <- as.numeric(scale(CO_poly_all$SRL_best_m_g))
-CO_poly_all$SPEI_uniform_s <- as.numeric(scale(CO_poly_all$SPEI_uniform))
 CO_poly_all$precip_s <- as.numeric(scale(CO_poly_all$Ann.Sum.Precip))
 #log transform area
 CO_poly_all$size_t_log <- as.numeric((log(CO_poly_all$area_t)))
@@ -862,7 +861,6 @@ CO_point_all$RDMC_s <- as.numeric(scale(CO_point_all$RDMC_g_g))
 CO_point_all$RTD_s <- as.numeric(scale(CO_point_all$RTD_g_cm3))
 CO_point_all$RDiam_s <- as.numeric(scale(CO_point_all$AvgDiam_mm))
 CO_point_all$SRL_s <- as.numeric(scale(CO_point_all$SRL_best_m_g))
-CO_point_all$SPEI_uniform_s <- as.numeric(scale(CO_point_all$SPEI_uniform))
 CO_point_all$precip_s <- as.numeric(scale(CO_point_all$Ann.Sum.Precip))
 
 <<<<<<< HEAD
