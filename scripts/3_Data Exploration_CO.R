@@ -845,8 +845,8 @@ CO_poly_all$SRL_s <- as.numeric(scale(CO_poly_all$SRL_best_m_g))
 CO_poly_all$SPEI_uniform_s <- as.numeric(scale(CO_poly_all$SPEI_uniform))
 CO_poly_all$precip_s <- as.numeric(scale(CO_poly_all$Ann.Sum.Precip))
 #log transform area
-CO_poly_all$area_s <- as.numeric((log(CO_poly_all$area_t)))
-CO_poly_all$area_tplus1_s <- as.numeric(log(CO_poly_all$area_tplus1))
+CO_poly_all$size_t_log <- as.numeric((log(CO_poly_all$area_t)))
+CO_poly_all$size_tplus1_log <- as.numeric(log(CO_poly_all$area_tplus1))
 
 
 ## scale variables in point dataset
