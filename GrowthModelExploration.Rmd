@@ -20,6 +20,7 @@ require(cowplot)
 require(lmerTest)
 require(stargazer)
 require(ggeffects)
+require(sjPlot)
 ```
 
 ```{r, echo = FALSE}
@@ -47,24 +48,24 @@ spei_vals <- c(SPEI_2_5_G, SPEI_97_5_G)
 
 #for TLP_s
 TLP_vals <- seq(min(CO_grams$TLP_s, na.rm = TRUE), max(CO_grams$TLP_s, na.rm = TRUE), length.out = 20)
-TLP_G_dat<- ggpredict(m1_grams, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE, typical = "mean")
+TLP_G_dat<- ggpredict(mSurvTLP_grams, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE, typical = "mean")
   #the ggpredict() function uses mean values for each of the fixed effects that aren't specified, and population-level values for the random effects
 
 #for LDMC_s
 LDMC_vals <- seq(min(CO_grams$LDMC_s, na.rm = TRUE), max(CO_grams$LDMC_s, na.rm = TRUE), length.out = 20)
-LDMC_G_dat <- ggpredict(m2_grams, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+LDMC_G_dat <- ggpredict(mSurvLDMC_grams, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 #for RDMC_s
 RDMC_vals <- seq(min(CO_grams$RDMC_s, na.rm = TRUE), max(CO_grams$RDMC_s, na.rm = TRUE), length.out = 20)
-RDMC_G_dat <- ggpredict(m9, terms = c("RDMC_s[RDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+RDMC_G_dat <- ggpredict(mSurvRDMC_grams, terms = c("RDMC_s[RDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 # for RDiam
 RDiam_vals <- seq(min(CO_grams$RDiam_s, na.rm = TRUE), max(CO_grams$RDiam_s, na.rm = TRUE), length.out = 20)
-RDiam_G_dat <- ggpredict(m14, terms = c("RDiam_s[RDiam_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+RDiam_G_dat <- ggpredict(mSurvRDiam_grams, terms = c("RDiam_s[RDiam_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 # for SLA
 SLA_vals <- seq(min(CO_grams$SLA_s, na.rm = TRUE), max(CO_grams$SLA_s, na.rm = TRUE), length.out = 20)
-SLA_G_dat <- ggpredict(m5, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+SLA_G_dat <- ggpredict(mSurvSLA_grams, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 #make a data.frame to contain all of the values for each trait
 GramDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_G_dat$x, GramSurv = TLP_G_dat$predicted, CI_low = TLP_G_dat$conf.low, CI_high = TLP_G_dat$conf.high, SPEI = TLP_G_dat$group, lab = "A")
@@ -117,7 +118,7 @@ gramSurvFigure <- ggplot(data = GramDat) +
   geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
   geom_text(data= dat_text, mapping = aes(x = x1, y = y1, label = sig), size = 3.5, fontface = "bold")
 
-##make figure for for survival
+##make figure for forb survival
 #get 2.5 and 97.5 percentiles of the distribution
 meanSPEI_F <- mean(CO_point_all$SPEI_s)
 sdSPEI_F <- sd(CO_point_all$SPEI_s)
@@ -129,24 +130,24 @@ spei_vals <- c(SPEI_2_5_G, SPEI_97_5_G)
 
 #for TLP_s
 TLP_vals <- seq(min(CO_point_all$TLP_s, na.rm = TRUE), max(CO_point_all$TLP_s, na.rm = TRUE), length.out = 20)
-TLP_F_dat <- ggpredict(m3, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+TLP_F_dat <- ggpredict(mSurvTLP_forbs, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 
 #for LDMC_s
 LDMC_vals <- seq(min(CO_point_all$LDMC_s, na.rm = TRUE), max(CO_point_all$LDMC_s, na.rm = TRUE), length.out = 20)
-LDMC_F_dat <- ggpredict(m4, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+LDMC_F_dat <- ggpredict(mSurvLDMC_forbs, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 #for RDMC_s
 RDMC_vals <- seq(min(CO_point_all$RDMC_s, na.rm = TRUE), max(CO_point_all$RDMC_s, na.rm = TRUE), length.out = 20)
-RDMC_F_dat <- ggpredict(m11, terms = c("RDMC_s[RDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+RDMC_F_dat <- ggpredict(mSurvRDMC_forbs, terms = c("RDMC_s[RDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 #for RDiam_s
 RDiam_vals <- seq(min(CO_point_all$RDiam_s, na.rm = TRUE), max(CO_point_all$RDiam_s, na.rm = TRUE), length.out = 20)
-RDiam_F_dat <- ggpredict(m16, terms = c("RDiam_s[RDiam_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+RDiam_F_dat <- ggpredict(mSurvRDiam_forbs, terms = c("RDiam_s[RDiam_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 #for SLA
-SLA_vals <- seq(min(CO_point_SLA$SLA_s, na.rm = TRUE), max(CO_point_SLA$SLA_s, na.rm = TRUE), length.out = 20)
-SLA_F_dat <- ggpredict(m6, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+SLA_vals <- seq(min(CO_point_all$SLA_s, na.rm = TRUE), max(CO_point_all$SLA_s, na.rm = TRUE), length.out = 20)
+SLA_F_dat <- ggpredict(mSurvSLA_forbs, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 
 #make a data.frame to contain all of the values for each trait
@@ -170,7 +171,7 @@ RugDat_F <- rbind(RugDat_F, data.frame(rug = CO_point_all$SLA_s, trait = "scaled
 #text for labels
 dat_text <- data.frame(
   label = c("C", "F", "I", "L", "O"),
-  sig = c("*,§", "*,§","§", "", "" ),
+  sig = c("*", "*,§","*,§", "", "*,§" ),
   trait = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)", "scaled(Average Root Diameter) (cm)", "scaled(Specific Leaf Area) (g/cm2)"),
   x    = c(min(TLP_F_dat$x),min(LDMC_F_dat$x),min(RDMC_F_dat$x), min(RDiam_F_dat$x), min(SLA_F_dat$x)),
   y     = c(1,1,1, 1, 1),
@@ -179,7 +180,7 @@ dat_text <- data.frame(
 )
 
 
-#make a multipanel figure that shows only the graminoid survival probs for 3 traits
+#make a multipanel figure that shows only the graminoid survival probs for 5 traits
 forbSurvFigure <- ggplot(data = ForbDat) +
   geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
   geom_line(aes(x=x, ForbSurv, col = SPEI))  + 
@@ -245,7 +246,7 @@ RugDat <- rbind(RugDat, data.frame(rug = CO_grow_SLA$SLA_s, trait = "scaled(Spec
 #text for labels
 dat_text <- data.frame(
   label = c("B", "E", "H", "K","N"),
-  sig = c("", "*","", "", "" ), 
+  sig = c("", "","", "", "" ), 
   trait = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)", "scaled(Average Root Diameter) (cm)", "scaled(Specific Leaf Area) (g/cm2)"),
   x    = c(min(TLP_grow_dat$x), min(LDMC_grow_dat$x), min(RDMC_grow_dat$x), min(RDiam_grow_dat$x), min(SLA_grow_dat$x)),
   y     = c(4.4,4.4,4.4,4.4,4.4),
@@ -281,20 +282,17 @@ mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Specific Leaf Area) (c
 mainObs
 ```
 
-
 ## Here is the model output for these new growth models: 
 ```{r, echo = FALSE}
 stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam, type = "text", style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("log(size t+1)"), digits = 2, model.numbers = FALSE, report = c("vc*"), omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
           add.lines =  list(
-            Trait = c("Trait", "-0.16*", "0.12", "0.05", "0.04", "-0.20**", "-0.09", "-0.02") ,
+            Trait = c("Trait", "-0.17**", "0.13", "0.05", "0.05", "-0.20**", "-0.09", "0.02") ,
             Blank = c("", "", "", "", "", "", "", ""),
-            TraitBySPEI = c("Trait:SPEI", "-0.02", "0.05**", "-0.01", "-0.004", "-0.01", "0.01", "0.01"),
+            TraitBySPEI = c("Trait:SPEI", "0.01","-0.02", "-0.01", "-0.01", "0.01", "0.01", "-0.016"),
             Blank = c("", "", "", "", "", "", "", ""),
-            R2 <- c("Marg./Cond. R2", "0.23/0.38", "0.23/0.39", "0.20/0.40", "0.20/0.41", "0.24/0.49", "0.19/0.53", "0.17/0.49"),
-            deltaAIC <- c("Delta AIC", "-10.32", "-5.79", "-13.17", "-12.79", "-9.48", "-12.19", "-13.17")
+            deltaAIC <- c("Delta AIC", "-11.02", "-10.39", "-13.15", "-12.25", "-9.56", "-12.66", "-12.39")
                             ), omit.table.layout = c("-"),
           omit.stat = c("bic", "ll"))
-
 ```
 
 ## *However* there is a problem with this modeling approach that I'm not sure how to solve. 
@@ -312,522 +310,95 @@ ggplot(data = CO_grams) +
 summary(modSizeTLP)
 ```
 
-### This is problematic. One way we could potentially get around this is to scale size uniquely for each species. 
+
+# Comparing size_t and size_t+1 for each species
 ```{r}
-# scale size_t and size_tplus1 for each species
-spp <- unique(CO_grams$species)
-
-
-#make an empty column for size in year t and year t+1 scaled per spp
-CO_grams$area_t_scaleSpp <- NA
-CO_grams$area_tplus1_scaleSpp <- NA
-
-for(i in 1:length(spp)) {
-  #uscaled size in year t: CO_grams$area_t
-  #scale size in year t for each species 
-  CO_grams[CO_grams$species==spp[i],"area_t_scaleSpp"] <- 
-  scale(log(CO_grams[CO_grams$species==spp[i],"area_t"]), center = TRUE)
-  #unscaled size in year t+1: CO_grams$area_tplus1
-  CO_grams[CO_grams$species==spp[i],"area_tplus1_scaleSpp"] <- 
-  scale(log(CO_grams[CO_grams$species==spp[i],"area_tplus1"]), center = TRUE)
-}
-
-## Then, scale the size variables again all together to make them normally distributed
-CO_grams$area_t_scaleSpp <- scale(CO_grams$area_t_scaleSpp, center = TRUE)
-CO_grams$area_tplus1_scaleSpp <- scale(CO_grams$area_tplus1_scaleSpp, center = TRUE)
+## use CO_poly_growth dataset
+ggplot(data = CO_grow_TLP) +
+  #geom_point(aes(x = area_s, y = area_tplus1_s, col = species)) +
+  geom_smooth(aes(x = size_t_log, y = size_tplus1_log, col = species), method = "lm", se = FALSE) +
+  theme_classic() +
+  xlab(expression(ln(size[italic(t)]))) +
+  ylab(expression(ln(size[italic(t+1)]))) +
+  theme(legend.text = element_text(face = "italic")) +
+  guides(col = guide_legend(title = "Species")) +
+  scale_color_brewer(palette = "Set2" )
 ```
 
-### Now, redo the growth models using this new scaled size variable
-```{r, echo = FALSE}
-CO_poly_growth <- 
-  CO_grams %>% 
-  filter(!is.na(CO_grams$logDiffArea))
-
-#models
-## TLP model
-#global model
-options(na.action = "na.omit")
-
-CO_grow_TLP_spp <-
-  CO_poly_growth %>% 
-  filter(is.na(TLP_s)==FALSE)
-
-mGrowTLP_spp<- lme4::lmer(area_tplus1_scaleSpp ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_TLP_spp , control=lmerControl(optimizer="bobyqa"))
-
-#LDMC model
-CO_grow_LDMC_spp<-
-  CO_poly_growth %>% 
-  filter(is.na(LDMC_s)==FALSE)
-mGrowLDMC_spp <- lme4::lmer(area_tplus1_scaleSpp ~  area_t_scaleSpp + neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_LDMC_spp , control=lmerControl(optimizer="bobyqa"))
-
-CO_grow_SLA_spp <-
-  CO_poly_growth %>% 
-  filter(is.na(SLA_s)==FALSE)
-mGrowSLA_spp <- lme4::lmer(area_tplus1_scaleSpp ~  area_t_scaleSpp + neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_SLA_spp, control=lmerControl(optimizer="bobyqa"))
-
-CO_grow_RDMC_spp <-
-  CO_poly_growth %>% 
-  filter(is.na(RDMC_s)==FALSE)
-mGrowRDMC_spp <- lme4::lmer(area_tplus1_scaleSpp ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * RDMC_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_RDMC_spp , control=lmerControl(optimizer="bobyqa"))
-# singular fit
-
-CO_grow_SRL_spp <-
-  CO_poly_growth %>% 
-  filter(is.na(SRL_s)==FALSE)
-mGrowSRL_spp <- lme4::lmer(area_tplus1_scaleSpp ~  area_t_scaleSpp + neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_SRL_spp , control=lmerControl(optimizer="bobyqa"))
-
-CO_grow_RTD_spp<-
-  CO_poly_growth %>% 
-  filter(is.na(RTD_s)==FALSE)
-mGrowRTD_spp  <- lme4::lmer(area_tplus1_scaleSpp ~  area_t_scaleSpp + neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_RTD_spp , control=lmerControl(optimizer="bobyqa"))
-#singular fit 
-
-CO_grow_RDiam_spp<-
-  CO_poly_growth %>% 
-  filter(is.na(RDiam_s)==FALSE)
-mGrowRDiam_spp  <- lme4::lmer(area_tplus1_scaleSpp ~  area_t_scaleSpp + neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_RDiam_spp , control=lmerControl(optimizer="bobyqa"))
-
-#### make growth models without traits for comparison ####
-#fit models
-
-mGrowTLP_NO_spp <- lme4::lmer(area_tplus1_scaleSpp ~  area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_TLP_spp, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
-
-mGrowLDMC_NO_spp <- lme4::lmer(area_tplus1_scaleSpp ~  area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_LDMC_spp, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
-
-mGrowSLA_NO_spp <- lme4::lmer(area_tplus1_scaleSpp ~  area_t_scaleSpp + neighbors_10_s + SPEI_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_SLA_spp, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
-
-mGrowRDMC_NO_spp <- lme4::lmer(area_tplus1_scaleSpp ~  area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_RDMC_spp, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
-
-mGrowSRL_NO_spp <- lme4::lmer(area_tplus1_scaleSpp ~ area_t_scaleSpp + neighbors_10_s + SPEI_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_SRL_spp , control=lmerControl(optimizer="bobyqa"))
-
-mGrowRTD_NO_spp  <- lme4::lmer(area_tplus1_scaleSpp ~ area_t_scaleSpp + neighbors_10_s + SPEI_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_RTD_spp , control=lmerControl(optimizer="bobyqa"))
-
-mGrowRDiam_NO_spp  <- lme4::lmer(area_tplus1_scaleSpp ~ area_t_scaleSpp + neighbors_10_s + SPEI_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_grow_RDiam_spp , control=lmerControl(optimizer="bobyqa"))
-
+# Comparing size_t and growth for each species
+```{r}
+## use CO_poly_growth dataset
+ggplot(data = CO_grow_TLP) +
+  #geom_point(aes(x = size_t_log, y = logDiffArea, col = species)) +
+  geom_smooth(aes(x = size_t_log, y = logDiffArea, col = species), method = "gam", se = FALSE) +
+  theme_classic() +
+  xlab("size_t") +
+  ylab("Log Difference of Area (t to t+1)")
 ```
 
-### Here are figures showing the model results
-```{r, echo = FALSE, fig.width=9, fig.height=10}
-## 'gramSurvFigure' is the same as before
+# Interaction between SPEI and size t+1 
+### color coded by trait value
+```{r}
+plot(Effect(focal.predictors=c("SPEI_s", "species"), mod = mGrowTLP))
 
-## 'forbSurvFigure' is the same as before
+sjPlot::sjp.lmer(mGrowTLP, vars = "SPEI_s", type = "ri.slope")
+```
 
-## make figure for graminoid growth models 
-#get 2.5 and 97.5 percentiles of the distribution
-meanSPEI <- mean(CO_grow_TLP_spp$SPEI_s)
-sdSPEI <- sd(CO_grow_TLP_spp$SPEI_s)
-#get 97.5 quantile of the distribution
-SPEI_97_5 <- qnorm(.975, meanSPEI, sdSPEI) 
-SPEI_2_5 <- qnorm(.025, meanSPEI, sdSPEI)
-
-spei_vals <- c(SPEI_2_5, SPEI_97_5)
+Compare SPEI and size_t+1 accross a spectrum of TLP for graminoids 
+```{r}
+#get unique values of TLP 
+trait_vals <- sort(unique(CO_grow_TLP$TLP_s))
 
 #for TLP_s
-TLP_vals <- seq(min(CO_grow_TLP_spp$TLP_s, na.rm = TRUE), max(CO_grow_TLP_spp$TLP_s, na.rm = TRUE), length.out = 20)
-TLP_grow_dat <- ggpredict(mGrowTLP_spp, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed")
-
-#for LDMC_s
-LDMC_vals <- seq(min(CO_grow_LDMC_spp$LDMC_s, na.rm = TRUE), max(CO_grow_LDMC_spp$LDMC_s, na.rm = TRUE), length.out = 20)
-LDMC_grow_dat <- ggpredict(mGrowLDMC_spp, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed")
-
-#for RDMC_s
-RDMC_vals <- seq(min(CO_grow_RDMC_spp$RDMC_s, na.rm = TRUE), max(CO_grow_RDMC_spp$RDMC_s, na.rm = TRUE), length.out = 20)
-RDMC_grow_dat <- ggpredict(mGrowRDMC_spp, terms = c("RDMC_s[RDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed")
-
-#for RDiam_s
-RDiam_vals <- seq(min(CO_grow_RDiam_spp$RDiam_s, na.rm = TRUE), max(CO_grow_RDiam_spp$RDiam_s, na.rm = TRUE), length.out = 20)
-RDiam_grow_dat <- ggpredict(mGrowRDiam_spp, terms = c("RDiam_s[RDiam_vals]", "SPEI_s[spei_vals]"), type = "fixed")
-
-#for SLA_s
-SLA_vals <- seq(min(CO_grow_SLA_spp$SLA_s, na.rm = TRUE), max(CO_grow_SLA_spp$SLA_s, na.rm = TRUE), length.out = 20)
-SLA_grow_dat <- ggpredict(mGrowSLA_spp, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed")
-
+SPEI_vals <- seq(min(CO_grow_TLP$SPEI_s, na.rm = TRUE), max(CO_grow_TLP$SPEI_s, na.rm = TRUE), length.out = 20)
+TLP_grow_dat <- ggpredict(mGrowTLP, terms = c( "SPEI_s[SPEI_vals]", "TLP_s[trait_vals]"), type = "fixed")
 
 #make a data.frame to contain all of the values for each trait
-GrowthDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_grow_dat$x, Growth = TLP_grow_dat$predicted, CI_low = TLP_grow_dat$conf.low, CI_high = TLP_grow_dat$conf.high, SPEI = TLP_grow_dat$group)
-GrowthDat <- rbind(GrowthDat, data.frame(trait = c("scaled(Leaf Dry Matter Content) (g/g)"), x = LDMC_grow_dat$x, Growth = LDMC_grow_dat$predicted, CI_low = LDMC_grow_dat$conf.low, CI_high = LDMC_grow_dat$conf.high, SPEI = LDMC_grow_dat$group))
-GrowthDat <- rbind(GrowthDat, data.frame(trait = c("scaled(Root Dry Matter Content) (g/g)" ), x = RDMC_grow_dat$x, Growth = RDMC_grow_dat$predicted, CI_low = RDMC_grow_dat$conf.low, CI_high = RDMC_grow_dat$conf.high, SPEI = RDMC_grow_dat$group))
-GrowthDat <- rbind(GrowthDat, data.frame(trait = c("scaled(Average Root Diameter) (cm)"), x = RDiam_grow_dat$x, Growth = RDiam_grow_dat$predicted, CI_low = RDiam_grow_dat$conf.low, CI_high = RDiam_grow_dat$conf.high, SPEI = RDiam_grow_dat$group))
-GrowthDat <- rbind(GrowthDat, data.frame(trait = c("scaled(Specific Leaf Area) (g/cm2)"), x = SLA_grow_dat$x, Growth = SLA_grow_dat$predicted, CI_low = SLA_grow_dat$conf.low, CI_high = SLA_grow_dat$conf.high, SPEI = SLA_grow_dat$group))
+SPEIDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_grow_dat$x, Growth = TLP_grow_dat$predicted, CI_low = TLP_grow_dat$conf.low, CI_high = TLP_grow_dat$conf.high, TLP = TLP_grow_dat$group)
 
 #make a data.frame with data for the rug plot
-RugDat <- data.frame(rug = CO_grow_TLP_spp$TLP_s, trait = "scaled(Turgor Loss Point) (MPa)")
-RugDat <- rbind(RugDat, data.frame(rug = CO_grow_LDMC_spp$LDMC_s, trait = "scaled(Leaf Dry Matter Content) (g/g)"))
-RugDat <- rbind(RugDat, data.frame(rug = CO_grow_RDMC_spp$RDMC_s, trait = "scaled(Root Dry Matter Content) (g/g)"))
-RugDat <- rbind(RugDat, data.frame(rug = CO_grow_RDiam_spp$RDiam_s, trait = "scaled(Average Root Diameter) (cm)"))
-RugDat <- rbind(RugDat, data.frame(rug = CO_grow_SLA_spp$SLA_s, trait = "scaled(Specific Leaf Area) (g/cm2)"))
+RugDat <- data.frame(rug = CO_grow_TLP$SPEI_s, trait = "scaled(SPEI)")
 
-
-#text for labels
-dat_text <- data.frame(
-  label = c("B", "E", "H", "K","N"),
-  sig = c("", "*","", "", "" ), 
-  trait = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)", "scaled(Average Root Diameter) (cm)", "scaled(Specific Leaf Area) (g/cm2)"),
-  x    = c(min(TLP_grow_dat$x), min(LDMC_grow_dat$x), min(RDMC_grow_dat$x), min(RDiam_grow_dat$x), min(SLA_grow_dat$x)),
-  y     = c(1,1,1,1,1),
-  x1 = c(max(TLP_grow_dat$x), max(LDMC_grow_dat$x), max(RDMC_grow_dat$x), max(RDiam_grow_dat$x), max(SLA_grow_dat$x)),
-  y1 = c(1,1,1,1,1)
-)
-
-#make a multipanel figure
-GrowthExtraFig_spp <- ggplot(data = GrowthDat) +
-  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
-  geom_line(aes(x=x, Growth, col = SPEI))  + 
+#make a figure
+ ggplot(data = SPEIDat) +
+  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = TLP), alpha = 0.3) +
+  geom_line(aes(x=x, Growth, col = TLP))  + 
   geom_rug(aes(x = rug), data = RugDat) +
-  labs(title = "Graminoid Growth (Scaled by Species)") +
-  xlab(NULL) +
+  labs(title = "Graminoid Growth") +
+  xlab("SPEI") +
   ylab(expression(size[t+1])) +
-  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
-  scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
-  #geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
-  #geom_text(data = dat_text, mapping = aes(x = x1, y = y1, label = sig), size = 3.5, fontface = "bold") +
-  facet_wrap(.~factor(trait, levels = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)","scaled(Average Root Diameter) (cm)", "scaled(Specific Leaf Area) (g/cm2)")), scales = "free_x", strip.position =  "bottom", ncol = 1) +
-  theme_classic()+
-  theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
-
-mainObs <- cowplot::plot_grid( gramSurvFigure, GrowthExtraFig_spp, forbSurvFigure, ncol = 3, align = "h", axis = "tb", rel_widths = c(.9,1, .9)) %>% 
-  cowplot::ggdraw() + 
-  cowplot::draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .07, y = .059, width = .92, height = .0227) +
-  cowplot::draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .07, y = .006, width = .33, height = .05) + #cover up left legend 
-  cowplot::draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .75, y = .006, width = .33, height = .05) #cover up right legend
-
-mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Specific Leaf Area) (c"*m^2*"/g)"),x = .5, y = 3, size = 9))
-mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Specific Leaf Area) (c"*m^2*"/g)"),x = .19, y = 4, size = 9))
-mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Specific Leaf Area) (c"*m^2*"/g)"),x = .873, y = 5, size = 9))
-mainObs
-```
-
-
-```{r, echo = FALSE, fig.width=9, fig.height=10}
-
-#comparing size in year t+1 as repsonse scaled together, and scaled by species
-survCompare <- cowplot::plot_grid( GrowthExtraFig, GrowthExtraFig_spp, ncol = 2, align = "h", rel_widths = c(.9,1, .9)) %>% 
-  cowplot::ggdraw()
-survCompare
-```
-
-
-### Here are the model coefficients and summary statistics
-
-```{r, echo = FALSE, fig.width=9, fig.height=10}
-stargazer(mGrowTLP_spp, mGrowLDMC_spp, mGrowSLA_spp, mGrowRDMC_spp, mGrowRTD_spp, mGrowSRL_spp, mGrowRDiam_spp, type = "text", style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("log(size t+1)"), digits = 2, model.numbers = FALSE, report = c("vc*"), omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
-          add.lines =  list(
-            Trait = c("Trait", "-0.015", "0.016", "0.020", "0.031***", "-0.030**", "-0.019", "0.002") ,
-            Blank = c("", "", "", "", "", "", "", ""),
-            TraitBySPEI = c("Trait:SPEI", "-0.008", " 0.028**", "-0.009", " -0.007", "-0.008", "0.006 ", "0.005 "),
-            Blank = c("", "", "", "", "", "", "", ""),
-            R2 <- c("Marg./Cond. R2", "0.236/0.310", "0.236/0.305", "0.232/0.303", "0.254 / NA", "0.268 / NA", "0.246 / 0.334", "0.197 / 0.290"),
-            deltaAIC <- c("Delta AIC", "-16.53", "-10.15", "-15.67", "-13.57", "-12.54", "-16.70", "-17.93")
-                            ), omit.table.layout = c("-"),
-          omit.stat = c("bic", "ll"))
-```   
-
-This doesn't seem to do much to make the model fit better... so not too sure how to feel about it except for that it makes more sense theoretically. (note: RDMC and RTD models didn't converge)
-
-## Now, fit the survival models with this new scaled size variable, and see how the results change (if at all)
-```{r, echo = FALSE}
-#models
-## TLP model
-#global model
-options(na.action = "na.omit")
-
-CO_surv_TLP_spp <-
-  CO_grams %>% 
-  filter(is.na(TLP_s)==FALSE)
-
-mSurvTLP_spp<- lme4::glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_TLP_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
- 
-
-#LDMC model
-CO_surv_LDMC_spp <-
-  CO_grams %>% 
-  filter(is.na(LDMC_s)==FALSE)
-
-mSurvLDMC_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * LDMC_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_LDMC_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-  
-
-CO_surv_SLA_spp <-
-  CO_grams %>% 
-  filter(is.na(SLA_s)==FALSE)
-
-msurvSLA_spp <-  glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * SLA_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_SLA_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-CO_surv_RDMC_spp <-
-  CO_grams %>% 
-  filter(is.na(RDMC_s)==FALSE)
-msurvRDMC_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * RDMC_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_RDMC_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-# singular fit
-
-CO_surv_SRL_spp <-
-  CO_grams %>% 
-  filter(is.na(SRL_s)==FALSE)
-msurvSRL_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * SRL_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_SRL_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-CO_surv_RTD_spp<-
-  CO_grams %>% 
-  filter(is.na(RTD_s)==FALSE)
-msurvRTD_spp  <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * RTD_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_RTD_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-#singular fit 
-
-CO_surv_RDiam_spp<-
-  CO_grams %>% 
-  filter(is.na(RDiam_s)==FALSE)
-msurvRDiam_spp  <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_RDiam_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-#### make growth models without traits for comparison ####
-#fit models
-
-msurvTLP_NO_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_TLP_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-msurvLDMC_NO_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_LDMC_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-msurvSLA_NO_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_SLA_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-msurvRDMC_NO_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_RDMC_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-msurvSRL_NO_spp <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_SRL_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-msurvRTD_NO_spp  <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_RTD_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-msurvRDiam_NO_spp  <- glmer(survives_tplus1 ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t + (area_t_scaleSpp|species) + (1|quad) + (1|year_t), data = CO_surv_RDiam_spp, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
-
-```
-
-### Here's a comparison of TLP and size 
-```{r}
-#fit a model
-modSizeTLP_spp <- lm(as.numeric(CO_grow_TLP_spp$area_tplus1_scaleSpp) ~
-                       as.numeric(CO_grow_TLP_spp$TLP_s) + 
-                       as.numeric(CO_grow_TLP_spp$area_t_scaleSpp))
-
-ggplot(data = CO_grow_TLP_spp) +
-  geom_point(aes(x = TLP_s, y = area_tplus1_scaleSpp), colour = "darkblue", pch = 1) +
-  xlab("TLP") +
-  ylab("size_t+1") + 
-  geom_smooth(aes(x = TLP_s, y = area_tplus1_scaleSpp),  method = "lm", col = "black", lwd = .75) + 
+  scale_color_manual(labels = c("Buchloe dactyloides", "Schedonnardus paniculatus", "Bouteloua gracilis", "Stipa comata", "Aristida longiseta" , "Sporobolus cryptandrus", "Sitanion hystrix"), values = scales::hue_pal(h = c(0, 180))(7)) +
+  scale_fill_manual(values = scales::hue_pal(h = c(0, 180))(7)) +
   theme_classic()
-summary(modSizeTLP_spp)
 ```
-
-Comparing uniform-scaled and species-scaled size used in survival models
+Compare SPEI and P(survival) accross a spectrum of TLP for graminoids 
 ```{r}
-#uniformly scaled data
-visreg2d(m1_grams, xvar = "SPEI_s", yvar = "TLP_s", scale = "response", plot.type = "persp", zlim = c(0,1))
+#get unique values of TLP 
+trait_vals <- sort(unique(CO_poly_TLP$TLP_s))
 
-#species-scaled data
-visreg2d(mSurvTLP_spp, xvar = "SPEI_s", yvar = "TLP_s", scale = "response", plot.type = "persp", zlim = c(0,1))
-```
+#for TLP_s
+SPEI_vals <- seq(min(CO_poly_TLP$SPEI_s, na.rm = TRUE), max(CO_poly_TLP$SPEI_s, na.rm = TRUE), length.out = 20)
+TLP_grow_dat <- ggpredict(mSurvTLP_grams, terms = c( "SPEI_s[SPEI_vals]", "TLP_s[trait_vals]"), type = "fixed")
 
+#make a data.frame to contain all of the values for each trait
+SPEIDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_grow_dat$x, Growth = TLP_grow_dat$predicted, CI_low = TLP_grow_dat$conf.low, CI_high = TLP_grow_dat$conf.high, TLP = TLP_grow_dat$group)
 
-This species-level scaling has dealt with the issue of a significant relationship between TLP and size in t+1, which seems like a good sign. It would be great to get everyone's oppinion on this approach. 
+#make a data.frame with data for the rug plot
+RugDat <- data.frame(rug = CO_poly_TLP$SPEI_s, trait = "scaled(SPEI)")
 
-
-
-# Species-level growth models
-This table shows coefficients and summary statistics of species-level models of plant size in *t+1* that don't contain trait as a fixed effect or an interaction. 
-These models use the following structure:
-```{r, eval=FALSE}
-lme4::lmer(area_tplus1_s ~ area_s + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + 
-             (1|year_t), data = CO_grow_TLP[CO_grow_TLP$species == "Sporobolus cryptandrus",] ,
-           control=lmerControl(optimizer="bobyqa"))
-```
-
-\* Important note: the model for *Schedonardus paniculatus* did not converge, likely because there are only 17 observations for that species. 
-\* Another Important Note: these models use a response variable of size_t+1 that has been scaled accross the entire dataset, not size_t+1 scaled by species. 
-```{r, echo = FALSE}
-stargazer(mGrowTLP_ARILON, mGrowTLP_BOUDAC, mGrowTLP_BOUGRA, mGrowTLP_ELYELY, mGrowTLP_SCHPAN, mGrowTLP_SPOCRY, mGrowTLP_STICOM, title = "Species-level models of size_t+1 (w/out traits)", type = "text", style = "all2", column.labels = c("ARILON", "BOUDAC", "BOUGRA", "ELYELY","SCHPAN", "SPOCRY", "STICOM"), dep.var.labels = c("log(size t+1)"), digits = 2, model.numbers = FALSE)
-```
-
-## These figures show *the effect of size_t on size_t+1* for species-level models
-
-```{r, echo = FALSE, fig.width=9, fig.height=9}
-#what is the variable of interest in these models w/out traits? size_t? or SPEI?
-## for ARILON
-## plots of the effect of size_t on growth
-grid.arrange(#effect of size_t
-plot(Effect("area_s", 
-            mod = mGrowTLP_ARILON), main = "ARILON"),
-#effect of size_t
-plot(Effect("area_s", 
-            mod = mGrowTLP_BOUGRA), main = "BOUGRA"),
-#effect of size_t
-plot(Effect("area_s", 
-            mod = mGrowTLP_BOUDAC), main = "BOUDAC"),
-#effect of size_t
-plot(Effect("area_s", 
-            mod = mGrowTLP_SCHPAN), main = "SCHPAN"),
-#effect of size_t
-plot(Effect("area_s", 
-            mod = mGrowTLP_ELYELY), main = "ELYELY"),
-#effect of size_t
-plot(Effect("area_s", 
-            mod = mGrowTLP_SPOCRY), main = "SPOCRY"),
-#effect of size_t
-plot(Effect("area_s", 
-            mod = mGrowTLP_STICOM), main = "STICOM"))
-```
-
-## These figures show *the effect of SPEI on size_t+1* for species-level models
-
-```{r, echo = FALSE, fig.width=9, fig.height=9}
-## plots for the effect of SPEI on growth
-grid.arrange(#effect of SPEI
-plot(Effect("SPEI_s", 
-            mod = mGrowTLP_ARILON), main = "ARILON"),
-#effect of SPEI
-plot(Effect("SPEI_s", 
-            mod = mGrowTLP_BOUGRA), main = "BOUGRA"),
-## for BOUDAC
-#effect of SPEI
-plot(Effect("SPEI_s", 
-           mod = mGrowTLP_BOUDAC), main = "BOUDAC"),
-## for SCHPAN
-#effect of SPEI
-plot(Effect("SPEI_s", 
-            mod = mGrowTLP_SCHPAN), main = "SCHPAN"),
-## for ELYELY
-#effect of SPEI
-plot(Effect("SPEI_s", 
-            mod = mGrowTLP_ELYELY), main = "ELYELY"),
-## for SPOCRY
-#effect of SPEI
-plot(Effect("SPEI_s", 
-            mod = mGrowTLP_SPOCRY), main = "SPOCRY"),
-## for STICOM
-#effect of SPEI
-plot(Effect("SPEI_s", 
-            mod = mGrowTLP_STICOM), main = "STICOM"), name = "Effect of SPEI on size_t+1")
-
-```
-
-## This figure and model compares the effect of SPEI on size in t+1 to TLP value accross species. There is not a significant relationship between SPEI effect and TLP accross the modeled species, which is good sign. There is not a species that responds to SPEI so strongly that it is individually driving the relationship in our cross-species models. 
-```{r}
-#removes SCHPAN results, since the model for that species doesn't converge
-sppTest <- data.frame(spp = c("ARILON", "BOUDAC", "BOUGRA", "ELYELY",  "SPOCRY", "STICOM"), 
-                      SPEI_coef = c(-0.03,  0.03,0.21,0.14,0.07,0.30), 
-                      TLP = c(-2.482760, -3.329160, -2.822600, -2.041160,  -2.438216, -2.822216))
-
-modSPEI_TLP <- lm(SPEI_coef ~ TLP , data = sppTest)
-
-ggplot(data = sppTest) +
-  geom_point(aes(y = SPEI_coef, x = TLP, col = spp)) +
-  xlab("Turgor Loss Point") + 
-  ylab("SPEI coefficient") +
-  geom_smooth(aes(y = SPEI_coef, x = TLP), method = "lm", se = FALSE, col = "black", lwd = .5) +
+#make a figure
+ ggplot(data = SPEIDat) +
+  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = TLP), alpha = 0.1) +
+  geom_line(aes(x=x, Growth, col = TLP))  + 
+  geom_rug(aes(x = rug), data = RugDat) +
+  labs(title = "") +
+  xlab("SPEI") +
+  ylab("P(graminoid survival)") +
+  ylim(c(0,1)) +
+  scale_color_manual(labels = c("Buchloe dactyloides", "Schedonnardus paniculatus", "Carex eleocharis", "Bouteloua gracilis", "Stipa comata", "Aristida longiseta" , "Sporobolus cryptandrus", "Sitanion hystrix"), values = scales::hue_pal(h = c(0, 180))(8)) +
+  scale_fill_manual(values = scales::hue_pal(h = c(0, 180))(8)) +
   theme_classic()
-
-summary(modSPEI_TLP)
 ```
-
-## Now do all this stuff again, but with the species-scaled size values
-```{r}
-#fit models by species w/ species scaled data
-
-mGrow_ARILON_spp<- lme4::lmer(area_tplus1_scaleSpp ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP_spp[CO_grow_TLP_spp$species == "Aristida longiseta",] , control=lmerControl(optimizer="bobyqa"))
-
-mGrow_BOUGRA_spp<- lme4::lmer(area_tplus1_scaleSpp ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP_spp[CO_grow_TLP_spp$species == "Bouteloua gracilis",] , control=lmerControl(optimizer="bobyqa"))
-
-mGrow_BOUDAC_spp<- lme4::lmer(area_tplus1_scaleSpp ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP_spp[CO_grow_TLP_spp$species == "Buchloe dactyloides",] , control=lmerControl(optimizer="bobyqa"))
-
-mGrow_SCHPAN_spp<- lme4::lmer(area_tplus1_scaleSpp ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP_spp[CO_grow_TLP_spp$species == "Schedonnardus paniculatus",] , control=lmerControl(optimizer="bobyqa"))
-#fit is Singular (only 17 data points, so makes sense...)
-
-mGrow_ELYELY_spp<- lme4::lmer(area_tplus1_scaleSpp ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP_spp[CO_grow_TLP_spp$species == "Sitanion hystrix",] , control=lmerControl(optimizer="bobyqa"))
-
-mGrow_SPOCRY_spp<- lme4::lmer(area_tplus1_scaleSpp ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP_spp[CO_grow_TLP_spp$species == "Sporobolus cryptandrus",] , control=lmerControl(optimizer="bobyqa"))
-
-mGrow_STICOM_spp<- lme4::lmer(area_tplus1_scaleSpp ~ area_t_scaleSpp + neighbors_10_s + SPEI_s  + nearEdge_t  + (1|quad) + (1|year_t), data = CO_grow_TLP_spp[CO_grow_TLP_spp$species == "Stipa comata",] , control=lmerControl(optimizer="bobyqa"))
-
-```
-
-
-```{r, echo = FALSE}
-stargazer(mGrow_ARILON_spp, mGrow_BOUDAC_spp, mGrow_BOUGRA_spp, mGrow_ELYELY_spp, mGrow_SCHPAN_spp, mGrow_SPOCRY_spp, mGrow_STICOM_spp, title = "Species-level models of size_t+1 (w/out traits)", type = "text", style = "all2", column.labels = c("ARILON", "BOUDAC", "BOUGRA", "ELYELY","SCHPAN", "SPOCRY", "STICOM"), dep.var.labels = c("log(size t+1)"), digits = 2, model.numbers = FALSE)
-```
-
-## These figures show *the effect of size_t on size_t+1* for species-level models w/ species-scaled size
-
-```{r, echo = FALSE, fig.width=9, fig.height=9}
-#what is the variable of interest in these models w/out traits? size_t? or SPEI?
-## for ARILON
-## plots of the effect of size_t on growth
-grid.arrange(#effect of size_t
-plot(Effect("area_t_scaleSpp", 
-            mod = mGrow_ARILON_spp), main = "ARILON"),
-#effect of size_t
-plot(Effect("area_t_scaleSpp", 
-            mod = mGrow_BOUGRA_spp), main = "BOUGRA"),
-#effect of size_t
-plot(Effect("area_t_scaleSpp", 
-            mod = mGrow_BOUDAC_spp), main = "BOUDAC"),
-#effect of size_t
-plot(Effect("area_t_scaleSpp", 
-            mod = mGrow_SCHPAN_spp), main = "SCHPAN"),
-#effect of size_t
-plot(Effect("area_t_scaleSpp", 
-            mod = mGrow_ELYELY_spp), main = "ELYELY"),
-#effect of size_t
-plot(Effect("area_t_scaleSpp", 
-            mod = mGrow_SPOCRY_spp), main = "SPOCRY"),
-#effect of size_t
-plot(Effect("area_t_scaleSpp", 
-            mod = mGrow_STICOM_spp), main = "STICOM"))
-```
-
-## These figures show *the effect of SPEI on size_t+1* for species-level models
-
-```{r, echo = FALSE, fig.width=9, fig.height=9}
-## plots for the effect of SPEI on growth
-grid.arrange(#effect of SPEI
-plot(Effect("SPEI_s", 
-            mod = mGrow_ARILON_spp), main = "ARILON"),
-#effect of SPEI
-plot(Effect("SPEI_s", 
-            mod = mGrow_BOUGRA_spp), main = "BOUGRA"),
-## for BOUDAC
-#effect of SPEI
-plot(Effect("SPEI_s", 
-           mod = mGrow_BOUDAC_spp), main = "BOUDAC"),
-## for SCHPAN
-#effect of SPEI
-plot(Effect("SPEI_s", 
-            mod = mGrow_SCHPAN_spp), main = "SCHPAN"),
-## for ELYELY
-#effect of SPEI
-plot(Effect("SPEI_s", 
-            mod = mGrow_ELYELY_spp), main = "ELYELY"),
-## for SPOCRY
-#effect of SPEI
-plot(Effect("SPEI_s", 
-            mod = mGrow_SPOCRY_spp), main = "SPOCRY"),
-## for STICOM
-#effect of SPEI
-plot(Effect("SPEI_s", 
-            mod = mGrow_STICOM_spp), main = "STICOM"), name = "Effect of SPEI on size_t+1")
-
-```
-
-## This figure and model compares the effect of SPEI on size in t+1 to TLP value accross species. There is not a significant relationship between SPEI effect and TLP accross the modeled species, which is good sign. There is not a species that responds to SPEI so strongly that it is individually driving the relationship in our cross-species models. 
-```{r}
-#removes SCHPAN results, since the model for that species doesn't converge
-sppTest <- data.frame(spp = c("ARILON", "BOUDAC", "BOUGRA", "ELYELY",  "SPOCRY", "STICOM"), 
-                      SPEI_coef = c(-0.02, 0.02, 0.13, 0.12,0.04,0.23), 
-                      TLP = c(-2.482760, -3.329160, -2.822600, -2.041160,  -2.438216, -2.822216))
-
-modSPEI_TLP <- lm(SPEI_coef ~ TLP , data = sppTest)
-
-ggplot(data = sppTest) +
-  geom_point(aes(y = SPEI_coef, x = TLP, col = spp)) +
-  xlab("Turgor Loss Point") + 
-  ylab("SPEI coefficient") +
-  geom_smooth(aes(y = SPEI_coef, x = TLP), method = "lm", se = FALSE, col = "black", lwd = .5) +
-  theme_classic()
-
-summary(modSPEI_TLP)
-```
-
-There is not a significant relationship between the effect SPEI and TLP for this approach either, which is good. 
-
 
 # Comparing Unique vs. Uniform SPEI  (for graminoids only)s
 The following results are for graminoids only
@@ -922,15 +493,4 @@ ggplot(data = CO_clim) +
 I plotted these patterns to check if it makes sense that sometimes SPEI for C4 species is actually higher (wetter) than for C3 species. It does look like in some years, there is more precip later in the summer. So  maybe that pattern of SPEI does make sense. 
 
 
-# Comparing size_t and size_t+1 for each species
-```{r}
-## use CO_poly_growth dataset
-ggplot(data = CO_grow_TLP) +
-  #geom_point(aes(x = area_s, y = area_tplus1_s, col = species)) +
-  geom_smooth(aes(x = area_s, y = area_tplus1_s, col = species), method = "lm", se = FALSE) +
-  theme_classic() +
-  xlab("size_t") +
-  ylab("size_t+1")
-  
-```
 

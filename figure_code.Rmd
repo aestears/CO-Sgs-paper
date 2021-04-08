@@ -34,9 +34,10 @@ load("./scripts/script4_output.RData") #change the file name to the most current
 ```
 
 Make a figure of model results for LDMC, RDMC, and TLP for forb and gram survival  
-Make figure for graminoids
+
+Make figure for graminoid survival
 ```{r}
-#make figure for graminoid survival
+## make figure for graminoid survival
 
 #get 2.5 and 97.5 percentiles of the distribution
 meanSPEI_G <- mean(CO_grams$SPEI_s, na.rm = TRUE)
@@ -49,23 +50,24 @@ spei_vals <- c(SPEI_2_5_G, SPEI_97_5_G)
 
 #for TLP_s
 TLP_vals <- seq(min(CO_grams$TLP_s, na.rm = TRUE), max(CO_grams$TLP_s, na.rm = TRUE), length.out = 20)
-TLP_G_dat <- ggpredict(m1_grams, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+TLP_G_dat<- ggpredict(mSurvTLP_grams, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE, typical = "mean")
+  #the ggpredict() function uses mean values for each of the fixed effects that aren't specified, and population-level values for the random effects
 
 #for LDMC_s
 LDMC_vals <- seq(min(CO_grams$LDMC_s, na.rm = TRUE), max(CO_grams$LDMC_s, na.rm = TRUE), length.out = 20)
-LDMC_G_dat <- ggpredict(m2_grams, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+LDMC_G_dat <- ggpredict(mSurvLDMC_grams, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 #for RDMC_s
 RDMC_vals <- seq(min(CO_grams$RDMC_s, na.rm = TRUE), max(CO_grams$RDMC_s, na.rm = TRUE), length.out = 20)
-RDMC_G_dat <- ggpredict(m9, terms = c("RDMC_s[RDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+RDMC_G_dat <- ggpredict(mSurvRDMC_grams, terms = c("RDMC_s[RDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 # for RDiam
 RDiam_vals <- seq(min(CO_grams$RDiam_s, na.rm = TRUE), max(CO_grams$RDiam_s, na.rm = TRUE), length.out = 20)
-RDiam_G_dat <- ggpredict(m14, terms = c("RDiam_s[RDiam_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+RDiam_G_dat <- ggpredict(mSurvRDiam_grams, terms = c("RDiam_s[RDiam_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 # for SLA
 SLA_vals <- seq(min(CO_grams$SLA_s, na.rm = TRUE), max(CO_grams$SLA_s, na.rm = TRUE), length.out = 20)
-SLA_G_dat <- ggpredict(m5, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+SLA_G_dat <- ggpredict(mSurvSLA_grams, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 #make a data.frame to contain all of the values for each trait
 GramDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_G_dat$x, GramSurv = TLP_G_dat$predicted, CI_low = TLP_G_dat$conf.low, CI_high = TLP_G_dat$conf.high, SPEI = TLP_G_dat$group, lab = "A")
@@ -79,15 +81,12 @@ GramDat <- rbind(GramDat, data.frame(trait = c("scaled(Average Root Diameter) (c
 GramDat <- rbind(GramDat, data.frame(trait = c("scaled(Specific Leaf Area) (g/cm2)"), x = SLA_G_dat$x, GramSurv = SLA_G_dat$predicted, CI_low = SLA_G_dat$conf.low, CI_high = SLA_G_dat$conf.high, SPEI = SLA_G_dat$group, lab = "C"))
 
 
-#levels(GramDat$trait) <- c("scaled(Turgor~Loss~Point)~(MPa)", "scaled(Leaf~Dry~Matter~Content)~(g/g)", "scaled(Root~Dry~Matter~Content)~(g/g)", "scaled(Average~Root~Diameter)~(cm)", expression('scaled(Specific~Leaf~Area)~(g/c'*m^'2'*')'))
-
 #make data for rug plot
 RugDat_G <-  data.frame(rug = CO_grams$TLP_s, trait = "scaled(Turgor Loss Point) (MPa)")
 RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$LDMC_s, trait = "scaled(Leaf Dry Matter Content) (g/g)"))
 RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$RDMC_s, trait = "scaled(Root Dry Matter Content) (g/g)"))
 RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$RDiam_s, trait = "scaled(Average Root Diameter) (cm)"))
 RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$SLA_s, trait = "scaled(Specific Leaf Area) (g/cm2)"))
-#levels(RugDat_G$trait) <-c("scaled(Turgor~Loss~Point)~(MPa)", "scaled(Leaf~Dry~Matter~Content)~(g/g)", "scaled(Root~Dry~Matter~Content)~(g/g)", "scaled(Average~Root~Diameter)~(cm)", expression('scaled(Specific~Leaf~Area)~(g/c'*m^'2'*')'))
 
 #text for labels
 dat_text <- data.frame(
@@ -99,8 +98,6 @@ dat_text <- data.frame(
   x1 = c(max(TLP_G_dat$x), max(LDMC_G_dat$x), max(RDMC_G_dat$x), max(RDiam_G_dat$x), max(SLA_G_dat$x)),
   y1 = c(1,1,1,1,1)
 )
-
-#make 'trait' into factor
 
 
 #make a multipanel figure that shows only the graminoid survival probs for 3 traits
@@ -119,10 +116,12 @@ gramSurvFigure <- ggplot(data = GramDat) +
   theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold")) +
   geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
   geom_text(data= dat_text, mapping = aes(x = x1, y = y1, label = sig), size = 3.5, fontface = "bold")
+
 ```
 
-make figure for forb survival
+Make a figure for forb survival
 ```{r}
+##make figure for forb survival
 #get 2.5 and 97.5 percentiles of the distribution
 meanSPEI_F <- mean(CO_point_all$SPEI_s)
 sdSPEI_F <- sd(CO_point_all$SPEI_s)
@@ -134,24 +133,24 @@ spei_vals <- c(SPEI_2_5_G, SPEI_97_5_G)
 
 #for TLP_s
 TLP_vals <- seq(min(CO_point_all$TLP_s, na.rm = TRUE), max(CO_point_all$TLP_s, na.rm = TRUE), length.out = 20)
-TLP_F_dat <- ggpredict(m3, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+TLP_F_dat <- ggpredict(mSurvTLP_forbs, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 
 #for LDMC_s
 LDMC_vals <- seq(min(CO_point_all$LDMC_s, na.rm = TRUE), max(CO_point_all$LDMC_s, na.rm = TRUE), length.out = 20)
-LDMC_F_dat <- ggpredict(m4, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+LDMC_F_dat <- ggpredict(mSurvLDMC_forbs, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 #for RDMC_s
 RDMC_vals <- seq(min(CO_point_all$RDMC_s, na.rm = TRUE), max(CO_point_all$RDMC_s, na.rm = TRUE), length.out = 20)
-RDMC_F_dat <- ggpredict(m11, terms = c("RDMC_s[RDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+RDMC_F_dat <- ggpredict(mSurvRDMC_forbs, terms = c("RDMC_s[RDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 #for RDiam_s
 RDiam_vals <- seq(min(CO_point_all$RDiam_s, na.rm = TRUE), max(CO_point_all$RDiam_s, na.rm = TRUE), length.out = 20)
-RDiam_F_dat <- ggpredict(m16, terms = c("RDiam_s[RDiam_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+RDiam_F_dat <- ggpredict(mSurvRDiam_forbs, terms = c("RDiam_s[RDiam_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 #for SLA
-SLA_vals <- seq(min(CO_point_SLA$SLA_s, na.rm = TRUE), max(CO_point_SLA$SLA_s, na.rm = TRUE), length.out = 20)
-SLA_F_dat <- ggpredict(m6, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+SLA_vals <- seq(min(CO_point_all$SLA_s, na.rm = TRUE), max(CO_point_all$SLA_s, na.rm = TRUE), length.out = 20)
+SLA_F_dat <- ggpredict(mSurvSLA_forbs, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 
 #make a data.frame to contain all of the values for each trait
@@ -175,7 +174,7 @@ RugDat_F <- rbind(RugDat_F, data.frame(rug = CO_point_all$SLA_s, trait = "scaled
 #text for labels
 dat_text <- data.frame(
   label = c("C", "F", "I", "L", "O"),
-  sig = c("*,§", "*,§","§", "", "" ),
+  sig = c("*", "*,§","*,§", "", "*,§" ),
   trait = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)", "scaled(Average Root Diameter) (cm)", "scaled(Specific Leaf Area) (g/cm2)"),
   x    = c(min(TLP_F_dat$x),min(LDMC_F_dat$x),min(RDMC_F_dat$x), min(RDiam_F_dat$x), min(SLA_F_dat$x)),
   y     = c(1,1,1, 1, 1),
@@ -183,8 +182,7 @@ dat_text <- data.frame(
   y1 = c(1,1,1,1,1)
 )
 
-
-#make a multipanel figure that shows only the graminoid survival probs for 3 traits
+#make a multipanel figure that shows only the graminoid survival probs for 5 traits
 forbSurvFigure <- ggplot(data = ForbDat) +
   geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
   geom_line(aes(x=x, ForbSurv, col = SPEI))  + 
@@ -200,10 +198,11 @@ forbSurvFigure <- ggplot(data = ForbDat) +
   facet_wrap(~factor(trait, levels = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)","scaled(Average Root Diameter) (cm)", "scaled(Specific Leaf Area) (g/cm2)")), scales = "free_x", strip.position =  "bottom", ncol = 1) +
   theme_classic()+
   theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
-
 ```
-Make figure for graminoid growth models
+
+Make a figure for growth
 ```{r}
+##make figure for graminoid growth models 
 #get 2.5 and 97.5 percentiles of the distribution
 meanSPEI <- mean(CO_grow_TLP$SPEI_s)
 sdSPEI <- sd(CO_grow_TLP$SPEI_s)
@@ -233,7 +232,6 @@ RDiam_grow_dat <- ggpredict(mGrowRDiam, terms = c("RDiam_s[RDiam_vals]", "SPEI_s
 SLA_vals <- seq(min(CO_grow_SLA$SLA_s, na.rm = TRUE), max(CO_grow_SLA$SLA_s, na.rm = TRUE), length.out = 20)
 SLA_grow_dat <- ggpredict(mGrowSLA, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed")
 
-
 #make a data.frame to contain all of the values for each trait
 GrowthDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_grow_dat$x, Growth = TLP_grow_dat$predicted, CI_low = TLP_grow_dat$conf.low, CI_high = TLP_grow_dat$conf.high, SPEI = TLP_grow_dat$group)
 GrowthDat <- rbind(GrowthDat, data.frame(trait = c("scaled(Leaf Dry Matter Content) (g/g)"), x = LDMC_grow_dat$x, Growth = LDMC_grow_dat$predicted, CI_low = LDMC_grow_dat$conf.low, CI_high = LDMC_grow_dat$conf.high, SPEI = LDMC_grow_dat$group))
@@ -248,11 +246,10 @@ RugDat <- rbind(RugDat, data.frame(rug = CO_grow_RDMC$RDMC_s, trait = "scaled(Ro
 RugDat <- rbind(RugDat, data.frame(rug = CO_grow_RDiam$RDiam_s, trait = "scaled(Average Root Diameter) (cm)"))
 RugDat <- rbind(RugDat, data.frame(rug = CO_grow_SLA$SLA_s, trait = "scaled(Specific Leaf Area) (g/cm2)"))
 
-
 #text for labels
 dat_text <- data.frame(
   label = c("B", "E", "H", "K","N"),
-  sig = c("", "*","", "", "" ), 
+  sig = c("", "","", "", "" ), 
   trait = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)", "scaled(Average Root Diameter) (cm)", "scaled(Specific Leaf Area) (g/cm2)"),
   x    = c(min(TLP_grow_dat$x), min(LDMC_grow_dat$x), min(RDMC_grow_dat$x), min(RDiam_grow_dat$x), min(SLA_grow_dat$x)),
   y     = c(4.4,4.4,4.4,4.4,4.4),
@@ -267,7 +264,7 @@ GrowthExtraFig <- ggplot(data = GrowthDat) +
   geom_rug(aes(x = rug), data = RugDat) +
   labs(title = "Graminoid Growth") +
   xlab(NULL) +
-  ylab(expression("Graminoid Growth: log" ~ bgroup("(",frac(size[year_t+1],size[year_t]),")")))  +
+  ylab(expression(ln(Graminoid--size[italic(t+1)]))) +
   scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
   scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
   geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
@@ -277,9 +274,10 @@ GrowthExtraFig <- ggplot(data = GrowthDat) +
   theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
 ```
 
-Combine into one figure
-```{r mainObservationsFig, fig.width=9, fig.height=10}
-mainObs <- cowplot::plot_grid( gramSurvFigure, GrowthExtraFig, forbSurvFigure, ncol = 3, align = "h", axis = "tb", rel_widths = c(.9,1, .9)) %>% 
+Combine into one figure 
+
+```{r, mainObservationsFig, fig.width=9, fig.height=10} 
+mainObs <- cowplot::plot_grid( gramSurvFigure, GrowthExtraFig, forbSurvFigure, ncol = 3, align = "h", axis = "tb", rel_widths = c(1,1, 1)) %>% 
   cowplot::ggdraw() + 
   cowplot::draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .07, y = .059, width = .92, height = .0227) +
   cowplot::draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .07, y = .006, width = .33, height = .05) + #cover up left legend 
@@ -315,12 +313,12 @@ Make a plot of random effects of individual plant size on survival for LDMC mode
 ```{r}
 #get random effect data
 #refit model w/ factors instead of logical values
-m2_fac <- glmer(as.factor(survives_tplus1) ~ SPEI_s * LDMC_s +  area_s + neighbors_10_s + as.factor(nearEdge_t) + (area_s|species) + (1|quad) + (1|year_t), data=CO_poly_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+m2_fac <- glmer(as.factor(survives_tplus1) ~ SPEI_s * LDMC_s +  size_t_log + neighbors_10_s + as.factor(nearEdge_t) + (size_t_log|species) + (1|quad) + (1|year_t), data=CO_poly_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
-sppAreaPreds_s <- ggpredict(m2_fac, terms = c("area_s[all]", "species"), type = "random")
+sppAreaPreds_s <- ggpredict(m2_fac, terms = c("size_t_log[all]", "species"), type = "random")
 sppAreaPreds_s <- data.frame("x" = sppAreaPreds_s$x, "preds" = sppAreaPreds_s$predicted,"spp" = sppAreaPreds_s$group )
 
-globPreds_a_s <- ggpredict(m2_fac, terms = c("area_s[all]"), type = "random")
+globPreds_a_s <- ggpredict(m2_fac, terms = c("size_t_log[all]"), type = "random")
 globPreds_a_s <- data.frame("x" = globPreds_a_s$x, "preds" = globPreds_a_s$predicted, "spp" = as.factor("Global"), "CI_low" = globPreds_a_s$conf.low, "CI_high" = globPreds_a_s$conf.high)
 
 AreaEffectSurv <- ggplot() +
@@ -411,12 +409,12 @@ spei_vals <- c(SPEI_2_5_G, SPEI_97_5_G)
 
 #for RTD_s
 RTD_vals <- seq(min(CO_grams$RTD_s, na.rm = TRUE), max(CO_grams$RTD_s, na.rm = TRUE), length.out = 20)
-RTD_G_dat <- ggpredict(m10, terms = c("RTD_s[RTD_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+RTD_G_dat <- ggpredict(mSurvRTD_grams, terms = c("RTD_s[RTD_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 
 #for SRL_s
 SRL_vals <- seq(min(CO_grams$SRL_s, na.rm = TRUE), max(CO_grams$SRL_s, na.rm = TRUE), length.out = 20)
-SRL_G_dat <- ggpredict(m13, terms = c("SRL_s[SRL_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+SRL_G_dat <- ggpredict(mSurvSRL_grams, terms = c("SRL_s[SRL_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 
 #make a data.frame to contain all of the values for each trait
@@ -472,12 +470,12 @@ spei_vals <- c(SPEI_2_5_G, SPEI_97_5_G)
 
 #for RTD
 RTD_vals <- seq(min(CO_point_all$RTD_s, na.rm = TRUE), max(CO_point_all$RTD_s, na.rm = TRUE), length.out = 20)
-RTD_F_dat <- ggpredict(m12, terms = c("RTD_s[RTD_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+RTD_F_dat <- ggpredict(mSurvRTD_forbs , terms = c("RTD_s[RTD_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 
 #for SRL
 SRL_vals <- seq(min(CO_point_all$SRL_s, na.rm = TRUE), max(CO_point_all$SRL_s, na.rm = TRUE), length.out = 20)
-SRL_F_dat <- ggpredict(m15, terms = c("SRL_s[SRL_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+SRL_F_dat <- ggpredict(mSurvSRL_forbs, terms = c("SRL_s[SRL_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 
 #make a data.frame to contain all of the values for each trait
@@ -559,7 +557,7 @@ GrowthExtraFig <- ggplot(data = GrowthDat) +
   geom_rug(aes(x = rug), data = RugDat) +
   labs(title = "Graminoid Growth") +
   xlab(NULL) +
-  ylab(expression("Graminoid Growth: log" ~ bgroup("(",frac(size[year_t+1],size[year_t]),")")))  +
+  ylab(expression(ln(Graminoid--size[italic(t+1)])))  +
   scale_color_manual(labels = c("dry year", "wet year"), values = c("#e78ac3", "#8da0cb")) +
   scale_fill_manual(values = c("#e78ac3", "#8da0cb"), guide = FALSE) +
   geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
@@ -581,125 +579,17 @@ mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Tissue Density) (
 mainObs
 ```
 
-make a plot of SPEI intervals
-```{r uniqueSPEIfig, fig.width=6, fig.height=4}
-#make a fake dataset
-phenDat <- data.frame(species = "Species A", month = c(1:12), flowering = c(0,0,0,0,.2,.6,.9,.9,.7,.3,0,0), xInt = 4.5, xInt2 = 11.25, xmin = 3.5, xmax = 11.25, ymin = -.9, ymax = -.2)
-phenDat <- rbind(phenDat, data.frame(species = "Species B", month = c(1:12), flowering = c(0,0,0,.3,.7,.95,.8,.4,.1,0,0,0),xInt = 3, xInt2 = 9.25, xmin = 2, xmax = 9.25, ymin = -.9, ymax = -.2))
-phenDat <- rbind(phenDat, data.frame(species = "Species C", month = c(1:12), flowering = c(0,0,0,0,0,.2,.5,.75,.9,.4,0,0), xInt = 5, xInt2 = 11.25, xmin = 4, xmax = 11.25, ymin = -.9, ymax = -.2))
 
-ggplot( data = phenDat) +
-  geom_smooth(aes(y = flowering, x =  month, col = species), method = 'gam', se = FALSE) +
-  geom_rect(aes(xmin = xmin,xmax = xmax, ymin = ymin, ymax = ymax, col = species, fill = species)) +
-  geom_vline(aes(xintercept = xInt), lty = 2, col = "grey30") +
-  geom_vline(aes(xintercept = xInt2), lty = 2, col = "grey30") + 
-  geom_text(aes(label = "species-level SPEI Interval", x = (xInt+3), y = -.55), colour = 
-              "white") +
-  facet_grid(species~.) +
-  ylim(c(-1,1)) + 
-  xlim(c(1,12)) +
-  xlab("Month") +
-  ylab("Likelihood of Flowering") +
-  scale_color_discrete(guide = FALSE) +
-  scale_fill_discrete(guide = FALSE) +
-  scale_x_continuous(labels = scales::number_format(accuracy = 1)) +
-  theme_classic() +  
-  theme(axis.ticks.y = element_blank(),
-        axis.text.y = element_blank()) 
-```
-
-Figures for comparing unique to uniform SPEI (TLP and LDMC only)
-```{r}
-#model objects (unique SPEI): m1_grams, m2_grams, mGrow_TLP, mGrow_LDMC
-#model objects (uniform SPEI): m1_SPEI, m2_SPEI, mGrowTLP_SPEI, mGrowLDMC_SPEI 
-
-## Make figure of unique SPEI of TLP and LDMC survival
-#get 2.5 and 97.5 percentiles of the distribution
-meanSPEI<- mean(CO_poly_TLP$SPEI_s)
-sdSPEI <- sd(CO_poly_TLP$SPEI_s)
-#get 97.5 quantile of the distribution
-SPEI_97_5 <- qnorm(.975, meanSPEI, sdSPEI) 
-SPEI_2_5 <- qnorm(.025, meanSPEI, sdSPEI)
-
-spei_vals <- c(SPEI_2_5, SPEI_97_5)
-
-#for TLP
-TLP_vals <- seq(min(CO_poly_TLP$TLP_s, na.rm = TRUE), max(CO_poly_TLP$TLP_s, na.rm = TRUE), length.out = 20)
-TLP_surv_dat <- ggpredict(m1_grams, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
-
-#for LDMC
-LDMC_vals <- seq(min(CO_poly_LDMC$LDMC_s, na.rm = TRUE), max(CO_poly_LDMC$LDMC_s, na.rm = TRUE), length.out = 20)
-LDMC_surv_dat <- ggpredict(m2_grams, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
-
-
-#make a data.frame to contain all of the values for each trait
-UniqueSurvDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_surv_dat$x, Surv = TLP_surv_dat$predicted, CI_low = TLP_surv_dat$conf.low, CI_high = TLP_surv_dat$conf.high, SPEI = TLP_surv_dat$group)
-
-UniqueSurvDat <- rbind(UniqueSurvDat, data.frame(trait = c("scaled(Leaf Dry Matter Content) (g/g)"), x = LDMC_surv_dat$x, Surv = LDMC_surv_dat$predicted, CI_low = LDMC_surv_dat$conf.low, CI_high = LDMC_surv_dat$conf.high, SPEI = LDMC_surv_dat$group))
-
-#make data for rug plot
-RugDat_surv <-  data.frame(rug = CO_poly_TLP$TLP_s, trait = "scaled(Turgor Loss Point) (MPa)")
-RugDat_surv <- rbind(RugDat_surv, data.frame(rug = CO_poly_LDMC$LDMC_s, trait = "scaled(Leaf Dry Matter Content) (g/g)"))
-
-#make a multipanel figure that shows only the graminoid survival probs for 3 traits
-UniqueSPEI_Surv <- ggplot(data = UniqueSurvDat) +
-  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
-  geom_line(aes(x=x, y = Surv, col = SPEI))  + 
-  geom_rug(aes(x = rug), data = RugDat_surv) +
-  labs(title = "Unique SPEI Graminoid Survival") +
-  xlab(NULL) +
-  ylab("Probability of Graminoid Survival") +
-  scale_y_continuous(limits = c(0,1)) +
-  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
-  #geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
-  scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
-  facet_wrap(~trait, scales = "free_x", strip.position =  "bottom", ncol = 1) +
-  theme_classic()+
-  theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
-```
-
-```{r}
-## Make figure of unique SPEI of TLP and LDMC growth
-meanSPEI<- mean(CO_grow_TLP$SPEI_s)
-sdSPEI <- sd(CO_grow_TLP$SPEI_s)
-#get 97.5 quantile of the distribution
-SPEI_97_5 <- qnorm(.975, meanSPEI, sdSPEI) 
-SPEI_2_5 <- qnorm(.025, meanSPEI, sdSPEI)
-
-spei_vals <- c(SPEI_2_5, SPEI_97_5)
-
-#for TLP
-TLP_vals <- seq(min(CO_grow_TLP$TLP_s, na.rm = TRUE), max(CO_grow_TLP$TLP_s, na.rm = TRUE), length.out = 20)
-TLP_grow_dat <- ggpredict(mGrowTLP, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
-
-#for LDMC
-LDMC_vals <- seq(min(CO_poly_LDMC$LDMC_s, na.rm = TRUE), max(CO_poly_LDMC$LDMC_s, na.rm = TRUE), length.out = 20)
-LDMC_grow_dat <- ggpredict(mGrowLDMC, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
-
-
-#make a data.frame to contain all of the values for each trait
-UniqueGrowDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_grow_dat$x, grow = TLP_grow_dat$predicted, CI_low = TLP_grow_dat$conf.low, CI_high = TLP_grow_dat$conf.high, SPEI = TLP_grow_dat$group)
-
-UniqueGrowDat <- rbind(UniqueGrowDat, data.frame(trait = c("scaled(Leaf Dry Matter Content) (g/g)"), x = LDMC_grow_dat$x, grow = LDMC_grow_dat$predicted, CI_low = LDMC_grow_dat$conf.low, CI_high = LDMC_grow_dat$conf.high, SPEI = LDMC_grow_dat$group))
-
-#make data for rug plot
-RugDat_grow <-  data.frame(rug = CO_grow_TLP$TLP_s, trait = "scaled(Turgor Loss Point) (MPa)")
-RugDat_grow <- rbind(RugDat_grow, data.frame(rug = CO_poly_LDMC$LDMC_s, trait = "scaled(Leaf Dry Matter Content) (g/g)"))
-
-#make a multipanel figure that shows only the graminoid survival probs for 3 traits
-UniqueSPEI_Grow <- ggplot(data = UniqueGrowDat) +
-  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
-  geom_line(aes(x=x, y = grow, col = SPEI))  + 
-  geom_rug(aes(x = rug), data = RugDat_grow) +
-  labs(title = "Unique SPEI Graminoid Growth") +
-  xlab(NULL) +
-  ylab(expression("Graminoid Growth: log" ~ bgroup("(",frac(size[year_t+1],size[year_t]),")"))) +
-  #scale_y_continuous(limits = c(0,1)) +
-  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
-  #geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
-  scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
-  facet_wrap(~trait, scales = "free_x", strip.position =  "bottom", ncol = 1) +
-  theme_classic()+
-  theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
+```{r SizeCompFig, fig.width=5, fig.height=4}
+## use CO_poly_growth dataset
+ggplot(data = CO_grow_TLP) +
+  #geom_point(aes(x = area_s, y = area_tplus1_s, col = species)) +
+  geom_smooth(aes(x = size_t_log, y = size_tplus1_log, col = species), method = "lm", se = FALSE) +
+  theme_classic() +
+  xlab(expression(ln(size[italic(t)]))) +
+  ylab(expression(ln(size[italic(t+1)]))) +
+  theme(legend.text = element_text(face = "italic")) +
+  guides(col = guide_legend(title = "Species")) +
+  scale_color_brewer(palette = "Set2" )
 ```
 
