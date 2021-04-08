@@ -547,7 +547,7 @@ dat_text <- data.frame(
   label = c("B", "E"),
   trait = c("scaled(Root Tissue Density) (g/cm3)", "scaled(Specific Root Length) (m/g)"),
   x    = c(min(RTD_grow_dat$x), min(SRL_grow_dat$x)),
-  y     = c(1.2,1.2)
+  y     = c(5.3,5.3)
 )
 
 #make a multipanel figure
