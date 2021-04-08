@@ -107,7 +107,7 @@ gramSurvFigure <- ggplot(data = GramDat) +
   geom_rug(aes(x = rug), data = RugDat_G) +
   labs(title = "Graminoid Survival") +
   xlab(NULL) +
-  ylab("Probability of Graminoid Survival") +
+  ylab("Probability of Survival") +
   scale_y_continuous(limits = c(0,1)) +
   scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
   scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
@@ -189,7 +189,7 @@ forbSurvFigure <- ggplot(data = ForbDat) +
   geom_rug(aes(x = rug), data = RugDat_F) +
   labs(title = "Forb Survival") +
   xlab(NULL) +
-  ylab("Probability of Forb Survival") +
+  ylab("Probability of Survival") +
   scale_y_continuous(limits = c(0,1)) +
   scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
   geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
@@ -264,7 +264,7 @@ GrowthExtraFig <- ggplot(data = GrowthDat) +
   geom_rug(aes(x = rug), data = RugDat) +
   labs(title = "Graminoid Growth") +
   xlab(NULL) +
-  ylab(expression(ln(Graminoid--size[italic(t+1)]))) +
+  ylab(expression(ln(size[italic(t+1)]))) +
   scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
   scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
   geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
@@ -378,7 +378,7 @@ NeighEffectGrowth <- ggplot() +
   geom_polygon(aes(x = c(globPreds_n_g$x,rev(globPreds_n_g$x)), y = c( globPreds_n_g$CI_low, rev(globPreds_n_g$CI_high))), col = NA, fill = "grey", alpha = .2) +
   theme_classic() +
   xlab(c("Conspecific Local \n Neighborhood Competition")) +
-  ylab(expression("log" ~ bgroup("(",frac(size[year_t+1],size[year_t]),")"))) +
+  ylab(expression(ln(size[italic(t+1)]))) +
   scale_color_manual(values = c("grey60", "grey60", "grey60", "grey60", "grey60", "grey60", "grey60", "grey60")) +
   theme(axis.ticks.x =element_blank(),
         axis.text.x = element_blank(),
@@ -447,7 +447,7 @@ gramSurvFigure <- ggplot(data = GramDat) +
   geom_rug(aes(x = rug), data = RugDat_G) +
   labs(title = "Graminoid Survival") +
   xlab(NULL) +
-  ylab("Probability of Graminoid Survival") +
+  ylab("Probability of Survival") +
   scale_y_continuous(limits = c(0,1)) +
   scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
   scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
@@ -503,7 +503,7 @@ forbSurvFigure <- ggplot(data = ForbDat) +
   geom_rug(aes(x = rug), data = RugDat_F) +
   labs(title = "Forb Survival") +
   xlab(NULL) +
-  ylab("Probability of Forb Survival") +
+  ylab("Probability of Survival") +
   scale_y_continuous(limits = c(0,1)) +
   scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
   geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
@@ -557,7 +557,7 @@ GrowthExtraFig <- ggplot(data = GrowthDat) +
   geom_rug(aes(x = rug), data = RugDat) +
   labs(title = "Graminoid Growth") +
   xlab(NULL) +
-  ylab(expression(ln(Graminoid--size[italic(t+1)])))  +
+  ylab(expression(ln(size[italic(t+1)])))  +
   scale_color_manual(labels = c("dry year", "wet year"), values = c("#e78ac3", "#8da0cb")) +
   scale_fill_manual(values = c("#e78ac3", "#8da0cb"), guide = FALSE) +
   geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
