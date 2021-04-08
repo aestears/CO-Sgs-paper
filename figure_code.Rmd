@@ -449,7 +449,7 @@ gramSurvFigure <- ggplot(data = GramDat) +
   xlab(NULL) +
   ylab("Probability of Survival") +
   scale_y_continuous(limits = c(0,1)) +
-  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
+  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5"), guide = FALSE) +
   scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
   facet_wrap(~trait, scales = "free_x", strip.position =  "bottom", ncol =1) +
   theme_classic()+
@@ -505,7 +505,7 @@ forbSurvFigure <- ggplot(data = ForbDat) +
   xlab(NULL) +
   ylab("Probability of Survival") +
   scale_y_continuous(limits = c(0,1)) +
-  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
+  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5"), guide = FALSE) +
   geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
   scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
   facet_wrap(~trait, scales = "free_x", strip.position =  "bottom", ncol = 1) +
@@ -558,8 +558,8 @@ GrowthExtraFig <- ggplot(data = GrowthDat) +
   labs(title = "Graminoid Growth") +
   xlab(NULL) +
   ylab(expression(ln(size[italic(t+1)])))  +
-  scale_color_manual(labels = c("dry year", "wet year"), values = c("#e78ac3", "#8da0cb")) +
-  scale_fill_manual(values = c("#e78ac3", "#8da0cb"), guide = FALSE) +
+  scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
+  scale_fill_manual(values = c("#fc8d62","#66c2a5"), guide = FALSE) +
   geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
     facet_wrap(vars(trait), scales = "free_x", strip.position =  "bottom", ncol = 1) +
   theme_classic()+
@@ -568,7 +568,7 @@ GrowthExtraFig <- ggplot(data = GrowthDat) +
 
 Combine into one figure
 ```{r suppObservationsFig, fig.width=9, fig.height=6}
-mainObs <- plot_grid( gramSurvFigure, GrowthExtraFig, forbSurvFigure, ncol = 3, align = "h", axis = "tb", rel_widths = c(.9,1,.9)) %>% 
+mainObs <- plot_grid( gramSurvFigure, GrowthExtraFig, forbSurvFigure, ncol = 3, align = "h", axis = "tb", rel_widths = c(1,1,1)) %>% 
   ggdraw() + draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .07, y = .529, width = .25, height = .035) +
   draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .39, y = .529, width = .29, height = .035) +
   draw_grob(grid::rectGrob(gp = grid::gpar(fill = "white", col = "white")) ,hjust = 0, vjust = 0, x = .73, y = .529, width = .25, height = .035)
