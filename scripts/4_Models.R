@@ -726,6 +726,7 @@ mGrowRDiam  <- lme4::lmer(size_tplus1_log ~  size_t_log + neighbors_10_s + SPEI_
 
 summary(as_lmerModLmerTest(mGrowRDiam))
 
+<<<<<<< HEAD
 #### testing different growth response variables ####
 ## log-transformed area in year t: size_t_log
 ## log-transformed area in year t+1: size_tplus1_log
@@ -794,6 +795,8 @@ mGrowRDiam  <- lme4::lmer(area_tplus1_s ~  area_s + neighbors_10_s + SPEI_s * RD
 
 mGrowRDiam  <- lme4::lmer(size_tplus1_log ~  size_t_log + neighbors_10_s + SPEI_s * RDiam_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_RDiam , control=lmerControl(optimizer="bobyqa"))
 
+=======
+>>>>>>> 8e68e80... update figures for new growth model version
 #### testing different growth response variables ####
 ## log-transformed area in year t: size_t_log
 ## log-transformed area in year t+1: size_tplus1_log
@@ -853,6 +856,13 @@ mGrowRDiam_NO  <- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + SPE
 require(stargazer)
 stargazer(mSurvTLP_grams, mSurvLDMC_grams, mSurvSLA_grams, mSurvRDMC_grams, mSurvRTD_grams, mSurvSRL_grams, mSurvRDiam_grams)
 sjPlot::tab_model(mSurvTLP_grams, mSurvLDMC_grams, mSurvSLA_grams, mSurvRDMC_grams, mSurvRTD_grams, mSurvSRL_grams, mSurvRDiam_grams, show.se = TRUE)
+diff(AIC(mSurvTLP_grams, mSurvTLP_grams_NO)$AIC) #TLP
+diff(AIC(mSurvLDMC_grams, mSurvLDMC_grams_NO)$AIC) #LDMC
+diff(AIC(mSurvSLA_grams, mSurvSLA_grams_NO)$AIC) #SLA
+diff(AIC(mSurvRDMC_grams, mSurvRDMC_grams_NO)$AIC) #RDMC
+diff(AIC(mSurvRTD_grams, mSurvRTD_grams_NO)$AIC) #RTD
+diff(AIC(mSurvSRL_grams, mSurvSRL_grams_NO)$AIC) #SRL
+diff(AIC(mSurvRDiam_grams, mSurvRDiam_grams_NO)$AIC) #RDiam
 
 #for forb survival models
 stargazer(mSurvTLP_forbs, mSurvLDMC_forbs, mSurvSLA_forbs, mSurvRDMC_forbs, mSurvRTD_forbs, mSurvSRL_forbs, mSurvRDiam_forbs)
