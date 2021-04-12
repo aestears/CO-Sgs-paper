@@ -540,6 +540,7 @@ model, as well as raw data
 \NormalTok{globPreds\_growth \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"x"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_growth}\OperatorTok{$}\NormalTok{x, }\StringTok{"preds"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_growth}\OperatorTok{$}\NormalTok{predicted, }\StringTok{"spp"}\NormalTok{ =}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(}\StringTok{"Global"}\NormalTok{), }\StringTok{"CI\_low"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_growth}\OperatorTok{$}\NormalTok{conf.low, }\StringTok{"CI\_high"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_growth}\OperatorTok{$}\NormalTok{conf.high)}
 
 \NormalTok{(AreaEffectGrowth \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_abline}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{slope =} \DecValTok{1}\NormalTok{, }\DataTypeTok{intercept =} \DecValTok{0}\NormalTok{), }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ sppSizePreds\_growth, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds, }\DataTypeTok{col =}\NormalTok{ spp), }\DataTypeTok{alpha =} \FloatTok{.75}\NormalTok{)}\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ globPreds\_growth , }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds), }\DataTypeTok{lwd =} \FloatTok{1.25}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_polygon}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(globPreds\_growth}\OperatorTok{$}\NormalTok{x,}\KeywordTok{rev}\NormalTok{(globPreds\_growth}\OperatorTok{$}\NormalTok{x)), }\DataTypeTok{y =} \KeywordTok{c}\NormalTok{( globPreds\_growth}\OperatorTok{$}\NormalTok{CI\_low, }\KeywordTok{rev}\NormalTok{(globPreds\_growth}\OperatorTok{$}\NormalTok{CI\_high))), }\DataTypeTok{col =} \OtherTok{NA}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"grey"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{.2}\NormalTok{) }\OperatorTok{+}
@@ -549,7 +550,7 @@ model, as well as raw data
 \StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\KeywordTok{ln}\NormalTok{(size[}\KeywordTok{italic}\NormalTok{(t)])))) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\KeywordTok{ln}\NormalTok{(size[}\KeywordTok{italic}\NormalTok{(t}\OperatorTok{+}\DecValTok{1}\NormalTok{)]))) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_color\_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"Set2"}\NormalTok{))}
+\StringTok{  }\KeywordTok{scale\_color\_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"Set2"}\NormalTok{)) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -567,6 +568,7 @@ size\_t+1 for each graminoid species
 \StringTok{  }\KeywordTok{paste0}\NormalTok{(}\KeywordTok{str\_sub}\NormalTok{(}\KeywordTok{str\_split\_fixed}\NormalTok{(CO\_grow\_TLP}\OperatorTok{$}\NormalTok{species, }\StringTok{" "}\NormalTok{, }\DataTypeTok{n =} \DecValTok{2}\NormalTok{)[,}\DecValTok{1}\NormalTok{], }\DataTypeTok{start =}\NormalTok{ 1L, }\DataTypeTok{end =}\NormalTok{ 1L),}\StringTok{". "}\NormalTok{,}\KeywordTok{str\_split\_fixed}\NormalTok{(CO\_grow\_TLP}\OperatorTok{$}\NormalTok{species, }\StringTok{" "}\NormalTok{, }\DataTypeTok{n =} \DecValTok{2}\NormalTok{)[,}\DecValTok{2}\NormalTok{])}
   
 \NormalTok{(sizet\_sizetplus1 \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ growTemp) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_abline}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{slope =} \DecValTok{1}\NormalTok{, }\DataTypeTok{intercept =} \DecValTok{0}\NormalTok{), }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{)}\OperatorTok{+}
 \StringTok{  }\CommentTok{\#geom\_point(aes(x = area\_s, y = area\_tplus1\_s, col = species)) +}
 \StringTok{  }\KeywordTok{geom\_smooth}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ size\_t\_log, }\DataTypeTok{y =}\NormalTok{ size\_tplus1\_log, }\DataTypeTok{col =}\NormalTok{ sppName), }\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{, }\DataTypeTok{se =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }\OperatorTok{+}
