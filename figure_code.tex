@@ -446,21 +446,23 @@ LDMC model (best model for graminoid survival)
 \NormalTok{globPreds\_a\_s \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(m2\_fac, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"size\_t\_log[all]"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"random"}\NormalTok{)}
 \NormalTok{globPreds\_a\_s \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"x"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_a\_s}\OperatorTok{$}\NormalTok{x, }\StringTok{"preds"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_a\_s}\OperatorTok{$}\NormalTok{predicted, }\StringTok{"spp"}\NormalTok{ =}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(}\StringTok{"Global"}\NormalTok{), }\StringTok{"CI\_low"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_a\_s}\OperatorTok{$}\NormalTok{conf.low, }\StringTok{"CI\_high"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_a\_s}\OperatorTok{$}\NormalTok{conf.high)}
 
-\NormalTok{AreaEffectSurv \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ sppAreaPreds\_s, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds, }\DataTypeTok{col =}\NormalTok{ spp), }\DataTypeTok{alpha =} \FloatTok{.8}\NormalTok{)}\OperatorTok{+}
+\NormalTok{(AreaEffectSurv \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ sppAreaPreds\_s, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds, }\DataTypeTok{col =}\NormalTok{ spp), }\DataTypeTok{alpha =} \FloatTok{.75}\NormalTok{)}\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ globPreds\_a\_s, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds), }\DataTypeTok{lwd =} \FloatTok{1.25}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\CommentTok{\#geom\_line(aes(x = globPreds\_a\_s$x, y = globPreds\_a\_s$CI\_low)) +}
 \StringTok{  }\KeywordTok{geom\_polygon}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(globPreds\_a\_s}\OperatorTok{$}\NormalTok{x,}\KeywordTok{rev}\NormalTok{(globPreds\_a\_s}\OperatorTok{$}\NormalTok{x)), }\DataTypeTok{y =} \KeywordTok{c}\NormalTok{( globPreds\_a\_s}\OperatorTok{$}\NormalTok{CI\_low, }\KeywordTok{rev}\NormalTok{(globPreds\_a\_s}\OperatorTok{$}\NormalTok{CI\_high))), }\DataTypeTok{col =} \OtherTok{NA}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"grey"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{.2}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}\OperatorTok{+}
-\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{expression}\NormalTok{(size[year\_t] ))) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\KeywordTok{ln}\NormalTok{(size[}\KeywordTok{italic}\NormalTok{(t)])))) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"P(Graminoid Survival)"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"Set2"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.ticks.x.bottom =} \KeywordTok{element\_blank}\NormalTok{(),}
         \DataTypeTok{axis.text.x.bottom =} \KeywordTok{element\_blank}\NormalTok{(),}
-        \DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{)}
+        \DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
+
+\includegraphics{figures/unnamed-chunk-7-1.pdf}
 
 Make plot of fixed effect of neighborhood density for effect of
 LDMC*SPEI on graminoid survival
@@ -473,29 +475,31 @@ LDMC*SPEI on graminoid survival
 \NormalTok{globPreds\_n\_s \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(m2\_fac, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"neighbors\_10\_s[all]"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"fixed"}\NormalTok{)}
 \NormalTok{globPreds\_n\_s \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"x"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_n\_s}\OperatorTok{$}\NormalTok{x, }\StringTok{"preds"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_n\_s}\OperatorTok{$}\NormalTok{predicted, }\StringTok{"spp"}\NormalTok{ =}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(}\StringTok{"Global"}\NormalTok{), }\StringTok{"CI\_low"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_n\_s}\OperatorTok{$}\NormalTok{conf.low, }\StringTok{"CI\_high"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_n\_s}\OperatorTok{$}\NormalTok{conf.high)}
 
-\NormalTok{NeighEffectSurv \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ sppNeighPreds\_s, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds, }\DataTypeTok{col =}\NormalTok{ spp), }\DataTypeTok{alpha =} \FloatTok{.8}\NormalTok{)}\OperatorTok{+}
+\NormalTok{(NeighEffectSurv \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ sppNeighPreds\_s, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds, }\DataTypeTok{col =}\NormalTok{ spp), }\DataTypeTok{alpha =} \FloatTok{.75}\NormalTok{)}\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ globPreds\_n\_s, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds), }\DataTypeTok{lwd =} \FloatTok{1.25}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_polygon}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(globPreds\_n\_s}\OperatorTok{$}\NormalTok{x,}\KeywordTok{rev}\NormalTok{(globPreds\_n\_s}\OperatorTok{$}\NormalTok{x)), }\DataTypeTok{y =} \KeywordTok{c}\NormalTok{( globPreds\_n\_s}\OperatorTok{$}\NormalTok{CI\_low, }\KeywordTok{rev}\NormalTok{(globPreds\_n\_s}\OperatorTok{$}\NormalTok{CI\_high))), }\DataTypeTok{col =} \OtherTok{NA}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"grey"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{.2}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}\OperatorTok{+}
 \StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Conspecific Local }\CharTok{\textbackslash{}n}\StringTok{ Neighborhood Competition"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"P(Graminoid Survival)"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"Set2"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.ticks.x.bottom =} \KeywordTok{element\_blank}\NormalTok{(),}
         \DataTypeTok{axis.text.x.bottom =} \KeywordTok{element\_blank}\NormalTok{(),}
         \DataTypeTok{axis.title.x.bottom =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{size =} \FloatTok{9.5}\NormalTok{),}
         \DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{,}
-\NormalTok{        )}
+\NormalTok{        ))}
 \end{Highlighting}
 \end{Shaded}
+
+\includegraphics{figures/unnamed-chunk-8-1.pdf}
 
 Make plot of fixed effect of neighborhood by species on growth for TLP
 model
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{mGrowTLP\_fac\textless{}{-}}\StringTok{ }\NormalTok{lme4}\OperatorTok{::}\KeywordTok{lmer}\NormalTok{(logDiffArea }\OperatorTok{\textasciitilde{}}\StringTok{  }\NormalTok{neighbors\_}\DecValTok{10}\NormalTok{\_s }\OperatorTok{+}\StringTok{ }\NormalTok{TLP\_s }\OperatorTok{+}\StringTok{ }\NormalTok{SPEI\_s }\OperatorTok{*}\StringTok{ }\NormalTok{TLP\_s }\OperatorTok{+}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(nearEdge\_t) }\OperatorTok{+}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{|}\NormalTok{species) }\OperatorTok{+}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{|}\NormalTok{quad) }\OperatorTok{+}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{|}\NormalTok{year\_t), }\DataTypeTok{data =}\NormalTok{ CO\_grow\_TLP , }\DataTypeTok{control=}\KeywordTok{lmerControl}\NormalTok{(}\DataTypeTok{optimizer=}\StringTok{"bobyqa"}\NormalTok{))}
+\NormalTok{mGrowTLP\_fac\textless{}{-}}\StringTok{ }\NormalTok{lme4}\OperatorTok{::}\KeywordTok{lmer}\NormalTok{(size\_tplus1\_log }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{size\_t\_log }\OperatorTok{+}\StringTok{ }\NormalTok{neighbors\_}\DecValTok{10}\NormalTok{\_s }\OperatorTok{+}\StringTok{ }\NormalTok{TLP\_s }\OperatorTok{+}\StringTok{ }\NormalTok{SPEI\_s }\OperatorTok{*}\StringTok{ }\NormalTok{TLP\_s }\OperatorTok{+}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(nearEdge\_t) }\OperatorTok{+}\StringTok{ }\NormalTok{(size\_t\_log}\OperatorTok{|}\NormalTok{species) }\OperatorTok{+}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{|}\NormalTok{quad) }\OperatorTok{+}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{|}\NormalTok{year\_t), }\DataTypeTok{data =}\NormalTok{ CO\_grow\_TLP , }\DataTypeTok{control=}\KeywordTok{lmerControl}\NormalTok{(}\DataTypeTok{optimizer=}\StringTok{"bobyqa"}\NormalTok{))}
 
 \NormalTok{sppNeighPreds\_g \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(mGrowTLP\_fac, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"neighbors\_10\_s[all]"}\NormalTok{, }\StringTok{"species"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"random"}\NormalTok{)}
 \NormalTok{sppNeighPreds\_g \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"x"}\NormalTok{ =}\StringTok{ }\NormalTok{sppNeighPreds\_g}\OperatorTok{$}\NormalTok{x, }\StringTok{"preds"}\NormalTok{ =}\StringTok{ }\NormalTok{sppNeighPreds\_g}\OperatorTok{$}\NormalTok{predicted,}\StringTok{"spp"}\NormalTok{ =}\StringTok{ }\NormalTok{sppNeighPreds\_g}\OperatorTok{$}\NormalTok{group )}
@@ -503,34 +507,110 @@ model
 \NormalTok{globPreds\_n\_g \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(mGrowTLP\_fac, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"neighbors\_10\_s[all]"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"fixed"}\NormalTok{)}
 \NormalTok{globPreds\_n\_g \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"x"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_n\_g}\OperatorTok{$}\NormalTok{x, }\StringTok{"preds"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_n\_g}\OperatorTok{$}\NormalTok{predicted, }\StringTok{"spp"}\NormalTok{ =}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(}\StringTok{"Global"}\NormalTok{), }\StringTok{"CI\_low"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_n\_g}\OperatorTok{$}\NormalTok{conf.low, }\StringTok{"CI\_high"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_n\_g}\OperatorTok{$}\NormalTok{conf.high)}
 
-\NormalTok{NeighEffectGrowth \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ sppNeighPreds\_g, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds, }\DataTypeTok{col =}\NormalTok{ spp), }\DataTypeTok{alpha =} \FloatTok{.8}\NormalTok{)}\OperatorTok{+}
+\NormalTok{(NeighEffectGrowth \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ sppNeighPreds\_g, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds, }\DataTypeTok{col =}\NormalTok{ spp), }\DataTypeTok{alpha =} \FloatTok{.75}\NormalTok{)}\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ globPreds\_n\_g, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds), }\DataTypeTok{lwd =} \FloatTok{1.25}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_polygon}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(globPreds\_n\_g}\OperatorTok{$}\NormalTok{x,}\KeywordTok{rev}\NormalTok{(globPreds\_n\_g}\OperatorTok{$}\NormalTok{x)), }\DataTypeTok{y =} \KeywordTok{c}\NormalTok{( globPreds\_n\_g}\OperatorTok{$}\NormalTok{CI\_low, }\KeywordTok{rev}\NormalTok{(globPreds\_n\_g}\OperatorTok{$}\NormalTok{CI\_high))), }\DataTypeTok{col =} \OtherTok{NA}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"grey"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{.2}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }\OperatorTok{+}
 \StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"Conspecific Local }\CharTok{\textbackslash{}n}\StringTok{ Neighborhood Competition"}\NormalTok{)) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\KeywordTok{ln}\NormalTok{(size[}\KeywordTok{italic}\NormalTok{(t}\OperatorTok{+}\DecValTok{1}\NormalTok{)]))) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{, }\StringTok{"grey60"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\OperatorTok{{-}}\DecValTok{1}\NormalTok{,}\DecValTok{8}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.ticks.x =}\KeywordTok{element\_blank}\NormalTok{(),}
         \DataTypeTok{axis.text.x =} \KeywordTok{element\_blank}\NormalTok{(),}
         \DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{,}
         \DataTypeTok{axis.title.x =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{size =} \DecValTok{9}\NormalTok{),}
-        \DataTypeTok{axis.title.y =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{margin =} \KeywordTok{margin}\NormalTok{(}\DataTypeTok{r =} \DecValTok{0}\NormalTok{))) }
+        \DataTypeTok{axis.title.y =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{margin =} \KeywordTok{margin}\NormalTok{(}\DataTypeTok{r =} \DecValTok{0}\NormalTok{))) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"Set2"}\NormalTok{)) }
 \end{Highlighting}
 \end{Shaded}
+
+\includegraphics{figures/unnamed-chunk-9-1.pdf}
+
+Make plot of effect of size\_t on size\_t+1 using coefficients from TLP
+model, as well as raw data
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#model is mGrowTLP}
+
+\NormalTok{sppSize\_Preds\_growth \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(mGrowTLP\_fac, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"size\_t\_log[all]"}\NormalTok{, }\StringTok{"species"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"random"}\NormalTok{)}
+\NormalTok{sppSizePreds\_growth \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"x"}\NormalTok{ =}\StringTok{ }\NormalTok{sppSize\_Preds\_growth}\OperatorTok{$}\NormalTok{x, }\StringTok{"preds"}\NormalTok{ =}\StringTok{ }\NormalTok{sppSize\_Preds\_growth}\OperatorTok{$}\NormalTok{predicted,}\StringTok{"spp"}\NormalTok{ =}\StringTok{ }\NormalTok{sppSize\_Preds\_growth}\OperatorTok{$}\NormalTok{group )}
+
+\NormalTok{globPreds\_growth \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(mGrowTLP\_fac, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"size\_t\_log[all]"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"random"}\NormalTok{)}
+\NormalTok{globPreds\_growth \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"x"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_growth}\OperatorTok{$}\NormalTok{x, }\StringTok{"preds"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_growth}\OperatorTok{$}\NormalTok{predicted, }\StringTok{"spp"}\NormalTok{ =}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(}\StringTok{"Global"}\NormalTok{), }\StringTok{"CI\_low"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_growth}\OperatorTok{$}\NormalTok{conf.low, }\StringTok{"CI\_high"}\NormalTok{ =}\StringTok{ }\NormalTok{globPreds\_growth}\OperatorTok{$}\NormalTok{conf.high)}
+
+\NormalTok{(AreaEffectGrowth \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ sppSizePreds\_growth, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds, }\DataTypeTok{col =}\NormalTok{ spp), }\DataTypeTok{alpha =} \FloatTok{.75}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ globPreds\_growth , }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ preds), }\DataTypeTok{lwd =} \FloatTok{1.25}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_polygon}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(globPreds\_growth}\OperatorTok{$}\NormalTok{x,}\KeywordTok{rev}\NormalTok{(globPreds\_growth}\OperatorTok{$}\NormalTok{x)), }\DataTypeTok{y =} \KeywordTok{c}\NormalTok{( globPreds\_growth}\OperatorTok{$}\NormalTok{CI\_low, }\KeywordTok{rev}\NormalTok{(globPreds\_growth}\OperatorTok{$}\NormalTok{CI\_high))), }\DataTypeTok{col =} \OtherTok{NA}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"grey"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{.2}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\OperatorTok{{-}}\DecValTok{1}\NormalTok{,}\DecValTok{8}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{min}\NormalTok{(CO\_grow\_TLP}\OperatorTok{$}\NormalTok{size\_t\_log)}\OperatorTok{+}\NormalTok{.}\DecValTok{2}\NormalTok{, }\KeywordTok{max}\NormalTok{(CO\_grow\_TLP}\OperatorTok{$}\NormalTok{size\_t\_log))) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\KeywordTok{ln}\NormalTok{(size[}\KeywordTok{italic}\NormalTok{(t)])))) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\KeywordTok{ln}\NormalTok{(size[}\KeywordTok{italic}\NormalTok{(t}\OperatorTok{+}\DecValTok{1}\NormalTok{)]))) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"Set2"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{figures/unnamed-chunk-10-1.pdf}
+
+Make a figure showing the fitted relationship between size\_t and
+size\_t+1 for each graminoid species
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\# use CO\_poly\_growth dataset}
+\NormalTok{growTemp \textless{}{-}}\StringTok{ }\NormalTok{CO\_grow\_TLP}
+
+\NormalTok{growTemp}\OperatorTok{$}\NormalTok{sppName \textless{}{-}}\StringTok{ }
+\StringTok{  }\KeywordTok{paste0}\NormalTok{(}\KeywordTok{str\_sub}\NormalTok{(}\KeywordTok{str\_split\_fixed}\NormalTok{(CO\_grow\_TLP}\OperatorTok{$}\NormalTok{species, }\StringTok{" "}\NormalTok{, }\DataTypeTok{n =} \DecValTok{2}\NormalTok{)[,}\DecValTok{1}\NormalTok{], }\DataTypeTok{start =}\NormalTok{ 1L, }\DataTypeTok{end =}\NormalTok{ 1L),}\StringTok{". "}\NormalTok{,}\KeywordTok{str\_split\_fixed}\NormalTok{(CO\_grow\_TLP}\OperatorTok{$}\NormalTok{species, }\StringTok{" "}\NormalTok{, }\DataTypeTok{n =} \DecValTok{2}\NormalTok{)[,}\DecValTok{2}\NormalTok{])}
+  
+\NormalTok{(sizet\_sizetplus1 \textless{}{-}}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ growTemp) }\OperatorTok{+}
+\StringTok{  }\CommentTok{\#geom\_point(aes(x = area\_s, y = area\_tplus1\_s, col = species)) +}
+\StringTok{  }\KeywordTok{geom\_smooth}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ size\_t\_log, }\DataTypeTok{y =}\NormalTok{ size\_tplus1\_log, }\DataTypeTok{col =}\NormalTok{ sppName), }\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{, }\DataTypeTok{se =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\OperatorTok{{-}}\DecValTok{1}\NormalTok{,}\DecValTok{8}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{min}\NormalTok{(CO\_grow\_TLP}\OperatorTok{$}\NormalTok{size\_t\_log)}\OperatorTok{+}\NormalTok{.}\DecValTok{2}\NormalTok{, }\KeywordTok{max}\NormalTok{(CO\_grow\_TLP}\OperatorTok{$}\NormalTok{size\_t\_log))) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\KeywordTok{ln}\NormalTok{(size[}\KeywordTok{italic}\NormalTok{(t)]))) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\KeywordTok{ln}\NormalTok{(size[}\KeywordTok{italic}\NormalTok{(t}\OperatorTok{+}\DecValTok{1}\NormalTok{)]))) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.text =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{face =} \StringTok{"italic"}\NormalTok{, }\DataTypeTok{size =} \DecValTok{8}\NormalTok{), }\DataTypeTok{legend.position =} \StringTok{"right"}\NormalTok{, }\DataTypeTok{legend.key.width =} \KeywordTok{unit}\NormalTok{(.}\DecValTok{4}\NormalTok{, }\StringTok{"cm"}\NormalTok{), }\DataTypeTok{legend.margin =} \KeywordTok{margin}\NormalTok{(}\DataTypeTok{t =} \FloatTok{.1}\NormalTok{, }\DataTypeTok{r =} \FloatTok{.1}\NormalTok{, }\DataTypeTok{b =} \DecValTok{0}\NormalTok{, }\DataTypeTok{l =} \FloatTok{.1}\NormalTok{, }\DataTypeTok{unit =} \StringTok{"pt"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{guides}\NormalTok{(}\DataTypeTok{col =} \KeywordTok{guide\_legend}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Species"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"Set2"}\NormalTok{ ))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{figures/unnamed-chunk-11-1.pdf}
 
 Make figure 3 (combination of figures for effect of size and local
 neighborhood on LDMC*SPEI effect of graminoid survival)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{(effectsSurv \textless{}{-}}\StringTok{ }\KeywordTok{ggarrange}\NormalTok{(AreaEffectSurv, NeighEffectSurv, NeighEffectGrowth,}
-          \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"A"}\NormalTok{, }\StringTok{"B"}\NormalTok{, }\StringTok{"C"}\NormalTok{),}
-          \DataTypeTok{ncol =} \DecValTok{3}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{, }\DataTypeTok{align =}\StringTok{"hv"}\NormalTok{))}
+\NormalTok{(effectsSurv \textless{}{-}}\StringTok{ }\KeywordTok{ggarrange}\NormalTok{(NeighEffectSurv, AreaEffectSurv, }
+          \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"A"}\NormalTok{, }\StringTok{"B"}\NormalTok{),}
+          \DataTypeTok{ncol =} \DecValTok{2}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{, }\DataTypeTok{align =}\StringTok{"hv"}\NormalTok{,}\DataTypeTok{legend =} \StringTok{"right"}\NormalTok{,}
+          \DataTypeTok{legend.grob =} \KeywordTok{get\_legend}\NormalTok{(sizet\_sizetplus1)))}
 \end{Highlighting}
 \end{Shaded}
 
 \includegraphics{figures/survEffectPlots-1.pdf}
+
+Make figure 4 (combination of figures for effect of size and neighbors
+on LDMC*TLP effect on graminoid growth)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(effectsGrowth \textless{}{-}}\StringTok{ }\KeywordTok{ggarrange}\NormalTok{(NeighEffectGrowth, AreaEffectGrowth,  sizet\_sizetplus1,}
+          \DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"A"}\NormalTok{, }\StringTok{"B"}\NormalTok{, }\StringTok{"C"}\NormalTok{),}
+          \DataTypeTok{widths =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{),}
+           \DataTypeTok{legend =} \StringTok{"right"}\NormalTok{,}
+          \DataTypeTok{legend.grob =} \KeywordTok{get\_legend}\NormalTok{(sizet\_sizetplus1),}
+          \DataTypeTok{ncol =} \DecValTok{3}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{, }\DataTypeTok{align =}\StringTok{"hv"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{figures/growthEffectPlots-1.pdf}
 
 Make a figure of model results for forb survival and gram growth and
 survival for other traits
@@ -680,7 +760,6 @@ Make figure for graminoid growth models
 \NormalTok{SRL\_grow\_dat \textless{}{-}}\StringTok{ }\KeywordTok{ggpredict}\NormalTok{(mGrowSRL, }\DataTypeTok{terms =} \KeywordTok{c}\NormalTok{(}\StringTok{"SRL\_s[SRL\_vals]"}\NormalTok{, }\StringTok{"SPEI\_s[spei\_vals]"}\NormalTok{), }\DataTypeTok{type =} \StringTok{"fixed"}\NormalTok{)}
 
 
-
 \CommentTok{\#make a data.frame to contain all of the values for each trait}
 \NormalTok{GrowthDat \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{trait =} \KeywordTok{c}\NormalTok{(}\StringTok{"scaled(Root Tissue Density) (g/cm3)"}\NormalTok{), }\DataTypeTok{x =}\NormalTok{ RTD\_grow\_dat}\OperatorTok{$}\NormalTok{x, }\DataTypeTok{Growth =}\NormalTok{ RTD\_grow\_dat}\OperatorTok{$}\NormalTok{predicted, }\DataTypeTok{CI\_low =}\NormalTok{ RTD\_grow\_dat}\OperatorTok{$}\NormalTok{conf.low, }\DataTypeTok{CI\_high =}\NormalTok{ RTD\_grow\_dat}\OperatorTok{$}\NormalTok{conf.high, }\DataTypeTok{SPEI =}\NormalTok{ RTD\_grow\_dat}\OperatorTok{$}\NormalTok{group)}
 \NormalTok{GrowthDat \textless{}{-}}\StringTok{ }\KeywordTok{rbind}\NormalTok{(GrowthDat, }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{trait =} \KeywordTok{c}\NormalTok{(}\StringTok{"scaled(Specific Root Length) (m/g)"}\NormalTok{), }\DataTypeTok{x =}\NormalTok{ SRL\_grow\_dat}\OperatorTok{$}\NormalTok{x, }\DataTypeTok{Growth =}\NormalTok{ SRL\_grow\_dat}\OperatorTok{$}\NormalTok{predicted, }\DataTypeTok{CI\_low =}\NormalTok{ SRL\_grow\_dat}\OperatorTok{$}\NormalTok{conf.low, }\DataTypeTok{CI\_high =}\NormalTok{ SRL\_grow\_dat}\OperatorTok{$}\NormalTok{conf.high, }\DataTypeTok{SPEI =}\NormalTok{ SRL\_grow\_dat}\OperatorTok{$}\NormalTok{group))}
@@ -731,22 +810,5 @@ Combine into one figure
 \end{Shaded}
 
 \includegraphics{figures/suppObservationsFig-1.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#\# use CO\_poly\_growth dataset}
-\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ CO\_grow\_TLP) }\OperatorTok{+}
-\StringTok{  }\CommentTok{\#geom\_point(aes(x = area\_s, y = area\_tplus1\_s, col = species)) +}
-\StringTok{  }\KeywordTok{geom\_smooth}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ size\_t\_log, }\DataTypeTok{y =}\NormalTok{ size\_tplus1\_log, }\DataTypeTok{col =}\NormalTok{ species), }\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{, }\DataTypeTok{se =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\KeywordTok{ln}\NormalTok{(size[}\KeywordTok{italic}\NormalTok{(t)]))) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\KeywordTok{ln}\NormalTok{(size[}\KeywordTok{italic}\NormalTok{(t}\OperatorTok{+}\DecValTok{1}\NormalTok{)]))) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.text =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{face =} \StringTok{"italic"}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{guides}\NormalTok{(}\DataTypeTok{col =} \KeywordTok{guide\_legend}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Species"}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_color\_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"Set2"}\NormalTok{ )}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{figures/SizeCompFig-1.pdf}
 
 \end{document}
