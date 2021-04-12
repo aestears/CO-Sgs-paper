@@ -398,6 +398,7 @@ globPreds_growth <- ggpredict(mGrowTLP_fac, terms = c("size_t_log[all]"), type =
 globPreds_growth <- data.frame("x" = globPreds_growth$x, "preds" = globPreds_growth$predicted, "spp" = as.factor("Global"), "CI_low" = globPreds_growth$conf.low, "CI_high" = globPreds_growth$conf.high)
 
 (AreaEffectGrowth <- ggplot() +
+  geom_abline(aes(slope = 1, intercept = 0), lty = 2) +
   geom_line(data = sppSizePreds_growth, aes(x = x, y = preds, col = spp), alpha = .75)+
   geom_line(data = globPreds_growth , aes(x = x, y = preds), lwd = 1.25) +
   geom_polygon(aes(x = c(globPreds_growth$x,rev(globPreds_growth$x)), y = c( globPreds_growth$CI_low, rev(globPreds_growth$CI_high))), col = NA, fill = "grey", alpha = .2) +
@@ -407,7 +408,7 @@ globPreds_growth <- data.frame("x" = globPreds_growth$x, "preds" = globPreds_gro
   xlab(c(expression(ln(size[italic(t)])))) +
   ylab(expression(ln(size[italic(t+1)]))) +
   theme(legend.position = "none") +
-  scale_color_brewer(palette = "Set2"))
+  scale_color_brewer(palette = "Set2")) 
 ```
 
 Make a figure showing the fitted relationship between size_t and size_t+1 for each graminoid species
@@ -419,6 +420,7 @@ growTemp$sppName <-
   paste0(str_sub(str_split_fixed(CO_grow_TLP$species, " ", n = 2)[,1], start = 1L, end = 1L),". ",str_split_fixed(CO_grow_TLP$species, " ", n = 2)[,2])
   
 (sizet_sizetplus1 <- ggplot(data = growTemp) +
+  geom_abline(aes(slope = 1, intercept = 0), lty = 2)+
   #geom_point(aes(x = area_s, y = area_tplus1_s, col = species)) +
   geom_smooth(aes(x = size_t_log, y = size_tplus1_log, col = sppName), method = "lm", se = FALSE) +
   theme_classic() +
