@@ -53,10 +53,14 @@ setwd(datWD)
 load("./scripts/script3_output.RData")
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7e5a451... adding h-line to growth plots
 CO_poly_old <- CO_poly_all
 
 CO_point_old <- CO_point_all
 
+<<<<<<< HEAD
 #### ensure that the structure of the variables is correct ####
 CO_poly_all <- CO_poly_all %>% 
   dplyr::select(species, quad, year_t, area_t, survives_tplus1, nearEdge_t, area_tplus1, neighbors_5_s, neighbors_10_s, neighbors_15_s, neighbors_20_s, size_t_log, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s, SPEI_uniform, precip_s,  size_tplus1_log) %>% 
@@ -64,6 +68,8 @@ CO_poly_all <- CO_poly_all %>%
 
 CO_point_all <- CO_point_all %>% dplyr::select(species, quad, year, survives, nearEdge,  neighbors_10_s, neighbors_15_s, neighbors_20_s, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s, SPEI_uniform, precip_s) %>% 
 =======
+=======
+>>>>>>> 7e5a451... adding h-line to growth plots
 #### ensure that the structure of the variables is correct ####
 CO_poly_all <- CO_poly_all %>% 
   dplyr::select(species, quad, year_t, area_t, survives_tplus1, nearEdge_t, area_tplus1, neighbors_5_s, neighbors_10_s, neighbors_15_s, neighbors_20_s, size_t_log, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s, SPEI_uniform, precip_s, logDiffArea, size_tplus1_log) %>% 
