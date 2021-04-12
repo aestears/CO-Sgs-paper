@@ -851,11 +851,58 @@ mGrowRDiam_NO  <- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + SPE
 
 #compare AIC of models with and without traits
 
-#### table of model results ####
+
+#### Get Correlation TLP and LDMC for polygons (graminoids) ####
+# "traits_Not_dups" is the data.frame with the species-level trait averages
+# make sure that it is subset for the species we used in our analysis
+polySpp <- as.character(unique(CO_grams$species))
+pointSpp <- as.character(unique(CO_point_all$species))
+
+#get trait data
+datWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files" #set working directory for location of flowering time data file
+setwd(datWD)
+CO_traits <- read.csv("./CO_mean_traits.csv", stringsAsFactors = FALSE)
+
+#l
+#get trait correlations for all species used in the models
+traits_modSpp <- CO_traits[CO_traits$species %in% c(polySpp, pointSpp),]
+
+mComp <- lm(data = traits_modSpp, TLP ~ LDMC_g_g)
+
+plot(x = traits_modSpp$LDMC_g_g, 
+     y = traits_modSpp$TLP)
+abline(reg = mComp)
+
+#traits of interest
+traits <- c("TLP", "AvgDiam_mm", "RTD_g_cmSurvTLP_forbs", "RDMC_g_g", "SRL_best_m_g", "LDMC_g_g", "SLA_adj_cm2_g")
+
+#calculate a correlation matrix
+allSpp_corMatrix <- cor(traits_modSpp[,names(traits_modSpp) %in% traits], use="complete.obs")
+stargazer(allSpp_corMatrix)
+
+#correlation matrix for traits in polygon analysis
+polySpp_corMatrix <- cor(CO_traits[CO_traits$species %in% polySpp,names(traits_modSpp) %in% traits], use="complete.obs")
+
+#correlation matrix for traits in point analysis
+pointSpp_corMatrix <- cor(CO_traits[CO_traits$species %in% pointSpp,names(traits_modSpp) %in% traits], use="complete.obs")
+
+#### tables of model results ####
 #for graminoidsurvival  models
 require(stargazer)
-stargazer(mSurvTLP_grams, mSurvLDMC_grams, mSurvSLA_grams, mSurvRDMC_grams, mSurvRTD_grams, mSurvSRL_grams, mSurvRDiam_grams)
+stargazer(mSurvTLP_grams, mSurvLDMC_grams, mSurvSLA_grams, mSurvRDMC_grams, mSurvRTD_grams, mSurvSRL_grams, mSurvRDiam_grams, 
+style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), #omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
+          add.lines =  list(
+            Trait = c("Trait", "-0.02", "0.26**", "-0.07 ", "-0.02", "0.36***", "0.14", "-0.04") ,
+            Blank = c("", "", "", "", "", "", "", ""),
+            TraitBySPEI = c("Trait:SPEI", "0.15***", "-0.26***", "-0.08***", "-0.21***", "0.01", "-0.05**", "-0.15***"),
+            Blank = c("", "", "", "", "", "", "", ""),
+            deltaAIC <- c("Delta AIC", "47.01", "123.18", "10.64", "87.60", "5.06", "2.99", "46.13")
+          ), omit.table.layout = c("-"),
+          omit.stat = c("bic", "ll")
+          )
+#get random effect coefficients
 sjPlot::tab_model(mSurvTLP_grams, mSurvLDMC_grams, mSurvSLA_grams, mSurvRDMC_grams, mSurvRTD_grams, mSurvSRL_grams, mSurvRDiam_grams, show.se = TRUE)
+
 diff(AIC(mSurvTLP_grams, mSurvTLP_grams_NO)$AIC) #TLP
 diff(AIC(mSurvLDMC_grams, mSurvLDMC_grams_NO)$AIC) #LDMC
 diff(AIC(mSurvSLA_grams, mSurvSLA_grams_NO)$AIC) #SLA
@@ -865,7 +912,18 @@ diff(AIC(mSurvSRL_grams, mSurvSRL_grams_NO)$AIC) #SRL
 diff(AIC(mSurvRDiam_grams, mSurvRDiam_grams_NO)$AIC) #RDiam
 
 #for forb survival models
-stargazer(mSurvTLP_forbs, mSurvLDMC_forbs, mSurvSLA_forbs, mSurvRDMC_forbs, mSurvRTD_forbs, mSurvSRL_forbs, mSurvRDiam_forbs)
+stargazer(mSurvTLP_forbs, mSurvLDMC_forbs, mSurvSLA_forbs, mSurvRDMC_forbs, mSurvRTD_forbs, mSurvSRL_forbs, mSurvRDiam_forbs,  
+          style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
+          add.lines =  list(
+            Trait = c("Trait", "0.01", "-0.16", "0.33", "-0.48", "0.17", "0.06" , "0.09" ) ,
+            Blank = c("", "", "", "", "", "", "", ""),
+            TraitBySPEI = c("Trait:SPEI", "0.26**", "-0.51***", "0.73***", "-0.44***", "-0.41***", "0.39***", "-0.02"),
+            Blank = c("", "", "", "", "", "", "", ""),
+            deltaAIC <- c("Delta AIC", "0.39", "13.84", "7.60", "8.45", "5.48", "3.63", "-.89")
+          ), omit.table.layout = c("-"),
+          omit.stat = c("bic", "ll"))
+
+#get random effect coefficients
 sjPlot::tab_model(mSurvTLP_forbs, mSurvLDMC_forbs, mSurvSLA_forbs, mSurvRDMC_forbs, mSurvRTD_forbs, mSurvSRL_forbs, mSurvRDiam_forbs, show.se = TRUE)
 diff(AIC(mSurvTLP_forbs, mSurvTLP_forbs_NO)$AIC) #TLP
 diff(AIC(mSurvLDMC_forbs, mSurvLDMC_forbs_NO)$AIC) #LDMC
@@ -883,6 +941,7 @@ diff(AIC(mGrowRDMC, mGrowRDMC_NO)$AIC) #RDMC
 diff(AIC(mGrowRTD, mGrowRTD_NO)$AIC) #RTD
 diff(AIC(mGrowSRL, mGrowSRL_NO)$AIC) #SRL
 diff(AIC(mGrowRDiam, mGrowRDiam_NO)$AIC) #RDiam
+<<<<<<< HEAD
 stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam)
 sjPlot::tab_model(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam)
 >>>>>>> a4403b8... update modeling script
@@ -1017,6 +1076,10 @@ anova(mGrowRDiam, mGrowRDiam_NO, test = "Chisq")
 
 stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam, style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
           #type = "text",
+=======
+
+stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam, style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
+>>>>>>> 677fc22... update effect plots (hopefully for the last time...)
           add.lines =  list(
             Trait = c("Trait", "-0.17**", "0.13", "0.05", "0.05", "-0.20**", "-0.09", "0.02") ,
             Blank = c("", "", "", "", "", "", "", ""),
@@ -1026,6 +1089,7 @@ stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDi
           ), omit.table.layout = c("-"),
           omit.stat = c("bic", "ll"))
 sjPlot::tab_model(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam)
+<<<<<<< HEAD
 
   #### save output to use in figure script ####vc s/CO-Sgs-paper/scripts" #location where you'll put the environment data file
 setwd(path)
@@ -1044,6 +1108,8 @@ polySpp_corMatrix <- cor(CO_traits[CO_traits$species %in% polySpp,traits], use="
 
 #correlation matrix for traits in point analysis
 pointSpp_corMatrix <- cor(CO_traits[CO_traits$species %in% pointSpp,traits], use="complete.obs")
+=======
+>>>>>>> 677fc22... update effect plots (hopefully for the last time...)
 
 <<<<<<< HEAD
 
