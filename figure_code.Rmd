@@ -259,7 +259,8 @@ dat_text <- data.frame(
 
 #make a multipanel figure
 GrowthExtraFig <- ggplot(data = GrowthDat) +
-  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
+  geom_hline(aes(yintercept = 3.54), col = "darkgrey", lty = 2) +# add an hline to show the average size_t, which is 3.545 
+  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3)+
   geom_line(aes(x=x, Growth, col = SPEI))  + 
   geom_rug(aes(x = rug), data = RugDat) +
   labs(title = "Graminoid Growth") +
@@ -271,7 +272,7 @@ GrowthExtraFig <- ggplot(data = GrowthDat) +
   geom_text(data = dat_text, mapping = aes(x = x1, y = y1, label = sig), size = 3.5, fontface = "bold") +
   facet_wrap(.~factor(trait, levels = c("scaled(Turgor Loss Point) (MPa)", "scaled(Leaf Dry Matter Content) (g/g)", "scaled(Root Dry Matter Content) (g/g)","scaled(Average Root Diameter) (cm)", "scaled(Specific Leaf Area) (g/cm2)")), scales = "free_x", strip.position =  "bottom", ncol = 1) +
   theme_classic()+
-  theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
+  theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold")) 
 ```
 
 Combine into one figure 
@@ -398,7 +399,7 @@ globPreds_growth <- ggpredict(mGrowTLP_fac, terms = c("size_t_log[all]"), type =
 globPreds_growth <- data.frame("x" = globPreds_growth$x, "preds" = globPreds_growth$predicted, "spp" = as.factor("Global"), "CI_low" = globPreds_growth$conf.low, "CI_high" = globPreds_growth$conf.high)
 
 (AreaEffectGrowth <- ggplot() +
-  geom_abline(aes(slope = 1, intercept = 0), lty = 2) +
+  geom_abline(aes(slope = 1, intercept = 0), lty = 2, alpha = .8) +
   geom_line(data = sppSizePreds_growth, aes(x = x, y = preds, col = spp), alpha = .75)+
   geom_line(data = globPreds_growth , aes(x = x, y = preds), lwd = 1.25) +
   geom_polygon(aes(x = c(globPreds_growth$x,rev(globPreds_growth$x)), y = c( globPreds_growth$CI_low, rev(globPreds_growth$CI_high))), col = NA, fill = "grey", alpha = .2) +
@@ -416,12 +417,13 @@ Make a figure showing the fitted relationship between size_t and size_t+1 for ea
 ## use CO_poly_growth dataset
 growTemp <- CO_grow_TLP
 
+#make abbreviated species names
 growTemp$sppName <- 
   paste0(str_sub(str_split_fixed(CO_grow_TLP$species, " ", n = 2)[,1], start = 1L, end = 1L),". ",str_split_fixed(CO_grow_TLP$species, " ", n = 2)[,2])
   
 (sizet_sizetplus1 <- ggplot(data = growTemp) +
-  geom_abline(aes(slope = 1, intercept = 0), lty = 2)+
-  #geom_point(aes(x = area_s, y = area_tplus1_s, col = species)) +
+  geom_abline(aes(slope = 1, intercept = 0), lty = 2, alpha = .8)+
+  #geom_point(aes(x = size_t_log, y = size_tplus1_log, col = sppName), alpha = .3) +
   geom_smooth(aes(x = size_t_log, y = size_tplus1_log, col = sppName), method = "lm", se = FALSE) +
   theme_classic() +
   ylim(c(-1,8)) +
@@ -634,7 +636,4 @@ mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Tissue Density) (
 mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Root Tissue Density) (g/c"*m^3*")"),x = .873, y = 11, size = 9))
 mainObs
 ```
-
-
-
 
