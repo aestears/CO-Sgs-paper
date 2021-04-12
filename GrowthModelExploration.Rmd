@@ -399,7 +399,34 @@ RugDat <- data.frame(rug = CO_poly_TLP$SPEI_s, trait = "scaled(SPEI)")
   scale_fill_manual(values = scales::hue_pal(h = c(0, 180))(8)) +
   theme_classic()
 ```
+Compare SPEI and size_t+1 accross a spectrum of TLP for graminoids 
+```{r}
+#get unique values of TLP 
+trait_vals <- sort(unique(CO_poly_TLP$TLP_s))
 
+#for TLP_s
+SPEI_vals <- seq(min(CO_poly_TLP$SPEI_s, na.rm = TRUE), max(CO_poly_TLP$SPEI_s, na.rm = TRUE), length.out = 20)
+TLP_grow_dat <- ggpredict(mGrowTLP, terms = c( "SPEI_s[SPEI_vals]", "TLP_s[trait_vals]"), type = "fixed")
+
+#make a data.frame to contain all of the values for each trait
+SPEIDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_grow_dat$x, Growth = TLP_grow_dat$predicted, CI_low = TLP_grow_dat$conf.low, CI_high = TLP_grow_dat$conf.high, TLP = TLP_grow_dat$group)
+
+#make a data.frame with data for the rug plot
+RugDat <- data.frame(rug = CO_poly_TLP$SPEI_s, trait = "scaled(SPEI)")
+
+#make a figure
+ ggplot(data = SPEIDat) +
+  geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = TLP), alpha = 0.1) +
+  geom_line(aes(x=x, Growth, col = TLP))  + 
+  geom_rug(aes(x = rug), data = RugDat) +
+  labs(title = "") +
+  xlab("SPEI") +
+  ylab("size_t+1") +
+  #ylim(c(0,1)) +
+  scale_color_manual(labels = c("Buchloe dactyloides", "Schedonnardus paniculatus", "Carex eleocharis", "Bouteloua gracilis", "Stipa comata", "Aristida longiseta" , "Sporobolus cryptandrus", "Sitanion hystrix"), values = scales::hue_pal(h = c(0, 180))(8)) +
+  scale_fill_manual(values = scales::hue_pal(h = c(0, 180))(8)) +
+  theme_classic()
+```
 # Comparing Unique vs. Uniform SPEI  (for graminoids only)s
 The following results are for graminoids only
 
