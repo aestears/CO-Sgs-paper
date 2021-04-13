@@ -72,7 +72,7 @@ CO_point_all <- CO_point_all %>% dplyr::select(species, quad, year, survives, ne
 >>>>>>> 7e5a451... adding h-line to growth plots
 #### ensure that the structure of the variables is correct ####
 CO_poly_all <- CO_poly_all %>% 
-  dplyr::select(species, quad, year_t, area_t, survives_tplus1, nearEdge_t, area_tplus1, neighbors_5_s, neighbors_10_s, neighbors_15_s, neighbors_20_s, size_t_log, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s, SPEI_uniform, precip_s, logDiffArea, size_tplus1_log) %>% 
+  dplyr::select(species, quad, year_t, area_t, survives_tplus1, nearEdge_t, area_tplus1, neighbors_5_s, neighbors_10_s, neighbors_15_s, neighbors_20_s, size_t_log, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s, SPEI_uniform, precip_s,  size_tplus1_log) %>% 
   mutate(species = as.factor(species), quad = as.factor(quad), year_t = as.factor(year_t), nearEdge_t = as.factor(nearEdge_t))
 
 <<<<<<< HEAD
@@ -633,25 +633,6 @@ mSurvSRL_forbs_NO <- glmer(survives_tplus1 ~ SPEI_s + neighbors_10_s + nearEdge_
 
 mSurvRDiam_forbs_NO <- glmer(survives_tplus1 ~ SPEI_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_point_Diam, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
-#### compare survival models w/ traits to those without traits ####
-#For polygons
-diff(AIC(mSurvTLP_grams,mSurvTLP_grams_NO)$AIC) #TLP
-diff(AIC(mSurvLDMC_grams, mSurvLDMC_grams_NO)$AIC) #LDMC
-diff(AIC(mSurvSLA_grams, mSurvSLA_grams_NO)$AIC) #SLA
-diff(AIC(mSurvRDMC_grams, mSurvRDMC_grams_NO)$AIC) #RDMC
-diff(AIC(mSurvRTD_grams, mSurvRTD_grams_NO)$AIC) #RTD
-diff(AIC(mSurvSRL_grams, mSurvSRL_grams_NO)$AIC) #SRL
-diff(AIC(mSurvRDiam_grams, mSurvRDiam_grams_NO)$AIC) #RDiam
-
-#for forbs
-diff(AIC(mSurvTLP_forbs, mSurvTLP_forbs_NO)$AIC) #TLP
-diff(AIC(mSurvLDMC_forbs, mSurvLDMC_forbs_NO)$AIC) #LDMC
-diff(AIC(mSurvSLA_forbs, mSurvSLA_forbs_NO)$AIC) #SLA
-diff(AIC(mSurvRDMC_forbs, mSurvRDMC_forbs_NO)$AIC) #RDMC
-diff(AIC(mSurvRTD_forbs, mSurvRTD_forbs_NO)$AIC) #RTD
-diff(AIC(mSurvSRL_forbs, mSurvSRL_forbs_NO)$AIC) #SRL
-diff(AIC(mSurvRDiam_forbs, mSurvRDiam_forbs_NO)$AIC) #RDiam
-
 
 #### models w/ growth as response variable #### 
 # (only for graminoids, no size metric for forbs)
@@ -920,12 +901,13 @@ diff(AIC(mSurvRDiam_grams, mSurvRDiam_grams_NO)$AIC) #RDiam
 #for forb survival models
 stargazer(mSurvTLP_forbs, mSurvLDMC_forbs, mSurvSLA_forbs, mSurvRDMC_forbs, mSurvRTD_forbs, mSurvSRL_forbs, mSurvRDiam_forbs,  
           style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
+          #type = "text",
           add.lines =  list(
-            Trait = c("Trait", "0.01", "-0.16", "0.33", "-0.48", "0.17", "0.06" , "0.09" ) ,
+            Trait = c("Trait", "-0.06", "-0.19", "0.22", "-0.39", "0.14", "0.07" , "0.08" ) ,
             Blank = c("", "", "", "", "", "", "", ""),
-            TraitBySPEI = c("Trait:SPEI", "0.26**", "-0.51***", "0.73***", "-0.44***", "-0.41***", "0.39***", "-0.02"),
+            TraitBySPEI = c("Trait:SPEI", "0.12", "-0.38***", "0.57**", "-0.31**", "-0.27**", "0.20", "0.02"),
             Blank = c("", "", "", "", "", "", "", ""),
-            deltaAIC <- c("Delta AIC", "0.39", "13.84", "7.60", "8.45", "5.48", "3.63", "-.89")
+            deltaAIC <- c("Delta AIC", "-3.22", "4.63", "1.39", "1.05", "-0.90", "-2.87", "-3.91")
           ), omit.table.layout = c("-"),
           omit.stat = c("bic", "ll"))
 

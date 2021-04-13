@@ -726,6 +726,9 @@ plot(jitter(logDiffArea)~jitter(LDMC_g_g),
 CO_point_SPH <- CO_point_all[CO_point_all$species == "Sphaeralcea coccinea",]
 #subset randomly for 360 observations (randomly select 15 observations per quadrat) (3 iterations)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> dbabe56... update sphaeralcea subsetting and associated tables/figures
 
 #set random seed so results are reproducible
 set.seed(12011993)
@@ -748,6 +751,7 @@ for(i in 1:length(unique(CO_point_SPH$quad))){
     CO_point_SPH_rand <- temp2
   }
 }
+<<<<<<< HEAD
 
 #rest of points 
 CO_point_rest <- CO_point_all[CO_point_all$species != "Sphaeralcea coccinea",]
@@ -774,15 +778,15 @@ CO_point_SPHfew_3 <- CO_point_SPH %>%
   group_by(quad) %>% 
   sample_n(size = 15, replace = FALSE)%>% 
   as.data.frame()
+=======
+>>>>>>> dbabe56... update sphaeralcea subsetting and associated tables/figures
 
 #rest of points 
 CO_point_rest <- CO_point_all[CO_point_all$species != "Sphaeralcea coccinea",]
 
+CO_point_old <- CO_point_all
 #join subsetted points for sphaeralcea with rest of dataset 
-CO_point_all_1 <- rbind(CO_point_SPHfew_1, CO_point_rest)
-CO_point_all_2 <- rbind(CO_point_SPHfew_2, CO_point_rest)
-CO_point_all_3 <- rbind(CO_point_SPHfew_3, CO_point_rest)
-CO_point_all <- rbind(rbind(CO_point_SPHfew_3, CO_point_rest))
+CO_point_all <- rbind(rbind(CO_point_SPH_rand, CO_point_rest))
 
 #### scaling and log-transforming variables####
 #scale variables in polygon dataset
