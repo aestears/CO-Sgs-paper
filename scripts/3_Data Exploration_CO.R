@@ -298,27 +298,35 @@ corvif(temp)
 #divide out the sphaeralcea data
 CO_point_SPH <- CO_point_all[CO_point_all$species == "Sphaeralcea coccinea",]
 #subset randomly for 360 observations (randomly select 15 observations per quadrat) (3 iterations)
-CO_point_SPHfew_1 <- CO_point_SPH %>% 
-  group_by(quad) %>% 
-  sample_n(size = 15, replace = FALSE) %>% 
-  as.data.frame()
-CO_point_SPHfew_2 <- CO_point_SPH %>% 
-  group_by(quad) %>% 
-  sample_n(size = 15, replace = FALSE)%>% 
-  as.data.frame()
-CO_point_SPHfew_3 <- CO_point_SPH %>% 
-  group_by(quad) %>% 
-  sample_n(size = 15, replace = FALSE)%>% 
-  as.data.frame()
+
+#set random seed so results are reproducible
+set.seed(12011993)
+#make empty output data.frame
+CO_point_SPH_rand <- data.frame()
+#make vector of quadrats 
+quads <- unique(CO_point_SPH$quad)
+for(i in 1:length(unique(CO_point_SPH$quad))){ 
+  #subset the data just for that quadrat
+  temp1 <- CO_point_SPH[CO_point_SPH$quad==quads[i],]
+  #get a vector of unique trackIDs
+  IDs <- unique(temp1$trackID)
+  #randomly select 5 individuals (5 trackIDs), and subset the data for these individuals
+  chosenOnes <- sample(IDs, size = 5, replace = FALSE)
+  temp2 <- temp1[temp1$trackID %in% chosenOnes,]
+  #output data
+  if(nrow(CO_point_SPH_rand)>0){
+    CO_point_SPH_rand <- rbind(CO_point_SPH_rand, temp2)
+  } else {
+    CO_point_SPH_rand <- temp2
+  }
+}
 
 #rest of points 
 CO_point_rest <- CO_point_all[CO_point_all$species != "Sphaeralcea coccinea",]
 
+CO_point_old <- CO_point_all
 #join subsetted points for sphaeralcea with rest of dataset 
-CO_point_all_1 <- rbind(CO_point_SPHfew_1, CO_point_rest)
-CO_point_all_2 <- rbind(CO_point_SPHfew_2, CO_point_rest)
-CO_point_all_3 <- rbind(CO_point_SPHfew_3, CO_point_rest)
-CO_point_all <- rbind(rbind(CO_point_SPHfew_3, CO_point_rest))
+CO_point_all <- rbind(rbind(CO_point_SPH_rand, CO_point_rest))
 
 #### scaling and log-transforming variables####
 #scale variables in polygon dataset
