@@ -118,6 +118,7 @@ CO_traits <- read.csv("./CO_mean_traits.csv", stringsAsFactors = FALSE)
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## load quadrat information
 CO_quads <- read.csv("./quad_info_CO.csv")
 >>>>>>> cf7f924... cleaned up file loading
@@ -125,6 +126,17 @@ CO_quads <- read.csv("./quad_info_CO.csv")
 >>>>>>> 80dfe2b... updating script 2
 #load climate information
 =======
+=======
+#make sure TLP data is correct
+#forbs: πTLP = 0.80πo–0.845
+#for forbs
+CO_traits[CO_traits$Functional_Group=="F", "TLP"] <- 0.8 * CO_traits[CO_traits$Functional_Group=="F", "LeafOsmoticPotential_Mpa"] - 0.845
+
+#graminoids: πtlp = 0.944πo–0.611; r2 = 0.96
+#for grams
+CO_traits[CO_traits$Functional_Group=="G", "TLP"] <- 0.944 * CO_traits[CO_traits$Functional_Group=="G", "LeafOsmoticPotential_Mpa"] - 0.611
+
+>>>>>>> d8181b2... checking numbers in tables of model results
 #load climate data
 >>>>>>> fa7c121... updating analysis and figure code
 CO_climate <- read.csv("./CO_Climate_All.csv")

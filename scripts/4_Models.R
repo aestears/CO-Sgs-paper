@@ -21,7 +21,7 @@ library(ggeffects) #v1.1.3.1
 require(tidyverse) #v1.3.0
 #require(fields) #v11.6
 require(lme4) #v1.1-26
-#require(MuMIn) #v1.43.17
+require(MuMIn) #v1.43.17
 require(lmerTest) #v3.1-3
 require(stargazer) #v5.2.2
 #require(glmmTMB) #v1.0.2.1
@@ -134,6 +134,9 @@ ggplot(data = NeCoeff) +
   theme_classic()
 #the coefficient for a radius of 10cm was the 'largest' (most negative), so use 10_cm
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d8181b2... checking numbers in tables of model results
 AIC(mNeigh5, mNeigh10, mNeigh15, mNeigh20)
 
 #### Model validation functions ####
@@ -142,12 +145,21 @@ glmerInfo <- function(mod) {
   #'mod' is the fitted lmer model
   # output is stored as a list
   list("summary" = summary(mod, cor = FALSE), #see the model summary)
+<<<<<<< HEAD
        "anova" = anova(mod, method = "Chisq"),
        "rSquared" = r.squaredGLMM(mod))
 }
 
 
 
+=======
+       "fixedEff" = drop1(mod,test="Chisq"), #see the effect of the fixed effects (as estimated by single-term deletion of fixed-effects) 
+       "randEff" = rand(mod), #see the effect of the random effects (as estimated by single-term deletion of random effects)
+       "confInts" = confint(mod), #computing profile confidence intervals for these models
+       "rSquared" = r.squaredGLMM(mod))
+}
+
+>>>>>>> d8181b2... checking numbers in tables of model results
 ### for lmer models (growth) (make REML = FALSE )
 lmerInfo <- function(mod) {
   #'mod' is the fitted lmer model
@@ -167,8 +179,11 @@ modCompare <- function(m1, m2){
   "LRT" = pchisq(as.numeric(-2 * logLik(m1) + 2 * logLik(m2)), df=1, lower.tail=F), #perform a likelihood ratio test using the loglik() function
   "deltaAIC" =  diff(AIC(m2, m1)$AIC)) #calculate the differences in AIC
 }
+<<<<<<< HEAD
 =======
 >>>>>>> a4403b8... update modeling script
+=======
+>>>>>>> d8181b2... checking numbers in tables of model results
 
 #####Graminoid Survival Models #####
 ### rename polygon dataset
@@ -641,8 +656,12 @@ mSurvRDiam_forbs_NO <- glmer(survives_tplus1 ~ SPEI_s + neighbors_10_s + nearEdg
 ## Graminoid Models ##
 #subset the datasets to only include observations that have growth data (for those plants that survived)
 CO_poly_growth <- CO_grams %>% 
+<<<<<<< HEAD
   filter(!is.na(CO_grams$logDiffArea))
 >>>>>>> a4403b8... update modeling script
+=======
+  filter(!is.na(CO_grams$size_tplus1_log))
+>>>>>>> d8181b2... checking numbers in tables of model results
 
 ## TLP model
 #global model
@@ -1632,10 +1651,14 @@ summary(as_lmerModLmerTest(mGrowTLP_SPOCRY))
 summary(as_lmerModLmerTest(mGrowTLP_STICOM))
 
 
+<<<<<<< HEAD
 =======
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
 #### save output to use in figure script ####
 path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
+=======
+  #### save output to use in figure script ####vc s/CO-Sgs-paper/scripts" #location where you'll put the environment data file
+>>>>>>> d8181b2... checking numbers in tables of model results
 setwd(path)
 save.image('script4_output.RData')
 >>>>>>> e46be99... Making / updating R markdown for Dana, Peter, and Daniel
