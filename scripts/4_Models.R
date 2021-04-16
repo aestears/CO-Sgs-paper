@@ -73,11 +73,11 @@ glmerInfo <- function(mod) {
   #'mod' is the fitted lmer model
   # output is stored as a list
   list("summary" = summary(mod, cor = FALSE), #see the model summary)
-       "fixedEff" = drop1(mod,test="Chisq"), #see the effect of the fixed effects (as estimated by single-term deletion of fixed-effects) 
-       "randEff" = rand(mod), #see the effect of the random effects (as estimated by single-term deletion of random effects)
-       "confInts" = confint(mod), #computing profile confidence intervals for these models
+       "anova" = anova(mod, method = "Chisq"),
        "rSquared" = r.squaredGLMM(mod))
 }
+
+
 
 ### for lmer models (growth) (make REML = FALSE )
 lmerInfo <- function(mod) {
@@ -413,13 +413,15 @@ pointSpp_corMatrix <- cor(CO_traits[CO_traits$species %in% pointSpp,names(traits
 #for graminoidsurvival  models
 require(stargazer)
 stargazer(mSurvTLP_grams, mSurvLDMC_grams, mSurvSLA_grams, mSurvRDMC_grams, mSurvRTD_grams, mSurvSRL_grams, mSurvRDiam_grams, 
-style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), #omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
-          add.lines =  list(
-            Trait = c("Trait", "-0.02", "0.26**", "-0.07 ", "-0.02", "0.36***", "0.14", "-0.04") ,
+style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), 
+#omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
+          type = "text",
+add.lines =  list(
+            Trait = c("Trait", "-0.13**", "0.26**", "-0.07 ", "-0.02", "0.36***", "0.14", "-0.04") ,
             Blank = c("", "", "", "", "", "", "", ""),
-            TraitBySPEI = c("Trait:SPEI", "0.15***", "-0.26***", "-0.08***", "-0.21***", "0.01", "-0.05**", "-0.15***"),
+            TraitBySPEI = c("Trait:SPEI", "0.16***", "-0.26***", "-0.08***", "-0.21***", "0.01", "-0.05**", "-0.15***"),
             Blank = c("", "", "", "", "", "", "", ""),
-            deltaAIC <- c("Delta AIC", "47.01", "123.18", "10.64", "87.60", "5.06", "2.99", "46.13")
+            deltaAIC <- c("Delta AIC", "55.79", "123.18", "10.64", "87.60", "5.06", "2.99", "46.13")
           ), omit.table.layout = c("-"),
           omit.stat = c("bic", "ll")
           )
@@ -467,6 +469,7 @@ diff(AIC(mGrowSRL, mGrowSRL_NO)$AIC) #SRL
 diff(AIC(mGrowRDiam, mGrowRDiam_NO)$AIC) #RDiam
 
 stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam, style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
+          #type = "text",
           add.lines =  list(
             Trait = c("Trait", "-0.17**", "0.13", "0.05", "0.05", "-0.20**", "-0.09", "0.02") ,
             Blank = c("", "", "", "", "", "", "", ""),
