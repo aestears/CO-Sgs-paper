@@ -26,6 +26,15 @@ datWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analys
 setwd(datWD)
 CO_traits <- read.csv("./CO_mean_traits.csv", stringsAsFactors = FALSE)
 
+#make sure TLP data is correct
+#forbs: πTLP = 0.80πo–0.845
+#for forbs
+CO_traits[CO_traits$Functional_Group=="F", "TLP"] <- 0.8 * CO_traits[CO_traits$Functional_Group=="F", "LeafOsmoticPotential_Mpa"] - 0.845
+
+#graminoids: πtlp = 0.944πo–0.611; r2 = 0.96
+#for grams
+CO_traits[CO_traits$Functional_Group=="G", "TLP"] <- 0.944 * CO_traits[CO_traits$Functional_Group=="G", "LeafOsmoticPotential_Mpa"] - 0.611
+
 #load climate data
 CO_climate <- read.csv("./CO_Climate_All.csv")
 #reformat date
