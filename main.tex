@@ -159,22 +159,21 @@ We included individual plant basal area (for graminoids) and conspecific local n
 
 All models included a random intercept for quadrat (1\textbar quad) to account for non-independence of observations within the same quadrat, and a random intercept for year (1\textbar year) to account for non-independence of samples observed in the same year. Because data on individual size was available for graminoids, we included a random slope for size associated with a random intercept for species (size$_\textit{t}$\textbar species), which accounts for the fact that larger individuals of a given species have a higher growth and survival probability than small individuals, but also allows for variation in response for each species. 
 
-We used AIC to determine the best random effect structure for each trait model by comparing the F-statistics of models with all possible random effect structures. We then used an analogous process to determine the best fixed effect structure \cite{Bolker2009}. We used the size and significance of the trait-by-SPEI interaction coefficient to rank traits by their respective ability to predict drought tolerance. Because data for each trait was not available for all species, each model had a slightly different sample size, making it impossible to use AIC to compare fit across models. Instead, we used AIC to compare each model to a model of the same structure, but without the trait and trait-by-environment interaction coefficients (recorded as $\Delta$ AIC in Tables \ref{ModResults}, \ref{growth_ModResults}, and \ref{ForbSurv_ModResults}). This comparison indicates the extent to which traits improve the models. The larger the decrease in AIC in the trait model relative to the no-trait model, the more support for the ability of that trait to predict survival or growth in response to drought. Positive $\Delta$ AIC values indicate that including a trait improved model fit, while negative $\Delta$ AIC values indicate that including a trait did not improve model fit. 
-
+We used AIC to determine the best random effect structure for each trait model by comparing the F-statistics of models with all possible random effect structures. We then used an analogous process to determine the best fixed effect structure \cite{Bolker2009}. We used the size and significance of the trait-by-SPEI interaction coefficient to rank traits by their respective ability to predict drought tolerance. Because data for each trait was not available for all species, each model had a slightly different sample size, making it impossible to use AIC to compare fit across models. Instead, we used AIC to compare each model to a model of the same structure, but without the trait and trait-by-environment interaction coefficients (recorded as $\Delta$ AIC in Tables \ref{ModResults}, \ref{growth_ModResults}, and \ref{ForbSurv_ModResults}). This comparison indicates the extent to which traits improve the models. The larger the decrease in AIC in the trait model relative to the no-trait model, the more support for the ability of that trait to predict survival or growth in response to drought. Positive $\Delta$ AIC values indicate that including a trait improved model fit, while negative $\Delta$ AIC values indicate that including a trait did not improve model fit. We also used likelihood ratio tests as an additional method to determine the extent to which models including traits were better than models without traits.
 
 \section{Results}
 \subsection{\textit{Graminoid Survival}} 
 We detected significant positive main effects of individual plant size and significant negative main effects of local neighborhood conspecific density on survival probability across all trait models (Table \ref{ModResults}; Fig. \ref{fig:Effects_Survival}). In other words, larger plants were more likely to survive than smaller plants of the same species, and individuals that share their immediate local environment with more individuals of the same species were less likely to survive. There was a consistently negative main effect of SPEI on survival probability, although this effect was only significant in the model using root diameter (RDiam). This negative coefficient suggests that plants had a higher survival probability when less water was available, which contradicts our predictions. In most cases, except for the positive effect of RTD, the main effects of traits by themselves on survival were not significant, and their effects were only manifested through interactions with SPEI. Variation in the modeled fixed and random effects explained between 33 and 67\% of the variation in survival rates (Table \ref{ModResults}).
 
-Models of survival for graminoids indicated that every trait except for SRL interacted with SPEI to impact survival (Table \ref{ModResults}). The traits with the largest interaction coefficients were LDMC ($\beta _6=$-0.26, \textit{P} $<$0.01), RDMC ($\beta _6=$-0.21, \textit{P} $<$0.01), and TLP ($\beta _6=$0.15, \textit{P} $<$0.01)(Table \ref{ModResults}; Fig. \ref{fig:PredsObs}: \textbf{A}, \textbf{D}, \textbf{G}, \textbf{J} and \textbf{M}). Species with lower leaf TLP and species with higher LDMC and RDMC were more likely to survive in dry years than wet years. The opposite was true of species with higher TLP and lower LDMC and RDMC. $\Delta$ AIC values indicate that LDMC, RDMC, TLP, and RDiam are the traits that best predict how survival probability changes across a gradient of SPEI (Table \ref{ModResults}).
+Models of survival for graminoids indicated that every trait except for SRL interacted with SPEI to impact survival (Table \ref{ModResults}). The traits with the largest interaction coefficients were LDMC ($\beta _6=$-0.26, \textit{P} $<$0.01), RDMC ($\beta _6=$-0.21, \textit{P} $<$0.01), and TLP ($\beta _6=$0.15, \textit{P} $<$0.01)(Table \ref{ModResults}; Fig. \ref{fig:PredsObs}: \textbf{A}, \textbf{D}, \textbf{G}, \textbf{J} and \textbf{M}). Species with lower leaf TLP and species with higher LDMC and RDMC were more likely to survive in dry years than wet years. The opposite was true of species with higher TLP and lower LDMC and RDMC. $\Delta$ AIC values and likelihood ratio test statistics indicated that LDMC, RDMC, TLP, and RDiam were the traits that best predicted how survival probability changed across a gradient of SPEI (Table \ref{ModResults}).
 
 \subsection{\textit{Graminoid Growth}} 
 We detected significant positive main effects of individual plant size in the current year on size in the next year across all trait models (\textit{P} $<0.01$)(Table \ref{growth_ModResults}; Fig. \ref{fig:Effects_Growth}). Even though this effect is positive, it is never above zero. When plants are small, they are likely to become larger in the following year. However, when they exceed a moderate size in the current year, they are likely to shrink in the following year. This is shown in Fig. \ref{fig:Effects_Growth}: \textbf{B} and \textbf{C}, where at a smaller value of size$_{\textit{t}}$, lines showing the average relationship between size$_{\textit{t}}$ and size$_{\textit{t+1}}$ are above the 1:1 dashed line, while at larger sizes of size$_{\textit{t}}$, the fitted lines are below the dashed line. Across all models of plant growth, there was a significant negative main effect of local neighborhood conspecific density (\textit{P} $<0.01$)(Table \ref{growth_ModResults}).
 
-Models of graminoid growth did not identify any significant interactions between trait and SPEI (Table \ref{growth_ModResults}, Fig. \ref{fig:PredsObs}: \textbf{B}, \textbf{E}, \textbf{H}, \textbf{K}, \textbf{N}). Species with trait values across the spectrum of measured traits were more likely to become larger in the next year when SPEI was higher, although this relationship was only statistically significant in models using TLP ($\beta _2=$0.12, \textit{P} $<$0.05), LDMC ($\beta _2=$0.13, \textit{P} $<$0.05), SLA ($\beta _2=$0.12, \textit{P} $<$0.05), RDMC ($\beta _2=$0/12, \textit{P} $<$0.05), and RDiam ($\beta _2=$0.12, \textit{P} $<$0.05). Species with low TLP ($\beta _2=$-0.17, \textit{P} $<$0.05) and low RTD ($\beta _2=$-0.20, \textit{P} $<$0.05) were significantly more likely to grow larger in the next year. Negative $\Delta$ AIC values for all models indicated that including a trait and trait-by-SPEI interaction made model fit worse (Table \ref{growth_ModResults}). These models including traits and trait-by-SPEI interactions explained 16-53\% of the variation in growth rates (Table \ref{growth_ModResults}). 
+Models of graminoid growth did not identify any significant interactions between trait and SPEI (Table \ref{growth_ModResults}, Fig. \ref{fig:PredsObs}: \textbf{B}, \textbf{E}, \textbf{H}, \textbf{K}, \textbf{N}). Species with trait values across the spectrum of measured traits were more likely to become larger in the next year when SPEI was higher, although this relationship was only statistically significant in models using TLP ($\beta _2=$0.12, \textit{P} $<$0.05), LDMC ($\beta _2=$0.13, \textit{P} $<$0.05), SLA ($\beta _2=$0.12, \textit{P} $<$0.05), RDMC ($\beta _2=$0/12, \textit{P} $<$0.05), and RDiam ($\beta _2=$0.12, \textit{P} $<$0.05). Species with low TLP ($\beta _2=$-0.17, \textit{P} $<$0.05) and low RTD ($\beta _2=$-0.20, \textit{P} $<$0.05) were significantly more likely to grow larger in the next year. Negative $\Delta$ AIC values for all models indicated that including a trait and trait-by-SPEI interaction made model fit worse (Table \ref{growth_ModResults}). Additionally, likelihood ratio tests did not identify any significant differences between growth models with and without traits (Table \ref{growth_ModResults}). These growth models including traits and trait-by-SPEI interactions explained 16-53\% of the variation in growth rates (Table \ref{growth_ModResults}). 
 
 \subsection{\textit{Forb Survival}} 
-There were no effects of local neighborhood conspecific density, SPEI, or traits on forb survival (Table \ref{ForbSurv_ModResults}). Marginal R$^2$ values were much smaller for forb models than graminoid models (all $<0.1$); conditional R$^2$ values ranged from 0.49 to 0.64 (Table \ref{ForbSurv_ModResults}). However, models of plant survival for forbs indicated that survival is affected by a significant interaction between SPEI and LDMC ($\beta_6=$-0.38, \textit{P} $<$0.01), RDMC ($\beta _6=$-0.31, \textit{P} $<$0.05), SLA ($\beta _6=$0.57, \textit{P} $<$0.05), and RTD ($\beta _6=$-0.27, \textit{P} $<$0.05) (Table \ref{ForbSurv_ModResults}), (Fig. \ref{fig:PredsObs}: \textbf{C}, \textbf{F}, \textbf{I}, \textbf{L} and \textbf{O}). In dry years, survival was higher for species with lower leaf TLP and species with high LDMC and RDMC. In wet years, survival was higher for species with high TLP and low LDMC and RDMC; however, species with low TLP and high LDMC and RDMC had lower survival probability in wet years than in dry years. These patterns are consistent with those observed for graminoid survival. The interaction between SLA and SPEI for forb survival, however, was different than the pattern observed in graminoids. Low SLA species had high survival in dry years and low survival in wet years, where a strongly opposite pattern occurred for high SLA species. The uncertainty in these estimates was much larger for forb survival models than graminoid models, as illustrated by the 95\% confidence intervals (Fig. \ref{fig:PredsObs}; Fig. \ref{fig:GramSurv_all}). $\Delta$ AIC values were highest for models with LDMC, RDMC, and SLA, which indicated that including coefficients for trait and trait-by-SPEI interactions for those traits improved our ability to predict how survival probability changes with variation in SPEI (Table \ref{ForbSurv_ModResults}).
+There were no effects of local neighborhood conspecific density, SPEI, or traits on forb survival (Table \ref{ForbSurv_ModResults}). Marginal R$^2$ values were much smaller for forb models than graminoid models (all $<0.1$); conditional R$^2$ values ranged from 0.49 to 0.64 (Table \ref{ForbSurv_ModResults}). However, models of plant survival for forbs indicated that survival is affected by a significant interaction between SPEI and LDMC ($\beta_6=$-0.38, \textit{P} $<$0.01), RDMC ($\beta _6=$-0.31, \textit{P} $<$0.05), SLA ($\beta _6=$0.57, \textit{P} $<$0.05), and RTD ($\beta _6=$-0.27, \textit{P} $<$0.05) (Table \ref{ForbSurv_ModResults}), (Fig. \ref{fig:PredsObs}: \textbf{C}, \textbf{F}, \textbf{I}, \textbf{L} and \textbf{O}). In dry years, survival was higher for species with lower leaf TLP and species with high LDMC and RDMC. In wet years, survival was higher for species with high TLP and low LDMC and RDMC; however, species with low TLP and high LDMC and RDMC had lower survival probability in wet years than in dry years. These patterns are consistent with those observed for graminoid survival. The interaction between SLA and SPEI for forb survival, however, was different than the pattern observed in graminoids. Low SLA species had high survival in dry years and low survival in wet years, where a strongly opposite pattern occurred for high SLA species. The uncertainty in these estimates was much larger for forb survival models than graminoid models, as illustrated by the 95\% confidence intervals (Fig. \ref{fig:PredsObs}; Fig. \ref{fig:GramSurv_all}). $\Delta$ AIC values were highest for models with LDMC, RDMC, and SLA, which indicated that including coefficients for trait and trait-by-SPEI interactions for those traits improved our ability to predict how survival probability changes with variation in SPEI (Table \ref{ForbSurv_ModResults}). Likelihood ratio tests only identified a significant improvement of trait models over no-trait models for models using LDMC (Table \ref{ForbSurv_ModResults}). 
 
 
 \begin{table}[h] \centering 
@@ -210,12 +209,17 @@ n & 18,750 & 18,827 & 18,827 & 18,474 & 16,618 & 16,618 & 17,190\\
 AIC  & 14,722.07 & 14,749.38 & 14,861.92 & 14,774.85 & 13,344.33 & 13,346.40 & 13,502.53 \\ 
 \hline 
 \rowcolor[gray]{.95}$\Delta$ AIC$^\dagger$ & 55.79 & 123.18 & 10.64 & 87.60 & 5.06 & 2.99 & 46.13 \\
+LRT:  $\chi^2$(df)$^{\dagger\dagger}$ & 59.8(2)$^{***}$ & 127.2(2)$^{***}$ & 14.6(2)$^{***}$ & 91.6(2)$^{***}$ & 9.1(2)$^{**}$ & 7.0(2)$^{**}$ & 50.1(2)$^{***}$\\
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:} & \multicolumn{7}{r}{$^{*}$ \textit{P} $<$0.1; $^{**}$ \textit{P} $<$0.05; $^{***}$ \textit{P} $<$0.01}\\
-\multicolumn{8}{r}{$\tau_{00}$=Rand. Intercept Variance; $\tau_{01}$=Rand. Slope Variance; $\rho_{01}$=Correlation of Rand. Slope \& Intercept}\\ 
-\multicolumn{8}{r}{$^\dagger$ = compares the AIC of a model with trait and trait:envi interaction as fixed effects to a model without}\\
-\multicolumn{8}{r}{trait and trait:envi effects. This serves as a relative metric of the predictive power of a given trait.}
+\multicolumn{8}{l}{$\tau_{00}$ = Rand. Intercept Variance; $\tau_{01}$=Rand. Slope Variance; $\rho_{01}$=Correlation of Rand. Slope \& Intercept}\\ 
+\multicolumn{8}{l}{$^\dagger$ = compares the AIC of a model with trait and trait:envi interaction as fixed effects to a model without}\\
+\multicolumn{8}{l}{trait and trait:envi effects. This serves as a relative metric of the predictive power of a given trait.}\\
+\multicolumn{8}{l}{$^{\dagger\dagger}$ = Results from a likelihood ratio test comparing models with and without trait and trait:envi effects.}\\
+\multicolumn{8}{l}{Significant $\chi^2$ values indicate that the model with trait and a trait:envi terms provides a significantly }\\
+\multicolumn{8}{l}{better fit to the data than the model without those terms. Insignificant $\chi^2$ values indicate that there is no}\\
+\multicolumn{8}{l}{significant difference between models.}
 \end{tabular}} 
 \end{table} 
 
@@ -252,18 +256,24 @@ n & 9,480 & 9,497 & 9,497 & 9,497 & 8,802 & 8,802 & 9,018 \\
 AIC & 30,536.16 & 30,597.42 & 30,600.18 & 30,599.27 & 28,430.58 & 28,433.69 & 29,107.74 \\ 
 \hline 
 \rowcolor[gray]{.95}$\Delta$ AIC$^\dagger$ & $-$10.76 & $-$10.40 & $-$13.16 & $-$12.25 & $-$9.55 & $-$12.66 & $-$12.39 \\
+LRT:  $\chi^2$(df)$^{\dagger\dagger}$ &
+2.8(2) & 2.6(2) & 0.6(2) & 0.5(2) & 4.4(2) & .0.8(2) & 0.7(2)\\
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:} & \multicolumn{7}{r}{$^{*}$ \textit{P} $<$0.1; $^{**}$ \textit{P} $<$0.05; $^{***}$ \textit{P} $<$0.01}\\
-\multicolumn{8}{r}{$\tau_{00}$=Rand. Intercept Variance; $\tau_{01}$=Rand. Slope Variance; $\rho_{01}$=Correlation of Rand. Slope \& Intercept}\\ 
-\multicolumn{8}{r}{$^\dagger$ = compares the AIC of a model with trait and trait:envi interaction as fixed effects to a model without}\\
-\multicolumn{8}{r}{trait and trait:envi effects. This serves as a relative metric of the predictive power of a given trait.}
+\multicolumn{8}{l}{$\tau_{00}$ = Rand. Intercept Variance; $\tau_{01}$=Rand. Slope Variance; $\rho_{01}$=Correlation of Rand. Slope \& Intercept}\\
+\multicolumn{8}{l}{$^\dagger$ = compares the AIC of a model with trait and trait:envi interaction as fixed effects to a model without}\\
+\multicolumn{8}{l}{trait and trait:envi effects. This serves as a relative metric of the predictive power of a given trait.}\\
+\multicolumn{8}{l}{$^{\dagger\dagger}$ = Results from a likelihood ratio test comparing models with and without trait and trait:envi effects.}\\
+\multicolumn{8}{l}{Significant $\chi^2$ values indicate that the model with trait and a trait:envi terms provides a significantly }\\
+\multicolumn{8}{l}{better fit to the data than the model without those terms. Insignificant $\chi^2$ values indicate that there is no}\\
+\multicolumn{8}{l}{significant difference between models.}
 \end{tabular}} 
 \end{table} 
 
 
 \begin{table}[h] \centering 
- \caption{\internallinenumbersForb Survival Model Coefficients} 
+ \caption{\internallinenumbers Forb Survival Model Coefficients} 
  \label{ForbSurv_ModResults} 
  \resizebox{\textwidth}{!}{%
 \begin{tabular}{lccccccc} 
@@ -290,13 +300,19 @@ n & 456 & 499 & 499 & 499 & 388 & 414 & 456 \\
 \rowcolor[gray]{.95} Marg./Cond. $R^2$ & 0.06/0.50 & 0.04/0.49 & 0.03/0.51 &	0.04/0.51 & 0.02/0.50 &	0.01/0.64 &	0.01/0.54\\
 AIC & 567.28 & 583.88 & 587.13 & 587.47 & 496.77 & 502.25 & 568.82 \\ 
 \hline 
-\rowcolor[gray]{.95}$\Delta$ AIC$^\dagger$ & $-$-2.37 & 4.63 & 1.39 & 1.05 & $-$0.90 & $-$2.87 & $-$3.91 \\
+\rowcolor[gray]{.95}$\Delta$ AIC$^\dagger$ & $-$2.37 & 4.63 & 1.39 & 1.05 & $-$0.90 & $-$2.87 & $-$3.91 \\
+LRT:  $\chi^2$(df)$^{\dagger\dagger}$ &
+1.6(2) & 8.6(2)$^{**}$ & 5.3(2)$^{*}$ & 5.0(2)$^{*}$ & 3.1(2) & 1.1(2) & 0.1(2)\\
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:} & \multicolumn{7}{r}{$^{*}$ \textit{P}$<$0.1; $^{**}$ \textit{P}$<$0.05; $^{***}$ \textit{P}$<$0.01} \\ 
-\multicolumn{8}{r}{$\tau_{00}$=Rand. Intercept Variance}\\ 
-\multicolumn{8}{r}{$^\dagger$ = compares the AIC of a model with trait and trait:envi interaction as fixed effects to a model without}\\
-\multicolumn{8}{r}{trait and trait:envi effects. This serves as a relative metric of the predictive power of a given trait.}
+\multicolumn{8}{l}{$\tau_{00}$ = Rand. Intercept Variance}\\
+\multicolumn{8}{l}{$^\dagger$ = compares the AIC of a model with trait and trait:envi interaction as fixed effects to a model without}\\
+\multicolumn{8}{l}{trait and trait:envi effects. This serves as a relative metric of the predictive power of a given trait.}\\
+\multicolumn{8}{l}{$^{\dagger\dagger}$ = Results from a likelihood ratio test comparing models with and without trait and trait:envi effects.}\\
+\multicolumn{8}{l}{Significant $\chi^2$ values indicate that the model with trait and a trait:envi terms provides a significantly }\\
+\multicolumn{8}{l}{better fit to the data than the model without those terms. Insignificant $\chi^2$ values indicate that there is no}\\
+\multicolumn{8}{l}{significant difference between models.}
 \end{tabular} }
 \end{table} 
 
