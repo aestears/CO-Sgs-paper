@@ -548,6 +548,7 @@ mSurvRDiam_forbs <- glmer(survives_tplus1 ~ SPEI_s*RDiam_s + neighbors_10_s + ne
 #### fit survival models w/out traits ####
 mSurvTLP_grams_NO <- glmer(survives_tplus1 ~ size_t_log + neighbors_10_s + SPEI_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t) ,
                   data = CO_poly_TLP, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+<<<<<<< HEAD
 
 mSurvLDMC_grams_NO <- glmer(survives_tplus1 ~ size_t_log + neighbors_10_s + SPEI_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t) ,
                data = CO_poly_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -614,6 +615,8 @@ mSurvRDiam_forbs <- glmer(survives_tplus1 ~ SPEI_s*RDiam_s + neighbors_10_s + ne
 #### fit survival models w/out traits ####
 mSurvTLP_grams_NO <- glmer(survives_tplus1 ~ size_t_log + neighbors_10_s + SPEI_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t) ,
                   data = (CO_poly_TLP), family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+=======
+>>>>>>> c3ae556... adding likelihood ratio tests
 
 mSurvLDMC_grams_NO <- glmer(survives_tplus1 ~ size_t_log + neighbors_10_s + SPEI_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t) ,
                data = CO_poly_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -902,7 +905,7 @@ polySpp_corMatrix <- cor(CO_traits[CO_traits$species %in% polySpp,names(traits_m
 pointSpp_corMatrix <- cor(CO_traits[CO_traits$species %in% pointSpp,names(traits_modSpp) %in% traits], use="complete.obs")
 
 #### tables of model results ####
-#for graminoidsurvival  models
+#for graminoid survival  models
 require(stargazer)
 stargazer(mSurvTLP_grams, mSurvLDMC_grams, mSurvSLA_grams, mSurvRDMC_grams, mSurvRTD_grams, mSurvSRL_grams, mSurvRDiam_grams, 
 style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), 
@@ -914,7 +917,8 @@ add.lines =  list(
             TraitBySPEI = c("Trait:SPEI", "0.16***", "-0.26***", "-0.08***", "-0.21***", "0.01", "-0.05**", "-0.15***"),
             Blank = c("", "", "", "", "", "", "", ""),
             deltaAIC <- c("Delta AIC", "55.79", "123.18", "10.64", "87.60", "5.06", "2.99", "46.13")
-          ), omit.table.layout = c("-"),
+          ),
+          omit.table.layout = c("-"),
           omit.stat = c("bic", "ll")
           )
 #get random effect coefficients
@@ -925,10 +929,15 @@ anova(mSurvTLP_grams, mSurvTLP_grams_NO, test="Chisq")
 diff(AIC(mSurvLDMC_grams, mSurvLDMC_grams_NO)$AIC) #LDMC
 anova(mSurvLDMC_grams, mSurvLDMC_grams_NO, test="Chisq")
 diff(AIC(mSurvSLA_grams, mSurvSLA_grams_NO)$AIC) #SLA
+anova(mSurvSLA_grams, mSurvSLA_grams_NO, test = "Chisq")
 diff(AIC(mSurvRDMC_grams, mSurvRDMC_grams_NO)$AIC) #RDMC
+anova(mSurvRDMC_grams, mSurvRDMC_grams_NO, test = "Chisq")
 diff(AIC(mSurvRTD_grams, mSurvRTD_grams_NO)$AIC) #RTD
+anova(mSurvRTD_grams, mSurvRTD_grams_NO, test = "Chisq")
 diff(AIC(mSurvSRL_grams, mSurvSRL_grams_NO)$AIC) #SRL
+anova(mSurvSRL_grams, mSurvSRL_grams_NO, test = "Chisq")
 diff(AIC(mSurvRDiam_grams, mSurvRDiam_grams_NO)$AIC) #RDiam
+anova(mSurvRDiam_grams, mSurvRDiam_grams_NO, test = "Chisq")
 
 #for forb survival models
 stargazer(mSurvTLP_forbs, mSurvLDMC_forbs, mSurvSLA_forbs, mSurvRDMC_forbs, mSurvRTD_forbs, mSurvSRL_forbs, mSurvRDiam_forbs,  
@@ -946,7 +955,9 @@ stargazer(mSurvTLP_forbs, mSurvLDMC_forbs, mSurvSLA_forbs, mSurvRDMC_forbs, mSur
 #get random effect coefficients
 sjPlot::tab_model(mSurvTLP_forbs, mSurvLDMC_forbs, mSurvSLA_forbs, mSurvRDMC_forbs, mSurvRTD_forbs, mSurvSRL_forbs, mSurvRDiam_forbs, show.se = TRUE)
 diff(AIC(mSurvTLP_forbs, mSurvTLP_forbs_NO)$AIC) #TLP
+anova(mSurvTLP_forbs, mSurvTLP_forbs_NO, test = "Chisq")
 diff(AIC(mSurvLDMC_forbs, mSurvLDMC_forbs_NO)$AIC) #LDMC
+anova(mSurvLDMC_forbs, mSurvLDMC_forbs_NO, test = "Chisq")
 diff(AIC(mSurvSLA_forbs, mSurvSLA_forbs_NO)$AIC) #SLA
 diff(AIC(mSurvRDMC_forbs, mSurvRDMC_forbs_NO)$AIC) #RDMC
 diff(AIC(mSurvRTD_forbs, mSurvRTD_forbs_NO)$AIC) #RTD
@@ -955,12 +966,19 @@ diff(AIC(mSurvRDiam_forbs, mSurvRDiam_forbs_NO)$AIC) #RDiam
 
 #for graminoid growth models
 diff(AIC(mGrowTLP, mGrowTLP_NO)$AIC) #TLP
+anova(mGrowTLP, mGrowTLP_NO, test = "Chisq")
 diff(AIC(mGrowLDMC, mGrowLDMC_NO)$AIC) #LDMC
+anova(mGrowLDMC, mGrowLDMC_NO, test = "Chisq")
 diff(AIC(mGrowSLA, mGrowSLA_NO)$AIC) #SLA
+anova(mGrowSLA, mGrowSLA_NO, test = "Chisq")
 diff(AIC(mGrowRDMC, mGrowRDMC_NO)$AIC) #RDMC
+anova(mGrowRDMC, mGrowRDMC_NO, test = "Chisq")
 diff(AIC(mGrowRTD, mGrowRTD_NO)$AIC) #RTD
+anova(mGrowRTD, mGrowRTD_NO, test = "Chisq")
 diff(AIC(mGrowSRL, mGrowSRL_NO)$AIC) #SRL
+anova(mGrowSRL, mGrowSRL_NO, test = "Chisq")
 diff(AIC(mGrowRDiam, mGrowRDiam_NO)$AIC) #RDiam
+<<<<<<< HEAD
 <<<<<<< HEAD
 stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam)
 sjPlot::tab_model(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam)
@@ -1092,6 +1110,8 @@ anova(mGrowRTD, mGrowRTD_NO, test = "Chisq")
 diff(AIC(mGrowSRL, mGrowSRL_NO)$AIC) #SRL
 anova(mGrowSRL, mGrowSRL_NO, test = "Chisq")
 diff(AIC(mGrowRDiam, mGrowRDiam_NO)$AIC) #RDiam
+=======
+>>>>>>> c3ae556... adding likelihood ratio tests
 anova(mGrowRDiam, mGrowRDiam_NO, test = "Chisq")
 
 stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam, style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
