@@ -455,11 +455,12 @@ LDMC model (best model for graminoid survival)
 \StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}\OperatorTok{+}
 \StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\KeywordTok{ln}\NormalTok{(size[}\KeywordTok{italic}\NormalTok{(t)])))) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"P(Graminoid Survival)"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_color\_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"Set2"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.ticks.x.bottom =} \KeywordTok{element\_blank}\NormalTok{(),}
-        \DataTypeTok{axis.text.x.bottom =} \KeywordTok{element\_blank}\NormalTok{(),}
-        \DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{))}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Prob.(Graminoid Survival)"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"Set2"}\NormalTok{) }\CommentTok{\#+}
+  \CommentTok{\#theme(axis.ticks.x.bottom = element\_blank(),}
+        \CommentTok{\#axis.text.x.bottom = element\_blank(),}
+        \CommentTok{\#legend.position = "none")}
+\NormalTok{  )}
 \end{Highlighting}
 \end{Shaded}
 
@@ -483,13 +484,14 @@ LDMC*SPEI on graminoid survival
 \StringTok{  }\KeywordTok{theme\_classic}\NormalTok{() }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}\OperatorTok{+}
 \StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Conspecific Local }\CharTok{\textbackslash{}n}\StringTok{ Neighborhood Competition"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"P(Graminoid Survival)"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Prob.(Graminoid Survival)"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{scale\_color\_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"Set2"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.ticks.x.bottom =} \KeywordTok{element\_blank}\NormalTok{(),}
-        \DataTypeTok{axis.text.x.bottom =} \KeywordTok{element\_blank}\NormalTok{(),}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\CommentTok{\#axis.ticks.x.bottom = element\_blank(),}
+        \CommentTok{\#axis.text.x.bottom = element\_blank(),}
         \DataTypeTok{axis.title.x.bottom =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{size =} \FloatTok{9.5}\NormalTok{),}
         \DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{,}
-\NormalTok{        ))}
+\NormalTok{        )}
+\NormalTok{  )}
 \end{Highlighting}
 \end{Shaded}
 
@@ -516,8 +518,8 @@ model
 \StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"Conspecific Local }\CharTok{\textbackslash{}n}\StringTok{ Neighborhood Competition"}\NormalTok{)) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\KeywordTok{ln}\NormalTok{(size[}\KeywordTok{italic}\NormalTok{(t}\OperatorTok{+}\DecValTok{1}\NormalTok{)]))) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{ylim}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\OperatorTok{{-}}\DecValTok{1}\NormalTok{,}\DecValTok{8}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
-\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.ticks.x =}\KeywordTok{element\_blank}\NormalTok{(),}
-        \DataTypeTok{axis.text.x =} \KeywordTok{element\_blank}\NormalTok{(),}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\CommentTok{\#axis.ticks.x =element\_blank(),}
+        \CommentTok{\#axis.text.x = element\_blank(),}
         \DataTypeTok{legend.position =} \StringTok{"none"}\NormalTok{,}
         \DataTypeTok{axis.title.x =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{size =} \DecValTok{9}\NormalTok{),}
         \DataTypeTok{axis.title.y =} \KeywordTok{element\_text}\NormalTok{(}\DataTypeTok{margin =} \KeywordTok{margin}\NormalTok{(}\DataTypeTok{r =} \DecValTok{0}\NormalTok{))) }\OperatorTok{+}
