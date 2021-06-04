@@ -464,10 +464,15 @@ anova(mSurvTLP_forbs, mSurvTLP_forbs_NO, test = "Chisq")
 diff(AIC(mSurvLDMC_forbs, mSurvLDMC_forbs_NO)$AIC) #LDMC
 anova(mSurvLDMC_forbs, mSurvLDMC_forbs_NO, test = "Chisq")
 diff(AIC(mSurvSLA_forbs, mSurvSLA_forbs_NO)$AIC) #SLA
+anova(mSurvSLA_forbs, mSurvSLA_forbs_NO, test = "Chisq")
 diff(AIC(mSurvRDMC_forbs, mSurvRDMC_forbs_NO)$AIC) #RDMC
+anova(mSurvRDMC_forbs, mSurvRDMC_forbs_NO, test = "Chisq")
 diff(AIC(mSurvRTD_forbs, mSurvRTD_forbs_NO)$AIC) #RTD
+anova(mSurvRTD_forbs, mSurvRTD_forbs_NO, test = "Chisq")
 diff(AIC(mSurvSRL_forbs, mSurvSRL_forbs_NO)$AIC) #SRL
+anova(mSurvSRL_forbs, mSurvSRL_forbs_NO, test = "Chisq")
 diff(AIC(mSurvRDiam_forbs, mSurvRDiam_forbs_NO)$AIC) #RDiam
+anova(mSurvRDiam_forbs, mSurvRDiam_forbs_NO, test = "Chisq")
 
 #for graminoid growth models
 diff(AIC(mGrowTLP, mGrowTLP_NO)$AIC) #TLP
