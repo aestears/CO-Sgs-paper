@@ -429,7 +429,9 @@ add.lines =  list(
 sjPlot::tab_model(mSurvTLP_grams, mSurvLDMC_grams, mSurvSLA_grams, mSurvRDMC_grams, mSurvRTD_grams, mSurvSRL_grams, mSurvRDiam_grams, show.se = TRUE)
 
 diff(AIC(mSurvTLP_grams, mSurvTLP_grams_NO)$AIC) #TLP
+anova(mSurvTLP_grams, mSurvTLP_grams_NO, test="Chisq")
 diff(AIC(mSurvLDMC_grams, mSurvLDMC_grams_NO)$AIC) #LDMC
+anova(mSurvLDMC_grams, mSurvLDMC_grams_NO, test="Chisq")
 diff(AIC(mSurvSLA_grams, mSurvSLA_grams_NO)$AIC) #SLA
 diff(AIC(mSurvRDMC_grams, mSurvRDMC_grams_NO)$AIC) #RDMC
 diff(AIC(mSurvRTD_grams, mSurvRTD_grams_NO)$AIC) #RTD
