@@ -59,6 +59,29 @@ setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis")
 #get model result data into the environment
 load("./SCRIPTS/models_11232020.RData") #change the file name to the most current version of model runs
 
+#### make SPEI figure
+load("./CO-Sgs-paper/scripts/script2_output.RData")
+
+## 50-year average prior to beginning of study
+mean(CO_SPEI_uniform[CO_SPEI_uniform$Year %in% c(1946:1996),"SPEI_uniform"])
+# 0.067
+## max over that time period
+max(CO_SPEI_uniform[CO_SPEI_uniform$Year %in% c(1946:1996),"SPEI_uniform"])
+# 2.25
+## min over that time period
+min(CO_SPEI_uniform[CO_SPEI_uniform$Year %in% c(1946:1996),"SPEI_uniform"])
+# -1.82
+
+ggplot(data = CO_SPEI_uniform[CO_SPEI_uniform$Year %in% c(1990:2019),]) +
+  geom_rect(aes(xmin = 1997, xmax = 2010, ymin = -2.5, ymax = 2.5, ), fill = "grey90")+ #1997-2010
+  geom_hline(aes(yintercept = 0.067), lty = 2, col = "grey60") +
+  geom_hline(aes(yintercept = 2.25), lty = 2, col = "#66c2a5") + 
+  geom_hline(aes(yintercept = -1.82), lty = 2, col = "#fc8d62") + 
+  geom_line(aes(x = Year, y = SPEI_uniform)) + 
+  ylab("SPEI") +
+  theme_classic()
+
+CO_SPEI_uniform
 #### make figure of model results and predictions ####
 # lattice.options(
 #   layout.heights=list(bottom.padding=list(x=0), top.padding=list(x=-.80)),
