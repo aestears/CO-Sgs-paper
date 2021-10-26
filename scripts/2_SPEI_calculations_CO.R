@@ -8,7 +8,7 @@
 #//////////////////////////
 
 #### load packages ####
-require(tidyverse) #v1.3.0
+library(tidyverse) #v1.3.0
 
 ## clear workspace ##
 rm(list=ls())
@@ -16,13 +16,13 @@ rm(list=ls())
 #### Load data files ####
 ### load data from previous script ###
 ## set working directory ##
-datWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper"  #a path for the directory containing the /scripts folder
+# datWD <-  #a path for the directory containing the /scripts folder
 setwd(datWD)
 load("./scripts/script1_output.RData")
 
 ### load climate data ###
 ## set working directory  ##
-path <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data" ##file location of climate dataset
+# path <-  ##file location of climate dataset
 setwd(path)
 
 
@@ -80,7 +80,7 @@ CO_SPEI_all <- climMonth  %>%
 ## USE THIS METRIC ## (better estimate of PET)
 ### load data ###
 ## set wd
-path <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Climate Data/CO Climate" ##file location of climate dataset
+# path <-  ##file location of climate dataset
 setwd(path)
 ## load dataset
 SPEIbase_04 <- read.table("./SPEIbase_CO_LTER_NEG104.89_40.50_SPEI04.csv", sep = ";", header = TRUE) 
@@ -118,6 +118,6 @@ rm(list = ls()[!(ls() %in% c('CO_point_all','CO_poly_all'))])
 
 ## for next script, need CO_point_all and CO_poly_all data.frames
 #save as an .RData file 
-path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
+# path = #location where you'll put the environment data file
 setwd(path)
 save.image('script2_output.RData')
