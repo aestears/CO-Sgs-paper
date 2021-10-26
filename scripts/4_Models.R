@@ -9,6 +9,9 @@
 
 ##### Load Packages #####
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> dc34618... cleaning up documentation/updating figures
 library(tidyverse) #v1.3.0
 library(lme4) #v1.1-26
 library(MuMIn) #v1.43.17
@@ -17,6 +20,7 @@ library(stargazer) #v5.2.2
 library(sjPlot) #v2.8.7
 library(effects) #v4.2-0
 library(ggeffects) #v1.1.3.1
+<<<<<<< HEAD
 =======
 require(tidyverse) #v1.3.0
 #require(fields) #v11.6
@@ -33,12 +37,15 @@ require(Ryacas) #v1.1.3.1
 =======
 require(ggeffects) #v1.1.3.1
 >>>>>>> d1625fe... try different precip models
+=======
+>>>>>>> dc34618... cleaning up documentation/updating figures
 
 ## clear workspace ##
 rm(list=ls())
 
 ##### Load Data Files #####
 ## set working directory
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 # datWD <-  set path for the location of the environment image of script 3 output
@@ -48,6 +55,9 @@ datWD <- setwd("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs A
 =======
 datWD <- c("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper") #set path for the location of the environment image of script 3 output
 >>>>>>> f170c74... checked models with uniform SPEI
+=======
+# datWD <-  set path for the location of the environment image of script 3 output
+>>>>>>> dc34618... cleaning up documentation/updating figures
 setwd(datWD)
 #load data from previous 
 load("./scripts/script3_output.RData")
@@ -877,7 +887,7 @@ polySpp <- as.character(unique(CO_grams$species))
 pointSpp <- as.character(unique(CO_point_all$species))
 
 #get trait data
-datWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files" #set working directory for location of flowering time data file
+# datWD <-  #set working directory for location of flowering time data file
 setwd(datWD)
 CO_traits <- read.csv("./CO_mean_traits.csv", stringsAsFactors = FALSE)
 
@@ -906,7 +916,7 @@ pointSpp_corMatrix <- cor(CO_traits[CO_traits$species %in% pointSpp,names(traits
 
 #### tables of model results ####
 #for graminoid survival  models
-require(stargazer)
+library(stargazer)
 stargazer(mSurvTLP_grams, mSurvLDMC_grams, mSurvSLA_grams, mSurvRDMC_grams, mSurvRTD_grams, mSurvSRL_grams, mSurvRDiam_grams, 
 style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), 
 #omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 

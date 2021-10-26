@@ -13,6 +13,7 @@
 
 ##### load packages #####
 <<<<<<< HEAD
+<<<<<<< HEAD
 library(tidyverse) #v1.3.0
 
 ## clear workspace ##
@@ -74,13 +75,16 @@ save.image('script1_output.RData')
 ###############
 =======
 require(tidyverse) #v1.3.0
+=======
+library(tidyverse) #v1.3.0
+>>>>>>> dc34618... cleaning up documentation/updating figures
 
 ## clear workspace ##
 rm(list=ls())
 
 ##### Load data files #####
 #source the previous script ("0_NearestNeighborCalcs.R") to get "points" and "poly" data.frames
-nearWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper"  #a path for the directory containing the /scripts folder
+# #a path for the directory containing the /scripts folder
 setwd(nearWD)
 <<<<<<< HEAD
 source("/scripts/0_NearestNeighborCalcs.R")
@@ -112,7 +116,7 @@ load("./scripts/script0_output.RData")
 ##load trait data 
 # data source: Blumenthal, 2020 (https://doi.org/10.1111/1365-2745.13454) 
 # Except: all trait values for Schedonnardus paniculatus, root trait values for Sitanion hystrix, Stipa comata RDMC, Allium textile RDMC and root diameter values, and all trait values for Vicia americana
-datWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/CO Analysis Data Files" #set working directory for location of flowering time data file
+# datWD <- #set working directory for location of flowering time data file
 setwd(datWD)
 CO_traits <- read.csv("./CO_mean_traits.csv", stringsAsFactors = FALSE)
 
