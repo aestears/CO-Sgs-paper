@@ -8,18 +8,18 @@
 #//////////////////////////
 
 ## Load packages
-require(lattice) #v0.20-41
-require(tidyverse) #v1.3.0
-require(lme4) #v1.1-26
-require(piecewiseSEM) #v2.1.2
-require(MuMIn) #v1.43.1
-require(corrplot) #v0.84
+library(lattice) #v0.20-41
+library(tidyverse) #v1.3.0
+library(lme4) #v1.1-26
+library(piecewiseSEM) #v2.1.2
+library(MuMIn) #v1.43.1
+library(corrplot) #v0.84
 
 ## clear workspace ##
 rm(list=ls())
 
 ## set working directory
-datWD <- c("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper") #set path for the location of the environment image of script 2 output
+#datWD <- #set path for the location of the environment image of script 2 output
 setwd(datWD)
 #load data from previous 
 load("./scripts/script2_output.RData")
@@ -368,6 +368,6 @@ rm(list = ls()[!(ls() %in% c('CO_point_all','CO_poly_all'))])
 
 ## for next script, need CO_point_all and CO_poly_all data.frames
 #save as an .RData file 
-path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
+# path = #location where you'll put the environment data file
 setwd(path)
 save.image('script3_output.RData')
