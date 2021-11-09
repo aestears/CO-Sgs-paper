@@ -543,7 +543,7 @@ quad <- unique(points$quad) #make a vector of quads in the dataset
 species <- unique(points$species) #make a vector of species in the dataset
 
 setwd(shpWD) #change WD to the path for the CO_shapefiles folder (which is the same as "shpWD", defined above)
-
+#gzgz_11 2005       3     2        1 0.2170000 0.14535000 
 #calculate nearest neighbor density for 5cm radius
 for(j in 1:length(quad)) {
   temp1 <- points[points$quad==quad[j],]
@@ -558,8 +558,8 @@ for(j in 1:length(quad)) {
           buffer <- st_buffer(shape[m,],.05)
           count <- ifelse(length(unlist(st_intersects(buffer, shape)))==0,
                           yes = (0), no = (length(unlist(st_intersects(buffer, shape)))-1))
-          points[points$x < (as.data.frame(shape[m,"coords_x1"])[1,1]+.0001) &
-                   points$x > (as.data.frame(shape[m,"coords_x1"])[1,1]-.0001) &
+          points[points$x < (as.data.frame(shape[m,"coords_x1"])[1,1]+.1) &
+                   points$x > (as.data.frame(shape[m,"coords_x1"])[1,1]-.1) &
                    points$quad == quad[j] &
                    points$year == year[i] &
                    points$species == species[k], "neighbors_5"] <- count
@@ -583,8 +583,8 @@ for(j in 1:length(quad)) {
           buffer <- st_buffer(shape[m,],.10)
           count <- ifelse(length(unlist(st_intersects(buffer, shape)))==0,
                           yes = (0), no = (length(unlist(st_intersects(buffer, shape)))-1))
-          points[points$x < (as.data.frame(shape[m,"coords_x1"])[1,1]+.0001) &
-                   points$x > (as.data.frame(shape[m,"coords_x1"])[1,1]-.0001) &
+          points[points$x < (as.data.frame(shape[m,"coords_x1"])[1,1]+.1) &
+                   points$x > (as.data.frame(shape[m,"coords_x1"])[1,1]-.1) &
                    points$quad == quad[j] &
                    points$year == year[i] &
                    points$species == species[k], "neighbors_10"] <- count
@@ -608,8 +608,8 @@ for(j in 1:length(quad)) {
           buffer <- st_buffer(shape[m,],.15)
           count <- ifelse(length(unlist(st_intersects(buffer, shape)))==0,
                           yes = (0), no = (length(unlist(st_intersects(buffer, shape)))-1))
-          points[points$x < (as.data.frame(shape[m,"coords_x1"])[1,1]+.0001) &
-                   points$x > (as.data.frame(shape[m,"coords_x1"])[1,1]-.0001) &
+          points[points$x < (as.data.frame(shape[m,"coords_x1"])[1,1]+.1) &
+                   points$x > (as.data.frame(shape[m,"coords_x1"])[1,1]-.1) &
                    points$quad == quad[j] &
                    points$year == year[i] &
                    points$species == species[k], "neighbors_15"] <- count
@@ -633,8 +633,8 @@ for(j in 1:length(quad)) {
           buffer <- st_buffer(shape[m,],.20)
           count <- ifelse(length(unlist(st_intersects(buffer, shape)))==0,
                           yes = (0), no = (length(unlist(st_intersects(buffer, shape)))-1))
-          points[points$x < (as.data.frame(shape[m,"coords_x1"])[1,1]+.0001) &
-                   points$x > (as.data.frame(shape[m,"coords_x1"])[1,1]-.0001) &
+          points[points$x < (as.data.frame(shape[m,"coords_x1"])[1,1]+.1) &
+                   points$x > (as.data.frame(shape[m,"coords_x1"])[1,1]-.1) &
                    points$quad == quad[j] &
                    points$year == year[i] &
                    points$species == species[k], "neighbors_20"] <- count

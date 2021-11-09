@@ -21,6 +21,7 @@ library(sjPlot) #v2.8.7
 library(effects) #v4.2-0
 library(ggeffects) #v1.1.3.1
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 require(tidyverse) #v1.3.0
 #require(fields) #v11.6
@@ -39,6 +40,9 @@ require(ggeffects) #v1.1.3.1
 >>>>>>> d1625fe... try different precip models
 =======
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+library(afex) #v0.28.1
+>>>>>>> c814ff3... calculating p-values using lrt
 
 ## clear workspace ##
 rm(list=ls())
@@ -149,6 +153,7 @@ ggplot(data = NeCoeff) +
 >>>>>>> d8181b2... checking numbers in tables of model results
 AIC(mNeigh5, mNeigh10, mNeigh15, mNeigh20)
 
+<<<<<<< HEAD
 #### Model validation functions ####
 ### for glmer models (survival)(Can't make REML = FALSE) 
 glmerInfo <- function(mod) {
@@ -204,6 +209,8 @@ modCompare <- function(m1, m2){
 =======
 >>>>>>> d8181b2... checking numbers in tables of model results
 
+=======
+>>>>>>> c814ff3... calculating p-values using lrt
 #####Graminoid Survival Models #####
 ### rename polygon dataset
 CO_grams <- CO_poly_all
@@ -755,6 +762,7 @@ mGrowRDiam  <- lme4::lmer(size_tplus1_log ~  size_t_log + neighbors_10_s + SPEI_
 summary(as_lmerModLmerTest(mGrowRDiam))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #### testing different growth response variables ####
 ## log-transformed area in year t: size_t_log
 ## log-transformed area in year t+1: size_tplus1_log
@@ -834,6 +842,8 @@ mGrow_GROWTH <- lme4::lmer(logDiffArea ~ size_t_log +neighbors_10_s + SPEI_s * T
 
 #compare the results of the above model to the model using size_t+1 as the response variable
 
+=======
+>>>>>>> c814ff3... calculating p-values using lrt
 #### make growth models without traits for comparison ####
 #fit models
 
@@ -877,9 +887,6 @@ mGrowRTD_NO  <- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + SPEI_
 
 mGrowRDiam_NO  <- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + SPEI_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_RDiam , control=lmerControl(optimizer="bobyqa"))
 
-#compare AIC of models with and without traits
-
-
 #### Get Correlation TLP and LDMC for polygons (graminoids) ####
 # "traits_Not_dups" is the data.frame with the species-level trait averages
 # make sure that it is subset for the species we used in our analysis
@@ -891,18 +898,11 @@ pointSpp <- as.character(unique(CO_point_all$species))
 setwd(datWD)
 CO_traits <- read.csv("./CO_mean_traits.csv", stringsAsFactors = FALSE)
 
-#l
 #get trait correlations for all species used in the models
 traits_modSpp <- CO_traits[CO_traits$species %in% c(polySpp, pointSpp),]
 
-mComp <- lm(data = traits_modSpp, TLP ~ LDMC_g_g)
-
-plot(x = traits_modSpp$LDMC_g_g, 
-     y = traits_modSpp$TLP)
-abline(reg = mComp)
-
 #traits of interest
-traits <- c("TLP", "AvgDiam_mm", "RTD_g_cmSurvTLP_forbs", "RDMC_g_g", "SRL_best_m_g", "LDMC_g_g", "SLA_adj_cm2_g")
+traits <- c("TLP", "AvgDiam_mm", "RTD_g_cm3", "RDMC_g_g", "SRL_best_m_g", "LDMC_g_g", "SLA_adj_cm2_g")
 
 #calculate a correlation matrix
 allSpp_corMatrix <- cor(traits_modSpp[,names(traits_modSpp) %in% traits], use="complete.obs")
@@ -915,10 +915,10 @@ polySpp_corMatrix <- cor(CO_traits[CO_traits$species %in% polySpp,names(traits_m
 pointSpp_corMatrix <- cor(CO_traits[CO_traits$species %in% pointSpp,names(traits_modSpp) %in% traits], use="complete.obs")
 
 #### tables of model results ####
-#for graminoid survival  models
+#for graminoid survival models
 library(stargazer)
 stargazer(mSurvTLP_grams, mSurvLDMC_grams, mSurvSLA_grams, mSurvRDMC_grams, mSurvRTD_grams, mSurvSRL_grams, mSurvRDiam_grams, 
-style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), 
+style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*s"), 
 #omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
           type = "text",
 add.lines =  list(
@@ -934,6 +934,7 @@ add.lines =  list(
 #get random effect coefficients
 sjPlot::tab_model(mSurvTLP_grams, mSurvLDMC_grams, mSurvSLA_grams, mSurvRDMC_grams, mSurvRTD_grams, mSurvSRL_grams, mSurvRDiam_grams, show.se = TRUE)
 
+## get delta AIC
 diff(AIC(mSurvTLP_grams, mSurvTLP_grams_NO)$AIC) #TLP
 anova(mSurvTLP_grams, mSurvTLP_grams_NO, test="Chisq")
 diff(AIC(mSurvLDMC_grams, mSurvLDMC_grams_NO)$AIC) #LDMC
@@ -948,6 +949,16 @@ diff(AIC(mSurvSRL_grams, mSurvSRL_grams_NO)$AIC) #SRL
 anova(mSurvSRL_grams, mSurvSRL_grams_NO, test = "Chisq")
 diff(AIC(mSurvRDiam_grams, mSurvRDiam_grams_NO)$AIC) #RDiam
 anova(mSurvRDiam_grams, mSurvRDiam_grams_NO, test = "Chisq")
+
+## get p-values using LRT
+#TLP
+mSurvTLP_grams_pvals <- mixed(mSurvTLP_grams, data = CO_poly_TLP, method = "LRT")
+mSurvLDMC_grams_pvals <- mixed(mSurvLDMC_grams, data = CO_poly_LDMC, method = "LRT")
+mSurvSLA_grams_pvals <- mixed(mSurvSLA_grams, data = CO_poly_SLA, method = "LRT")
+mSurvRDMC_grams_pvals <- mixed(mSurvRDMC_grams, data = CO_poly_RDMC, method = "LRT")
+mSurvRTD_grams_pvals <- mixed(mSurvRTD_grams, data = CO_poly_RTD, method = "LRT")
+mSurvSRL_grams_pvals <- mixed(mSurvSRL_grams, data = CO_poly_SRL, method = "LRT")
+mSurvRDiam_grams_pvals <-mixed(mSurvRDiam_grams, data =CO_poly_RDMC, method = "LRT")
 
 #for forb survival models
 stargazer(mSurvTLP_forbs, mSurvLDMC_forbs, mSurvSLA_forbs, mSurvRDMC_forbs, mSurvRTD_forbs, mSurvSRL_forbs, mSurvRDiam_forbs,  
@@ -964,6 +975,8 @@ stargazer(mSurvTLP_forbs, mSurvLDMC_forbs, mSurvSLA_forbs, mSurvRDMC_forbs, mSur
 
 #get random effect coefficients
 sjPlot::tab_model(mSurvTLP_forbs, mSurvLDMC_forbs, mSurvSLA_forbs, mSurvRDMC_forbs, mSurvRTD_forbs, mSurvSRL_forbs, mSurvRDiam_forbs, show.se = TRUE)
+
+## get delta AIC values and LRT statistics
 diff(AIC(mSurvTLP_forbs, mSurvTLP_forbs_NO)$AIC) #TLP
 anova(mSurvTLP_forbs, mSurvTLP_forbs_NO, test = "Chisq")
 diff(AIC(mSurvLDMC_forbs, mSurvLDMC_forbs_NO)$AIC) #LDMC
@@ -978,6 +991,14 @@ diff(AIC(mSurvSRL_forbs, mSurvSRL_forbs_NO)$AIC) #SRL
 anova(mSurvSRL_forbs, mSurvSRL_forbs_NO, test = "Chisq")
 diff(AIC(mSurvRDiam_forbs, mSurvRDiam_forbs_NO)$AIC) #RDiam
 anova(mSurvRDiam_forbs, mSurvRDiam_forbs_NO, test = "Chisq")
+## get p-values using LRT
+mSurvTLP_forbs_pvals <- mixed(mSurvTLP_forbs, data = CO_point_TLP, method = "LRT")
+mSurvLDMC_forbs_pvals <- mixed(mSurvLDMC_forbs, data = CO_point_LDMC, method = "LRT")
+mSurvSLA_forbs_pvals <- mixed(mSurvSLA_forbs, data = CO_point_SLA, method = "LRT")
+mSurvRDMC_forbs_pvals <- mixed(mSurvRDMC_forbs, data = CO_point_RDMC, method = "LRT")
+mSurvRTD_forbs_pvals <- mixed(mSurvRTD_forbs, data = CO_point_RTD, method = "LRT")
+mSurvSRL_forbs_pvals <- mixed(mSurvSRL_forbs, data = CO_point_SRL, method = "LRT")
+mSurvRDiam_forbs_pvals <- mixed(mSurvRDiam_forbs, data = CO_point_Diam, method = "LRT")
 
 #for graminoid growth models
 diff(AIC(mGrowTLP, mGrowTLP_NO)$AIC) #TLP
@@ -1128,6 +1149,15 @@ diff(AIC(mGrowRDiam, mGrowRDiam_NO)$AIC) #RDiam
 =======
 >>>>>>> c3ae556... adding likelihood ratio tests
 anova(mGrowRDiam, mGrowRDiam_NO, test = "Chisq")
+
+## get p-values using LRT
+mGrowTLP_pvals <- mixed(mGrowTLP, data = CO_grow_TLP, method = "LRT")
+mGrowLDMC_pvals <- mixed(mGrowLDMC, data = CO_grow_LDMC, method = "LRT")
+mGrowSLA_pvals <- mixed(mGrowSLA, data = CO_grow_SLA, method = "LRT")
+mGrowRDMC_pvals <- mixed(mGrowRDMC, data = CO_grow_RDMC, method = "LRT")
+mGrowRTD_pvals <- mixed(mGrowRTD, data = CO_grow_RTD, method = "LRT")
+mGrowSRL_pvals <- mixed(mGrowSRL, data = CO_grow_SRL, method = "LRT")
+mGrowRDiam_pvals <- mixed(mGrowRDiam, data = CO_grow_RDiam, method = "LRT")
 
 stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam, style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
           #type = "text",
@@ -1712,5 +1742,9 @@ path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/
   #### save output to use in figure script ####vc s/CO-Sgs-paper/scripts" #location where you'll put the environment data file
 >>>>>>> d8181b2... checking numbers in tables of model results
 setwd(path)
+<<<<<<< HEAD
 save.image('script4_output.RData')
 >>>>>>> e46be99... Making / updating R markdown for Dana, Peter, and Daniel
+=======
+save.image('./script4_output.RData')
+>>>>>>> c814ff3... calculating p-values using lrt

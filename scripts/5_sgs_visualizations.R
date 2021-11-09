@@ -23,6 +23,7 @@ library(ggpubr) # v0.4.0
 library(lme4) # v1.1-26
 library(ggeffects) # v1.0.1
 library(tidyverse) # v1.3.0
+library(cowplot) # v1.1.1
 
 ## Load model output data
 
@@ -1140,7 +1141,7 @@ forbSurvFigure <- ggplot(data = ForbDat) +
   theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
 
 
-Make figure for graminoid growth models
+# Make figure for graminoid growth models
 
 <<<<<<< HEAD
 #### model of all traits for growth models ####

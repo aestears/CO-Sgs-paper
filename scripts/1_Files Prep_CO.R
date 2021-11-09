@@ -66,7 +66,7 @@ rm(list = ls()[!(ls() %in% c('CO_point_all','CO_poly_all'))])
 
 ## for next script, need CO_point_surv_traits_quads and CO_poly_surv_traits_quads data.frames
 #save as an .RData file 
-path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
+#path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
 setwd(path)
 save.image('script1_output.RData')
 =======

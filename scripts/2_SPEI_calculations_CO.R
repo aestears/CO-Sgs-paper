@@ -14,6 +14,7 @@
 
 #### load packages ####
 library(tidyverse) #v1.3.0
+library(SPEI) #v1.7
 
 ## clear workspace ##
 rm(list=ls())
@@ -33,6 +34,7 @@ setwd(path)
 
 ## read in climate data file ##
 # This climate data is measured at the LTER site
+
 clim <- read.csv("./CO_daily_climate_data.csv")
 
 #### Site-Data SPEI calculations ####
@@ -88,7 +90,7 @@ CO_SPEI_all <- climMonth  %>%
 # path <-  ##file location of climate dataset
 setwd(path)
 ## load dataset
-SPEIbase_04 <- read.table("./SPEIbase_CO_LTER_NEG104.89_40.50_SPEI04.csv", sep = ";", header = TRUE) 
+SPEIbase_04 <- read.table("/SPEIbase_CO_LTER_NEG104.89_40.50_SPEI04.csv", sep = ";", header = TRUE) 
 names(SPEIbase_04) <- c("Date", "SPEI_04")
 # reformat date
 SPEIbase_04$Date <- as.POSIXct(SPEIbase_04$Date, tz = "GMT", format = "%Y-%m-%d")
