@@ -27,7 +27,7 @@ rm(list=ls())
 #datWD <- #set path for the location of the environment image of script 2 output
 setwd(datWD)
 #load data from previous 
-load("./scripts/script2_output.RData")
+#load("./scripts/script2_output.RData")
 
 ####Data exploration steps for survival data####
 =======

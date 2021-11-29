@@ -24,7 +24,7 @@ rm(list=ls())
 ## set working directory ##
 # datWD <-  #a path for the directory containing the /scripts folder
 setwd(datWD)
-load("./scripts/script1_output.RData")
+#load("./scripts/script1_output.RData")
 
 ### load climate data ###
 ## set working directory  ##

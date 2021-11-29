@@ -23,7 +23,7 @@ rm(list=ls())
 #source the previous script ("0_NearestNeighborCalcs.R") to get "points" and "poly" data.frames
 # #a path for the directory containing the /scripts folder
 setwd(nearWD)
-load("./scripts/script0_output.RData")
+#load("./scripts/script0_output.RData")
 
 ##load trait data 
 # data source: Blumenthal, 2020 (https://doi.org/10.1111/1365-2745.13454) 

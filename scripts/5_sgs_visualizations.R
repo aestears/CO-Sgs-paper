@@ -32,7 +32,7 @@ library(cowplot) # v1.1.1
 # path <-# file containing scripts for analysis
 setwd(path)
 #get model result data into the environment
-load("./script4_output.RData") #change the file name to the most current version of model runs
+#load("./script4_output.RData") #change the file name to the most current version of model runs
 
 #### Make a figure of model results for LDMC, RDMC, and TLP for forb and gram survival ####  
 

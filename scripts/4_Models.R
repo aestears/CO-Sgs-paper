@@ -64,7 +64,7 @@ datWD <- c("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analy
 >>>>>>> dc34618... cleaning up documentation/updating figures
 setwd(datWD)
 #load data from previous 
-load("./scripts/script3_output.RData")
+#load("./scripts/script3_output.RData")
 
 <<<<<<< HEAD
 <<<<<<< HEAD
