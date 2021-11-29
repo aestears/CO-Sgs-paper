@@ -27,7 +27,11 @@ rm(list=ls())
 #datWD <- #set path for the location of the environment image of script 2 output
 setwd(datWD)
 #load data from previous 
+<<<<<<< HEAD
 #load("./scripts/script2_output.RData")
+=======
+load("./scripts/script2_output.RData")
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 
 ####Data exploration steps for survival data####
 =======
@@ -230,6 +234,7 @@ corrplot(cor(poly_temp[,MyVar8], use = "na.or.complete", method = "pearson"), me
 
 ### examing variance inflation factors (VIF) for fixed effects
 #for TLP model
+<<<<<<< HEAD
 vif(poly_temp[,MyVar2])
 #for LDMC_g_g model
 <<<<<<< HEAD
@@ -254,7 +259,25 @@ corvif(poly_temp[,MyVar8])
 >>>>>>> b60fa6d... starting to update script 3
 =======
 vif(poly_temp[,MyVar8])
+<<<<<<< HEAD
 >>>>>>> c814ff3... calculating p-values using lrt
+=======
+=======
+corvif(poly_temp[,MyVar2])
+#for LDMC_g_g model
+corvif(poly_temp[,MyVar3])
+#for SLA model
+corvif(poly_temp[,MyVar4])
+#for SRL model
+corvif(poly_temp[,MyVar5])
+#for RDMC_g_g model
+corvif(poly_temp[,MyVar6])
+#for RTD model
+corvif(poly_temp[,MyVar7])
+#for RDiam model
+corvif(poly_temp[,MyVar8])
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
+>>>>>>> 882fd5f... changes
 
 # All values are below 3, which is good
 
@@ -410,6 +433,7 @@ corrplot(cor(temp_point[,MyVar14], use = "na.or.complete", method = "pearson"), 
 
 ### Variance Inflation Factors (VIF) for fixed effects
 #For LDMC model
+<<<<<<< HEAD
 vif(temp_point[,MyVar10])
 #for TLP model
 vif(temp_point[,MyVar9])
@@ -423,6 +447,21 @@ vif(temp_point[,MyVar13])
 vif(temp_point[,MyVar14])
 #For SLA model
 vif(temp_point[,MyVar15])
+=======
+corvif(temp_point[,MyVar10])
+#for TLP model
+corvif(temp_point[,MyVar9])
+#For RDMC model
+corvif(temp_point[,MyVar11])
+#For SRL model
+corvif(temp_point[,MyVar12])
+#For RTD model
+corvif(temp_point[,MyVar13])
+#For AvgDiam model
+corvif(temp_point[,MyVar14])
+#For SLA model
+corvif(temp_point[,MyVar15])
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 
 #All of the VIFs are below 3 
   
@@ -594,6 +633,7 @@ corrplot(cor(poly_temp_growth[,MyVar8], use = "na.or.complete", method = "pearso
 #for TLP model
 temp <- poly_temp_growth[,MyVar2] %>% 
   dplyr::filter(!is.na(TLP))
+<<<<<<< HEAD
 vif(temp)
 #for LDMC_g_g model
 temp <- poly_temp_growth[,MyVar3] %>% 
@@ -699,7 +739,37 @@ temp <- poly_temp_growth[,MyVar8] %>%
 corvif(temp)
 =======
 vif(temp)
+<<<<<<< HEAD
 >>>>>>> c814ff3... calculating p-values using lrt
+=======
+=======
+corvif(temp)
+#for LDMC_g_g model
+temp <- poly_temp_growth[,MyVar3] %>% 
+  dplyr::filter(!is.na("LDMC_g_g"))
+corvif(temp)
+#for SLA model
+temp <- poly_temp_growth[,MyVar4] %>% 
+  dplyr::filter(!is.na(SLA_adj_cm2_g))
+corvif(temp)
+#for RDMC_g_g model
+temp <- poly_temp_growth[,MyVar5] %>% 
+  dplyr::filter(!is.na("RDMC_g_g"))
+corvif(temp)
+#for SRL model
+temp <- poly_temp_growth[,MyVar6] %>% 
+  dplyr::filter(!is.na("SRL_m_g"))
+corvif(temp)
+#for RTD model
+temp <- poly_temp_growth[,MyVar7] %>% 
+  dplyr::filter(!is.na("RTD_g_cm3"))
+corvif(temp)
+#for RDiam
+temp <- poly_temp_growth[,MyVar8] %>% 
+  dplyr::filter(!is.na("AvgDiam_mm"))
+corvif(temp)
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
+>>>>>>> 882fd5f... changes
 
 # All values are below 3, which is good
 

@@ -23,7 +23,11 @@ rm(list=ls())
 #source the previous script ("0_NearestNeighborCalcs.R") to get "points" and "poly" data.frames
 # #a path for the directory containing the /scripts folder
 setwd(nearWD)
+<<<<<<< HEAD
 #load("./scripts/script0_output.RData")
+=======
+load("./scripts/script0_output.RData")
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 
 ##load trait data 
 # data source: Blumenthal, 2020 (https://doi.org/10.1111/1365-2745.13454) 
@@ -66,7 +70,11 @@ rm(list = ls()[!(ls() %in% c('CO_point_all','CO_poly_all'))])
 
 ## for next script, need CO_point_surv_traits_quads and CO_poly_surv_traits_quads data.frames
 #save as an .RData file 
+<<<<<<< HEAD
 #path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
+=======
+path = "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/CO-Sgs-paper/scripts" #location where you'll put the environment data file
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 setwd(path)
 save.image('script1_output.RData')
 =======

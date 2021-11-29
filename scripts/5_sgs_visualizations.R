@@ -23,7 +23,10 @@ library(ggpubr) # v0.4.0
 library(lme4) # v1.1-26
 library(ggeffects) # v1.0.1
 library(tidyverse) # v1.3.0
+<<<<<<< HEAD
 library(cowplot) # v1.1.1
+=======
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 
 ## Load model output data
 
@@ -32,7 +35,11 @@ library(cowplot) # v1.1.1
 # path <-# file containing scripts for analysis
 setwd(path)
 #get model result data into the environment
+<<<<<<< HEAD
 #load("./script4_output.RData") #change the file name to the most current version of model runs
+=======
+load("./script4_output.RData") #change the file name to the most current version of model runs
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 
 #### Make a figure of model results for LDMC, RDMC, and TLP for forb and gram survival ####  
 
@@ -1141,7 +1148,11 @@ forbSurvFigure <- ggplot(data = ForbDat) +
   theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
 
 
+<<<<<<< HEAD
 # Make figure for graminoid growth models
+=======
+Make figure for graminoid growth models
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 
 <<<<<<< HEAD
 #### model of all traits for growth models ####

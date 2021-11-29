@@ -14,7 +14,10 @@
 
 #### load packages ####
 library(tidyverse) #v1.3.0
+<<<<<<< HEAD
 library(SPEI) #v1.7
+=======
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 
 ## clear workspace ##
 rm(list=ls())
@@ -24,7 +27,11 @@ rm(list=ls())
 ## set working directory ##
 # datWD <-  #a path for the directory containing the /scripts folder
 setwd(datWD)
+<<<<<<< HEAD
 #load("./scripts/script1_output.RData")
+=======
+load("./scripts/script1_output.RData")
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 
 ### load climate data ###
 ## set working directory  ##
@@ -34,7 +41,10 @@ setwd(path)
 
 ## read in climate data file ##
 # This climate data is measured at the LTER site
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 clim <- read.csv("./CO_daily_climate_data.csv")
 
 #### Site-Data SPEI calculations ####
@@ -90,7 +100,11 @@ CO_SPEI_all <- climMonth  %>%
 # path <-  ##file location of climate dataset
 setwd(path)
 ## load dataset
+<<<<<<< HEAD
 SPEIbase_04 <- read.table("/SPEIbase_CO_LTER_NEG104.89_40.50_SPEI04.csv", sep = ";", header = TRUE) 
+=======
+SPEIbase_04 <- read.table("./SPEIbase_CO_LTER_NEG104.89_40.50_SPEI04.csv", sep = ";", header = TRUE) 
+>>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 names(SPEIbase_04) <- c("Date", "SPEI_04")
 # reformat date
 SPEIbase_04$Date <- as.POSIXct(SPEIbase_04$Date, tz = "GMT", format = "%Y-%m-%d")
