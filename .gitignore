@@ -1,6 +1,7 @@
 .Rproj.user
 .Rhistory
 .RData
+<<<<<<< HEAD
 .Ruserdata
 /scripts/script0_output.RData
 <<<<<<< HEAD
@@ -22,3 +23,6 @@
 =======
 /scripts/script4_output.RData
 >>>>>>> e46be99... Making / updating R markdown for Dana, Peter, and Daniel
+=======
+.Ruserdata
+>>>>>>> 6773349... change some errors
