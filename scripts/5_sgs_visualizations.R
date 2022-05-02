@@ -13,7 +13,6 @@
 <<<<<<< HEAD
 
 #### load packages ####
-
 library(effects) # v4.2-0
 library(lattice) # v0.20-41
 library(latticeExtra) # v0.6-29
@@ -23,10 +22,7 @@ library(ggpubr) # v0.4.0
 library(lme4) # v1.1-26
 library(ggeffects) # v1.0.1
 library(tidyverse) # v1.3.0
-<<<<<<< HEAD
 library(cowplot) # v1.1.1
-=======
->>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 
 ## Load model output data
 
@@ -35,12 +31,8 @@ library(cowplot) # v1.1.1
 # path <-# file containing scripts for analysis
 setwd(path)
 #get model result data into the environment
-<<<<<<< HEAD
 #load("./script4_output.RData") #change the file name to the most current version of model runs
-=======
 load("./script4_output.RData") #change the file name to the most current version of model runs
->>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
-
 #### Make a figure of model results for LDMC, RDMC, and TLP for forb and gram survival ####  
 
 ## Make figure for graminoid survival
@@ -205,10 +197,13 @@ dat_text <- data.frame(
 )
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
 
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 30a6837... tidying figure code
 #make a multipanel figure that shows only the graminoid survival probs for 3 traits
 gramSurvFigure <- ggplot(data = GramDat) +
   geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
@@ -227,7 +222,6 @@ gramSurvFigure <- ggplot(data = GramDat) +
   theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold")) +
   geom_text(data= dat_text, mapping = aes(x = x, y = y, label = label), size = 3, fontface = "bold") +
   geom_text(data= dat_text, mapping = aes(x = x1, y = y1, label = sig), size = 3.5, fontface = "bold")
-
 
 
 #### Make a figure for forb survival ####
@@ -628,19 +622,31 @@ mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Specific Leaf Area) (c
 mainObs <- ggdraw(add_sub(mainObs, label = bquote("scaled(Specific Leaf Area) (c"*m^2*"/g)"),x = .873, y = 5, size = 9))
 mainObs
 
+#### Make figure 2 (combination of figures for effect of size and local neighborhood on LDMC*SPEI effect of graminoid survival) ####
+### make a palette for all fig. 2 panels 
+palette <- data.frame("spp" = factor(
+  unique(paste0(str_sub(str_split_fixed(CO_poly_LDMC$species, " ", n = 2)[,1], start = 1L, end = 1L),". ",str_split_fixed(CO_poly_LDMC$species, " ", n = 2)[,2])),
+  levels = c("A. longiseta" , "B. gracilis",  "B. dactyloides", "C. eleocharis", "S. paniculatus", "S. hystrix", "S. cryptandrus", "S. comata")), 
+  "long_name" = c("Aristida longiseta", "Bouteloua gracilis", "Buchloe dactyloides", "Carex eleocharis", "Schedonnardus paniculatus", "Sitanion hystrix", "Sporobolus cryptandrus", "Stipa comata"  )
+)
 
 #### Make a plot of random effects of individual plant size on survival for LDMC model (best model for graminoid survival) (figure 2: panel B)####
 
 #get random effect data
 #refit model w/ factors instead of logical values
-m2_fac <- glmer(as.factor(survives_tplus1) ~ SPEI_s * LDMC_s +  size_t_log + neighbors_10_s + as.factor(nearEdge_t) + (size_t_log|species) + (1|quad) + (1|year_t), data=CO_poly_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+m2_fac <- glmer(as.factor(survives_tplus1) ~ SPEI_s * LDMC_s +  size_t_log + neighbors_10_s + as.factor(nearEdge_t) + (size_t_log|species) + (1|quad) + (1|year_t), data=CO_poly_LDMC, family = binomial(link = "logit"), control=glmerControl(optimizer="bobyqa"))
 
 sppAreaPreds_s <- ggpredict(m2_fac, terms = c("size_t_log[all]", "species"), type = "random")
 sppAreaPreds_s <- data.frame("x" = sppAreaPreds_s$x, "preds" = sppAreaPreds_s$predicted,"spp" = sppAreaPreds_s$group )
+sppAreaPreds_s <- sppAreaPreds_s %>% 
+  left_join(palette, by = c("spp" = "long_name")) %>% 
+  rename(spp.old = spp, spp = spp.y)
+
 
 globPreds_a_s <- ggpredict(m2_fac, terms = c("size_t_log[all]"), type = "random")
 globPreds_a_s <- data.frame("x" = globPreds_a_s$x, "preds" = globPreds_a_s$predicted, "spp" = as.factor("Global"), "CI_low" = globPreds_a_s$conf.low, "CI_high" = globPreds_a_s$conf.high)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 AreaEffectSurv <- ggplot() +
   geom_line(data = sppAreaPreds_s, aes(x = x, y = preds, col = spp), alpha = .8)+
@@ -699,6 +705,9 @@ dev.off()
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
 (AreaEffectSurv <- ggplot() +
+=======
+AreaEffectSurv <- ggplot() +
+>>>>>>> 30a6837... tidying figure code
     geom_line(data = sppAreaPreds_s, aes(x = x, y = preds, col = spp), alpha = .75)+
     geom_line(data = globPreds_a_s, aes(x = x, y = preds), lwd = 1.25) +
     #geom_line(aes(x = globPreds_a_s$x, y = globPreds_a_s$CI_low)) +
@@ -707,12 +716,18 @@ dev.off()
     ylim(c(0,1))+
     xlab(c(expression(ln(size[italic(t)])))) +
     ylab("Prob.(Graminoid Survival)") +
-    scale_color_brewer(palette = "Set2") #+
-  #theme(axis.ticks.x.bottom = element_blank(),
+    scale_color_manual(values = c("A. longiseta" = "#66C2A5",
+                                  "B. gracilis" = "#FC8D62",
+                                  "B. dactyloides" = "#8DA0CB",
+                                  "C. eleocharis" = "#E78AC3",
+                                  "S. paniculatus" = "#A6D854",
+                                  "S. hystrix" = "#FFD92F",
+                                  "S. cryptandrus" = "#E5C494",
+                                  "S. comata" = "#B3B3B3")) +
+  guides(col = guide_legend(title = "Species"))
+  #theme( #axis.ticks.x.bottom = element_blank(),
   #axis.text.x.bottom = element_blank(),
   #legend.position = "none")
-)
-
 
 
 #### Make plot of fixed effect of neighborhood density for effect of LDMC*SPEI on graminoid survival (figure 2: panel A) ####
@@ -720,6 +735,9 @@ dev.off()
 
 sppNeighPreds_s <- ggpredict(m2_fac, terms = c("neighbors_10_s[all]", "species"), type = "random")
 sppNeighPreds_s <- data.frame("x" = sppNeighPreds_s$x, "preds" = sppNeighPreds_s$predicted,"spp" = sppNeighPreds_s$group )
+sppNeighPreds_s <- sppNeighPreds_s %>% 
+  left_join(palette, by = c("spp" = "long_name")) %>% 
+  rename(spp.old = spp, spp = spp.y)
 
 globPreds_n_s <- ggpredict(m2_fac, terms = c("neighbors_10_s[all]"), type = "fixed")
 globPreds_n_s <- data.frame("x" = globPreds_n_s$x, "preds" = globPreds_n_s$predicted, "spp" = as.factor("Global"), "CI_low" = globPreds_n_s$conf.low, "CI_high" = globPreds_n_s$conf.high)
@@ -736,7 +754,14 @@ globPreds_n_s <- data.frame("x" = globPreds_n_s$x, "preds" = globPreds_n_s$predi
     ylim(c(0,1))+
     xlab("Conspecific Local \n Neighborhood Competition") +
     ylab("Prob.(Graminoid Survival)") +
-    scale_color_brewer(palette = "Set2") +
+    scale_color_manual(values = c("A. longiseta" = "#66C2A5",
+                                  "B. gracilis" = "#FC8D62",
+                                  "B. dactyloides" = "#8DA0CB",
+                                  "C. eleocharis" = "#E78AC3",
+                                  "S. paniculatus" = "#A6D854",
+                                  "S. hystrix" = "#FFD92F",
+                                  "S. cryptandrus" = "#E5C494",
+                                  "S. comata" = "#B3B3B3"))) +
     theme(#axis.ticks.x.bottom = element_blank(),
       #axis.text.x.bottom = element_blank(),
       axis.title.x.bottom = element_text(size = 9.5),
@@ -744,8 +769,7 @@ globPreds_n_s <- data.frame("x" = globPreds_n_s$x, "preds" = globPreds_n_s$predi
     )
 )
 
-
-#### Make plot of fixed effect of neighborhood by species on growth for TLP model (figure 4: panel A) ####
+#### Make plot of fixed effect of neighborhood by species on growth for TLP model (figure 2: panel C) ####
 
 mGrowTLP_fac<- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + TLP_s + SPEI_s * TLP_s + as.factor(nearEdge_t) + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
 <<<<<<< HEAD
@@ -800,6 +824,9 @@ dev.off()
 
 sppNeighPreds_g <- ggpredict(mGrowTLP_fac, terms = c("neighbors_10_s[all]", "species"), type = "random")
 sppNeighPreds_g <- data.frame("x" = sppNeighPreds_g$x, "preds" = sppNeighPreds_g$predicted,"spp" = sppNeighPreds_g$group )
+sppNeighPreds_g  <- sppNeighPreds_g  %>% 
+  left_join(palette, by = c("spp" = "long_name")) %>% 
+  rename(spp.old = spp, spp = spp.y)
 
 globPreds_n_g <- ggpredict(mGrowTLP_fac, terms = c("neighbors_10_s[all]"), type = "fixed")
 globPreds_n_g <- data.frame("x" = globPreds_n_g$x, "preds" = globPreds_n_g$predicted, "spp" = as.factor("Global"), "CI_low" = globPreds_n_g$conf.low, "CI_high" = globPreds_n_g$conf.high)
@@ -821,14 +848,24 @@ globPreds_n_g <- data.frame("x" = globPreds_n_g$x, "preds" = globPreds_n_g$predi
       legend.position = "none",
       axis.title.x = element_text(size = 9),
       axis.title.y = element_text(margin = margin(r = 0))) +
-    scale_color_brewer(palette = "Set2")) 
+    scale_color_manual(values = c("A. longiseta" = "#66C2A5",
+                                  "B. gracilis" = "#FC8D62",
+                                  "B. dactyloides" = "#8DA0CB",
+                                  "C. eleocharis" = "#E78AC3",
+                                  "S. paniculatus" = "#A6D854",
+                                  "S. hystrix" = "#FFD92F",
+                                  "S. cryptandrus" = "#E5C494",
+                                  "S. comata" = "#B3B3B3")))
 
 
-#### Make plot of effect of size_t on size_t+1 using coefficients from TLP model, as well as raw data (figure 4: panel B)####
+#### Make plot of effect of size_t on size_t+1 using coefficients from TLP model, as well as raw data (figure 2: panel D)####
 
 #model is mGrowTLP
 sppSize_Preds_growth <- ggpredict(mGrowTLP_fac, terms = c("size_t_log[all]", "species"), type = "random")
 sppSizePreds_growth <- data.frame("x" = sppSize_Preds_growth$x, "preds" = sppSize_Preds_growth$predicted,"spp" = sppSize_Preds_growth$group )
+sppSizePreds_growth <- sppSizePreds_growth  %>% 
+  left_join(palette, by = c("spp" = "long_name")) %>% 
+  rename(spp.old = spp, spp = spp.y)
 
 globPreds_growth <- ggpredict(mGrowTLP_fac, terms = c("size_t_log[all]"), type = "random")
 globPreds_growth <- data.frame("x" = globPreds_growth$x, "preds" = globPreds_growth$predicted, "spp" = as.factor("Global"), "CI_low" = globPreds_growth$conf.low, "CI_high" = globPreds_growth$conf.high)
@@ -838,16 +875,23 @@ globPreds_growth <- data.frame("x" = globPreds_growth$x, "preds" = globPreds_gro
     geom_line(data = sppSizePreds_growth, aes(x = x, y = preds, col = spp), alpha = .75)+
     geom_line(data = globPreds_growth , aes(x = x, y = preds), lwd = 1.25) +
     geom_polygon(aes(x = c(globPreds_growth$x,rev(globPreds_growth$x)), y = c( globPreds_growth$CI_low, rev(globPreds_growth$CI_high))), col = NA, fill = "grey", alpha = .2) +
-    ylim(c(-1,8)) +
+    ylim(c(-2.3,8.5)) +
     xlim(c(min(CO_grow_TLP$size_t_log)+.2, max(CO_grow_TLP$size_t_log))) +
     theme_classic() +
     xlab(c(expression(ln(size[italic(t)])))) +
     ylab(expression(ln(size[italic(t+1)]))) +
     theme(legend.position = "none") +
-    scale_color_brewer(palette = "Set2")) 
+    scale_color_manual(values = c("A. longiseta" = "#66C2A5",
+                                  "B. gracilis" = "#FC8D62",
+                                  "B. dactyloides" = "#8DA0CB",
+                                  "C. eleocharis" = "#E78AC3",
+                                  "S. paniculatus" = "#A6D854",
+                                  "S. hystrix" = "#FFD92F",
+                                  "S. cryptandrus" = "#E5C494",
+                                  "S. comata" = "#B3B3B3")))
 
 
-#### Make a figure showing the fitted relationship between size_t and size_t+1 for each graminoid species (figure 4: panel C) ####
+#### Make a figure showing the fitted relationship between size_t and size_t+1 for each graminoid species (figure 2: panel E) ####
 
 ## use CO_poly_growth dataset
 growTemp <- CO_grow_TLP
@@ -856,10 +900,14 @@ growTemp <- CO_grow_TLP
 growTemp$sppName <- 
   paste0(str_sub(str_split_fixed(CO_grow_TLP$species, " ", n = 2)[,1], start = 1L, end = 1L),". ",str_split_fixed(CO_grow_TLP$species, " ", n = 2)[,2])
 
+growTemp <- growTemp  %>% 
+  left_join(palette, by = c("species" = "long_name")) %>% 
+  rename(spp.old = sppName)
+
 (sizet_sizetplus1 <- ggplot(data = growTemp) +
     geom_abline(aes(slope = 1, intercept = 0), lty = 2, alpha = .8)+
     #geom_point(aes(x = size_t_log, y = size_tplus1_log, col = sppName), alpha = .3) +
-    geom_smooth(aes(x = size_t_log, y = size_tplus1_log, col = sppName), method = "lm", se = FALSE) +
+    geom_smooth(aes(x = size_t_log, y = size_tplus1_log, col = spp), method = "lm", se = FALSE) +
     theme_classic() +
     ylim(c(-1,8)) +
     xlim(c(min(CO_grow_TLP$size_t_log)+.2, max(CO_grow_TLP$size_t_log))) +
@@ -867,26 +915,28 @@ growTemp$sppName <-
     ylab(expression(ln(size[italic(t+1)]))) +
     theme(legend.text = element_text(face = "italic", size = 8), legend.position = "right", legend.key.width = unit(.4, "cm"), legend.margin = margin(t = .1, r = .1, b = 0, l = .1, unit = "pt")) +
     guides(col = guide_legend(title = "Species")) +
-    scale_color_brewer(palette = "Set2" ))
+    scale_color_manual(values = c("A. longiseta" = "#66C2A5",
+                                  "B. gracilis" = "#FC8D62",
+                                  "B. dactyloides" = "#8DA0CB",
+                                  "S. paniculatus" = "#A6D854",
+                                  "S. hystrix" = "#FFD92F",
+                                  "S. cryptandrus" = "#E5C494",
+                                  "S. comata" = "#B3B3B3")))
 
 
-#### Make figure 2 (combination of figures for effect of size and local neighborhood on LDMC*SPEI effect of graminoid survival) ####
+### combine panels into one figure
 (effectsSurv <- ggarrange(NeighEffectSurv, AreaEffectSurv, 
                           labels = c("A", "B"),
                           ncol = 2, nrow = 1, align ="hv",legend = "right",
-                          legend.grob = get_legend(sizet_sizetplus1)))
-
-
-#### Make figure 4 (combination of figures for effect of size and neighbors on LDMC*TLP effect on graminoid growth) ####
-
+                          legend.grob = get_legend(AreaEffectSurv), 
+                          common.legend = TRUE))
 (effectsGrowth <- ggarrange(NeighEffectGrowth, AreaEffectGrowth,  sizet_sizetplus1,
-                            labels = c("A", "B", "C"),
+                            labels = c("C", "D", "E"),
                             widths = c(1,1,1),
-                            legend = "right",
-                            legend.grob = get_legend(sizet_sizetplus1),
+                            legend = "none",
                             ncol = 3, nrow = 1, align ="hv"))
 
-
+ggarrange(effectsSurv, effectsGrowth, nrow = 2, common.legend = TRUE)
 
 #### Make a figure of model results for forb survival and gram growth and survival for other traits (figure S2)####
 
@@ -1148,11 +1198,7 @@ forbSurvFigure <- ggplot(data = ForbDat) +
   theme(legend.position = "bottom", legend.title = element_blank(), legend.background = element_rect(fill="grey95",size=0.5, linetype="solid"), strip.background = element_rect(colour=NA, fill=NA), strip.placement = "outside", strip.text.x = element_text(margin = margin(0, 0, 1.5, 0)), plot.title = element_text(hjust = 0.5, size = 13, face = "bold"))
 
 
-<<<<<<< HEAD
 # Make figure for graminoid growth models
-=======
-Make figure for graminoid growth models
->>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 
 <<<<<<< HEAD
 #### model of all traits for growth models ####
