@@ -47,7 +47,7 @@ workDir <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analy
 setwd(workDir) 
 
 #read in polygon survival data file
-poly <- read.csv("polygon_species_survD_IPM.csv")
+poly <- read.csv("polygonSpeciesSurvData.csv")
 
 ## create empty columns in the data.frame to hold values for each nearest neighbor radius (in cm)
 poly$neighbor_area_5 <- NA
@@ -527,7 +527,7 @@ pointsWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Anal
 setwd(pointsWD)
 
 #read in point survival data
-points <- read.csv("point_species_survD.csv", stringsAsFactors = FALSE)
+points <- read.csv("/pointSpeciesSurvData.csv", stringsAsFactors = FALSE)
 #add a column for 'site' 
 points$Site <- "CO"
 
@@ -538,7 +538,7 @@ points$neighbors_15 <- NA
 points$neighbors_20 <- NA
 
 #make a vector for years in the dataset
-year <- sort(unique(points$year))
+year <- sort(unique(points$year_t))
 quad <- unique(points$quad) #make a vector of quads in the dataset
 species <- unique(points$species) #make a vector of species in the dataset
 
