@@ -1,7 +1,10 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #//////////////////////////
 # Demographic trade-offs affect how leaf turgor loss point and tissue dry matter content mediate the effect of drought on herbaceous perennial survival and growth
 # Analysis 
@@ -10,6 +13,7 @@
 # Revised 9 February 2021
 # R version 4.0.3 
 #//////////////////////////
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 #### load packages ####
@@ -74,6 +78,7 @@ load("./script4_output.RData") #change the file name to the most current version
 ## Make figure for graminoid survival
 #get 2.5 and 97.5 percentiles of the distribution
 <<<<<<< HEAD
+<<<<<<< HEAD
 meanSPEI_G <- mean(CO_grams$SPEI_s)
 sdSPEI_G <- sd(CO_grams$SPEI_s)
 >>>>>>> 56c8fd3... added scripts for data analysis
@@ -81,6 +86,10 @@ sdSPEI_G <- sd(CO_grams$SPEI_s)
 meanSPEI_G <- mean(CO_grams$SPEI_s, na.rm = TRUE)
 sdSPEI_G <- sd(CO_grams$SPEI_s, na.rm = TRUE)
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+meanSPEI_G <- mean(CO_grams$SPEI_s, na.rm = TRUE)
+sdSPEI_G <- sd(CO_grams$SPEI_s, na.rm = TRUE)
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #get 97.5 quantile of the distribution
 SPEI_97_5_G <- qnorm(.975, meanSPEI_G, sdSPEI_G) 
 SPEI_2_5_G <- qnorm(.025, meanSPEI_G, sdSPEI_G)
@@ -91,6 +100,9 @@ spei_vals <- c(SPEI_2_5_G, SPEI_97_5_G)
 TLP_vals <- seq(min(CO_grams$TLP_s, na.rm = TRUE), max(CO_grams$TLP_s, na.rm = TRUE), length.out = 20)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 TLP_G_dat<- ggpredict(mSurvTLP_grams, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE, typical = "mean")
 #the ggpredict() function uses mean values for each of the fixed effects that aren't specified, and population-level values for the random effects
 
@@ -109,6 +121,7 @@ RDiam_G_dat <- ggpredict(mSurvRDiam_grams, terms = c("RDiam_s[RDiam_vals]", "SPE
 # for SLA
 SLA_vals <- seq(min(CO_grams$SLA_s, na.rm = TRUE), max(CO_grams$SLA_s, na.rm = TRUE), length.out = 20)
 SLA_G_dat <- ggpredict(mSurvSLA_grams, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+<<<<<<< HEAD
 =======
 TLP_G_dat <- ggpredict(m1_grams, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
@@ -136,6 +149,8 @@ RDiam_G_dat <- ggpredict(mSurvRDiam_grams, terms = c("RDiam_s[RDiam_vals]", "SPE
 SLA_vals <- seq(min(CO_grams$SLA_s, na.rm = TRUE), max(CO_grams$SLA_s, na.rm = TRUE), length.out = 20)
 SLA_G_dat <- ggpredict(mSurvSLA_grams, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #make a data.frame to contain all of the values for each trait
 GramDat <- data.frame(trait = c("scaled(Turgor Loss Point) (MPa)"), x = TLP_G_dat$x, GramSurv = TLP_G_dat$predicted, CI_low = TLP_G_dat$conf.low, CI_high = TLP_G_dat$conf.high, SPEI = TLP_G_dat$group, lab = "A")
@@ -146,24 +161,31 @@ GramDat <- rbind(GramDat, data.frame(trait = c("scaled(Root Dry Matter Content) 
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 GramDat <- rbind(GramDat, data.frame(trait = c("scaled(Average Root Diameter) (cm)"), x = RDiam_G_dat$x, GramSurv = RDiam_G_dat$predicted, CI_low = RDiam_G_dat$conf.low, CI_high = RDiam_G_dat$conf.high, SPEI = RDiam_G_dat$group, lab = "C"))
 
 GramDat <- rbind(GramDat, data.frame(trait = c("scaled(Specific Leaf Area) (g/cm2)"), x = SLA_G_dat$x, GramSurv = SLA_G_dat$predicted, CI_low = SLA_G_dat$conf.low, CI_high = SLA_G_dat$conf.high, SPEI = SLA_G_dat$group, lab = "C"))
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #make data for rug plot
 RugDat_G <-  data.frame(rug = CO_grams$TLP_s, trait = "scaled(Turgor Loss Point) (MPa)")
 RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$LDMC_s, trait = "scaled(Leaf Dry Matter Content) (g/g)"))
 RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$RDMC_s, trait = "scaled(Root Dry Matter Content) (g/g)"))
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$RDiam_s, trait = "scaled(Average Root Diameter) (cm)"))
 RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$SLA_s, trait = "scaled(Specific Leaf Area) (g/cm2)"))
 
@@ -184,6 +206,10 @@ dat_text <- data.frame(
 RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$RDiam_s, trait = "scaled(Average Root Diameter) (cm)"))
 RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$SLA_s, trait = "scaled(Specific Leaf Area) (g/cm2)"))
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$RDiam_s, trait = "scaled(Average Root Diameter) (cm)"))
+RugDat_G <- rbind(RugDat_G, data.frame(rug = CO_grams$SLA_s, trait = "scaled(Specific Leaf Area) (g/cm2)"))
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #text for labels
 dat_text <- data.frame(
@@ -196,6 +222,7 @@ dat_text <- data.frame(
   y1 = c(1,1,1,1,1)
 )
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> 56c8fd3... added scripts for data analysis
@@ -204,11 +231,15 @@ dat_text <- data.frame(
 >>>>>>> dc34618... cleaning up documentation/updating figures
 =======
 >>>>>>> 30a6837... tidying figure code
+=======
+
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #make a multipanel figure that shows only the graminoid survival probs for 3 traits
 gramSurvFigure <- ggplot(data = GramDat) +
   geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
   geom_line(aes(x=x, GramSurv, col = SPEI))  + 
   geom_rug(aes(x = rug), data = RugDat_G) +
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   labs(title = "Graminoid Survival") +
@@ -232,6 +263,9 @@ gramSurvFigure <- ggplot(data = GramDat) +
 =======
   labs(title = "Graminoid Survival") +
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+  labs(title = "Graminoid Survival") +
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
   xlab(NULL) +
   ylab("Probability of Survival") +
   scale_y_continuous(limits = c(0,1)) +
@@ -246,6 +280,7 @@ gramSurvFigure <- ggplot(data = GramDat) +
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## for forbs
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
@@ -253,6 +288,11 @@ gramSurvFigure <- ggplot(data = GramDat) +
 
 ##make figure for forb survival
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+#### Make a figure for forb survival ####
+
+##make figure for forb survival
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #get 2.5 and 97.5 percentiles of the distribution
 meanSPEI_F <- mean(CO_point_all$SPEI_s)
 sdSPEI_F <- sd(CO_point_all$SPEI_s)
@@ -266,6 +306,7 @@ spei_vals <- c(SPEI_2_5_G, SPEI_97_5_G)
 TLP_vals <- seq(min(CO_point_all$TLP_s, na.rm = TRUE), max(CO_point_all$TLP_s, na.rm = TRUE), length.out = 20)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 TLP_F_dat <- ggpredict(mSurvTLP_forbs, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 =======
 TLP_F_dat <- ggpredict(m3, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
@@ -273,12 +314,18 @@ TLP_F_dat <- ggpredict(m3, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), ty
 =======
 TLP_F_dat <- ggpredict(mSurvTLP_forbs, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+TLP_F_dat <- ggpredict(mSurvTLP_forbs, terms = c("TLP_s[TLP_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 
 #for LDMC_s
 LDMC_vals <- seq(min(CO_point_all$LDMC_s, na.rm = TRUE), max(CO_point_all$LDMC_s, na.rm = TRUE), length.out = 20)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 LDMC_F_dat <- ggpredict(mSurvLDMC_forbs, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
 #for RDMC_s
@@ -292,6 +339,7 @@ RDiam_F_dat <- ggpredict(mSurvRDiam_forbs, terms = c("RDiam_s[RDiam_vals]", "SPE
 #for SLA
 SLA_vals <- seq(min(CO_point_all$SLA_s, na.rm = TRUE), max(CO_point_all$SLA_s, na.rm = TRUE), length.out = 20)
 SLA_F_dat <- ggpredict(mSurvSLA_forbs, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
+<<<<<<< HEAD
 =======
 LDMC_F_dat <- ggpredict(m4, terms = c("LDMC_s[LDMC_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 
@@ -314,6 +362,8 @@ RDiam_F_dat <- ggpredict(mSurvRDiam_forbs, terms = c("RDiam_s[RDiam_vals]", "SPE
 SLA_vals <- seq(min(CO_point_all$SLA_s, na.rm = TRUE), max(CO_point_all$SLA_s, na.rm = TRUE), length.out = 20)
 SLA_F_dat <- ggpredict(mSurvSLA_forbs, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_vals]"), type = "fixed", back.transform = TRUE)
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 
 #make a data.frame to contain all of the values for each trait
@@ -325,23 +375,32 @@ ForbDat <- rbind(ForbDat, data.frame(trait = c("scaled(Root Dry Matter Content) 
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 ForbDat <- rbind(ForbDat, data.frame(trait = c("scaled(Average Root Diameter) (cm)"), x = RDiam_F_dat$x, ForbSurv = RDiam_F_dat$predicted, CI_low = RDiam_F_dat$conf.low, CI_high = RDiam_F_dat$conf.high, SPEI = RDiam_F_dat$group, lab = "I"))
 
 ForbDat <- rbind(ForbDat, data.frame(trait = c("scaled(Specific Leaf Area) (g/cm2)"), x = SLA_F_dat$x, ForbSurv = SLA_F_dat$predicted, CI_low = SLA_F_dat$conf.low, CI_high = SLA_F_dat$conf.high, SPEI = SLA_F_dat$group, lab = "I"))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #make data for rug plot
 RugDat_F <-  data.frame(rug = CO_point_all$TLP_s, trait = "scaled(Turgor Loss Point) (MPa)")
 RugDat_F <- rbind(RugDat_F, data.frame(rug = CO_point_all$LDMC_s, trait = "scaled(Leaf Dry Matter Content) (g/g)"))
 RugDat_F <- rbind(RugDat_F, data.frame(rug = CO_point_all$RDMC_s, trait = "scaled(Root Dry Matter Content) (g/g)"))
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 RugDat_F <- rbind(RugDat_F, data.frame(rug = CO_point_all$RDiam_s, trait = "scaled(Average Root Diameter) (cm)"))
 RugDat_F <- rbind(RugDat_F, data.frame(rug = CO_point_all$SLA_s, trait = "scaled(Specific Leaf Area) (g/cm2)"))
 
@@ -357,6 +416,7 @@ dat_text <- data.frame(
 )
 
 #make a multipanel figure that shows only the graminoid survival probs for 5 traits
+<<<<<<< HEAD
 =======
 =======
 RugDat_F <- rbind(RugDat_F, data.frame(rug = CO_point_all$RDiam_s, trait = "scaled(Average Root Diameter) (cm)"))
@@ -381,12 +441,17 @@ dat_text <- data.frame(
 =======
 #make a multipanel figure that shows only the graminoid survival probs for 5 traits
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 forbSurvFigure <- ggplot(data = ForbDat) +
   geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
   geom_line(aes(x=x, ForbSurv, col = SPEI))  + 
   geom_rug(aes(x = rug), data = RugDat_F) +
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
   labs(title = "Forb Survival") +
   xlab(NULL) +
   ylab("Probability of Survival") +
@@ -518,6 +583,7 @@ globPreds_a_s <- data.frame("x" = globPreds_a_s$x, "preds" = globPreds_a_s$predi
 
 
 #### Make plot of fixed effect of neighborhood density for effect of LDMC*SPEI on graminoid survival (figure 2: panel A) ####
+<<<<<<< HEAD
 =======
   labs(title = NULL) +
 =======
@@ -738,14 +804,22 @@ sppNeighPreds_s <- data.frame("x" = sppNeighPreds_s$x, "preds" = sppNeighPreds_s
 sppNeighPreds_s <- sppNeighPreds_s %>% 
   left_join(palette, by = c("spp" = "long_name")) %>% 
   rename(spp.old = spp, spp = spp.y)
+=======
+
+sppNeighPreds_s <- ggpredict(m2_fac, terms = c("neighbors_10_s[all]", "species"), type = "random")
+sppNeighPreds_s <- data.frame("x" = sppNeighPreds_s$x, "preds" = sppNeighPreds_s$predicted,"spp" = sppNeighPreds_s$group )
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 globPreds_n_s <- ggpredict(m2_fac, terms = c("neighbors_10_s[all]"), type = "fixed")
 globPreds_n_s <- data.frame("x" = globPreds_n_s$x, "preds" = globPreds_n_s$predicted, "spp" = as.factor("Global"), "CI_low" = globPreds_n_s$conf.low, "CI_high" = globPreds_n_s$conf.high)
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 (NeighEffectSurv <- ggplot() +
     geom_line(data = sppNeighPreds_s, aes(x = x, y = preds, col = spp), alpha = .75)+
     geom_line(data = globPreds_n_s, aes(x = x, y = preds), lwd = 1.25) +
@@ -754,6 +828,7 @@ globPreds_n_s <- data.frame("x" = globPreds_n_s$x, "preds" = globPreds_n_s$predi
     ylim(c(0,1))+
     xlab("Conspecific Local \n Neighborhood Competition") +
     ylab("Prob.(Graminoid Survival)") +
+<<<<<<< HEAD
     scale_color_manual(values = c("A. longiseta" = "#66C2A5",
                                   "B. gracilis" = "#FC8D62",
                                   "B. dactyloides" = "#8DA0CB",
@@ -762,6 +837,9 @@ globPreds_n_s <- data.frame("x" = globPreds_n_s$x, "preds" = globPreds_n_s$predi
                                   "S. hystrix" = "#FFD92F",
                                   "S. cryptandrus" = "#E5C494",
                                   "S. comata" = "#B3B3B3"))) +
+=======
+    scale_color_brewer(palette = "Set2") +
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
     theme(#axis.ticks.x.bottom = element_blank(),
       #axis.text.x.bottom = element_blank(),
       axis.title.x.bottom = element_text(size = 9.5),
@@ -769,6 +847,7 @@ globPreds_n_s <- data.frame("x" = globPreds_n_s$x, "preds" = globPreds_n_s$predi
     )
 )
 
+<<<<<<< HEAD
 #### Make plot of fixed effect of neighborhood by species on growth for TLP model (figure 2: panel C) ####
 
 mGrowTLP_fac<- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + TLP_s + SPEI_s * TLP_s + as.factor(nearEdge_t) + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
@@ -827,14 +906,26 @@ sppNeighPreds_g <- data.frame("x" = sppNeighPreds_g$x, "preds" = sppNeighPreds_g
 sppNeighPreds_g  <- sppNeighPreds_g  %>% 
   left_join(palette, by = c("spp" = "long_name")) %>% 
   rename(spp.old = spp, spp = spp.y)
+=======
+
+#### Make plot of fixed effect of neighborhood by species on growth for TLP model (figure 4: panel A) ####
+
+mGrowTLP_fac<- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + TLP_s + SPEI_s * TLP_s + as.factor(nearEdge_t) + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
+
+sppNeighPreds_g <- ggpredict(mGrowTLP_fac, terms = c("neighbors_10_s[all]", "species"), type = "random")
+sppNeighPreds_g <- data.frame("x" = sppNeighPreds_g$x, "preds" = sppNeighPreds_g$predicted,"spp" = sppNeighPreds_g$group )
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 globPreds_n_g <- ggpredict(mGrowTLP_fac, terms = c("neighbors_10_s[all]"), type = "fixed")
 globPreds_n_g <- data.frame("x" = globPreds_n_g$x, "preds" = globPreds_n_g$predicted, "spp" = as.factor("Global"), "CI_low" = globPreds_n_g$conf.low, "CI_high" = globPreds_n_g$conf.high)
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 (NeighEffectGrowth <- ggplot() +
     geom_line(data = sppNeighPreds_g, aes(x = x, y = preds, col = spp), alpha = .75)+
     geom_line(data = globPreds_n_g, aes(x = x, y = preds), lwd = 1.25) +
@@ -848,6 +939,7 @@ globPreds_n_g <- data.frame("x" = globPreds_n_g$x, "preds" = globPreds_n_g$predi
       legend.position = "none",
       axis.title.x = element_text(size = 9),
       axis.title.y = element_text(margin = margin(r = 0))) +
+<<<<<<< HEAD
     scale_color_manual(values = c("A. longiseta" = "#66C2A5",
                                   "B. gracilis" = "#FC8D62",
                                   "B. dactyloides" = "#8DA0CB",
@@ -859,13 +951,22 @@ globPreds_n_g <- data.frame("x" = globPreds_n_g$x, "preds" = globPreds_n_g$predi
 
 
 #### Make plot of effect of size_t on size_t+1 using coefficients from TLP model, as well as raw data (figure 2: panel D)####
+=======
+    scale_color_brewer(palette = "Set2")) 
+
+
+#### Make plot of effect of size_t on size_t+1 using coefficients from TLP model, as well as raw data (figure 4: panel B)####
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #model is mGrowTLP
 sppSize_Preds_growth <- ggpredict(mGrowTLP_fac, terms = c("size_t_log[all]", "species"), type = "random")
 sppSizePreds_growth <- data.frame("x" = sppSize_Preds_growth$x, "preds" = sppSize_Preds_growth$predicted,"spp" = sppSize_Preds_growth$group )
+<<<<<<< HEAD
 sppSizePreds_growth <- sppSizePreds_growth  %>% 
   left_join(palette, by = c("spp" = "long_name")) %>% 
   rename(spp.old = spp, spp = spp.y)
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 globPreds_growth <- ggpredict(mGrowTLP_fac, terms = c("size_t_log[all]"), type = "random")
 globPreds_growth <- data.frame("x" = globPreds_growth$x, "preds" = globPreds_growth$predicted, "spp" = as.factor("Global"), "CI_low" = globPreds_growth$conf.low, "CI_high" = globPreds_growth$conf.high)
@@ -875,12 +976,17 @@ globPreds_growth <- data.frame("x" = globPreds_growth$x, "preds" = globPreds_gro
     geom_line(data = sppSizePreds_growth, aes(x = x, y = preds, col = spp), alpha = .75)+
     geom_line(data = globPreds_growth , aes(x = x, y = preds), lwd = 1.25) +
     geom_polygon(aes(x = c(globPreds_growth$x,rev(globPreds_growth$x)), y = c( globPreds_growth$CI_low, rev(globPreds_growth$CI_high))), col = NA, fill = "grey", alpha = .2) +
+<<<<<<< HEAD
     ylim(c(-2.3,8.5)) +
+=======
+    ylim(c(-1,8)) +
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
     xlim(c(min(CO_grow_TLP$size_t_log)+.2, max(CO_grow_TLP$size_t_log))) +
     theme_classic() +
     xlab(c(expression(ln(size[italic(t)])))) +
     ylab(expression(ln(size[italic(t+1)]))) +
     theme(legend.position = "none") +
+<<<<<<< HEAD
     scale_color_manual(values = c("A. longiseta" = "#66C2A5",
                                   "B. gracilis" = "#FC8D62",
                                   "B. dactyloides" = "#8DA0CB",
@@ -892,6 +998,12 @@ globPreds_growth <- data.frame("x" = globPreds_growth$x, "preds" = globPreds_gro
 
 
 #### Make a figure showing the fitted relationship between size_t and size_t+1 for each graminoid species (figure 2: panel E) ####
+=======
+    scale_color_brewer(palette = "Set2")) 
+
+
+#### Make a figure showing the fitted relationship between size_t and size_t+1 for each graminoid species (figure 4: panel C) ####
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 ## use CO_poly_growth dataset
 growTemp <- CO_grow_TLP
@@ -900,6 +1012,7 @@ growTemp <- CO_grow_TLP
 growTemp$sppName <- 
   paste0(str_sub(str_split_fixed(CO_grow_TLP$species, " ", n = 2)[,1], start = 1L, end = 1L),". ",str_split_fixed(CO_grow_TLP$species, " ", n = 2)[,2])
 
+<<<<<<< HEAD
 growTemp <- growTemp  %>% 
   left_join(palette, by = c("species" = "long_name")) %>% 
   rename(spp.old = sppName)
@@ -908,6 +1021,12 @@ growTemp <- growTemp  %>%
     geom_abline(aes(slope = 1, intercept = 0), lty = 2, alpha = .8)+
     #geom_point(aes(x = size_t_log, y = size_tplus1_log, col = sppName), alpha = .3) +
     geom_smooth(aes(x = size_t_log, y = size_tplus1_log, col = spp), method = "lm", se = FALSE) +
+=======
+(sizet_sizetplus1 <- ggplot(data = growTemp) +
+    geom_abline(aes(slope = 1, intercept = 0), lty = 2, alpha = .8)+
+    #geom_point(aes(x = size_t_log, y = size_tplus1_log, col = sppName), alpha = .3) +
+    geom_smooth(aes(x = size_t_log, y = size_tplus1_log, col = sppName), method = "lm", se = FALSE) +
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
     theme_classic() +
     ylim(c(-1,8)) +
     xlim(c(min(CO_grow_TLP$size_t_log)+.2, max(CO_grow_TLP$size_t_log))) +
@@ -915,6 +1034,7 @@ growTemp <- growTemp  %>%
     ylab(expression(ln(size[italic(t+1)]))) +
     theme(legend.text = element_text(face = "italic", size = 8), legend.position = "right", legend.key.width = unit(.4, "cm"), legend.margin = margin(t = .1, r = .1, b = 0, l = .1, unit = "pt")) +
     guides(col = guide_legend(title = "Species")) +
+<<<<<<< HEAD
     scale_color_manual(values = c("A. longiseta" = "#66C2A5",
                                   "B. gracilis" = "#FC8D62",
                                   "B. dactyloides" = "#8DA0CB",
@@ -937,12 +1057,37 @@ growTemp <- growTemp  %>%
                             ncol = 3, nrow = 1, align ="hv"))
 
 ggarrange(effectsSurv, effectsGrowth, nrow = 2, common.legend = TRUE)
+=======
+    scale_color_brewer(palette = "Set2" ))
+
+
+#### Make figure 2 (combination of figures for effect of size and local neighborhood on LDMC*SPEI effect of graminoid survival) ####
+(effectsSurv <- ggarrange(NeighEffectSurv, AreaEffectSurv, 
+                          labels = c("A", "B"),
+                          ncol = 2, nrow = 1, align ="hv",legend = "right",
+                          legend.grob = get_legend(sizet_sizetplus1)))
+
+
+#### Make figure 4 (combination of figures for effect of size and neighbors on LDMC*TLP effect on graminoid growth) ####
+
+(effectsGrowth <- ggarrange(NeighEffectGrowth, AreaEffectGrowth,  sizet_sizetplus1,
+                            labels = c("A", "B", "C"),
+                            widths = c(1,1,1),
+                            legend = "right",
+                            legend.grob = get_legend(sizet_sizetplus1),
+                            ncol = 3, nrow = 1, align ="hv"))
+
+
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #### Make a figure of model results for forb survival and gram growth and survival for other traits (figure S2)####
 
 #make figure for graminoid survival
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #get 2.5 and 97.5 percentiles of the distribution
 meanSPEI_G <- mean(CO_grams$SPEI_s, na.rm = TRUE)
 sdSPEI_G <- sd(CO_grams$SPEI_s, na.rm = TRUE)
@@ -1054,6 +1199,7 @@ forbSurvFigure <- ggplot(data = ForbDat) +
 
 Make figure for graminoid growth models
 
+<<<<<<< HEAD
 =======
 NeighEffectGrowth <- ggplot() +
   geom_line(data = sppNeighPreds_g, aes(x = x, y = preds, col = spp), alpha = .8)+
@@ -1206,6 +1352,8 @@ forbSurvFigure <- ggplot(data = ForbDat) +
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #get 2.5 and 97.5 percentiles of the distribution
 meanSPEI <- mean(CO_grow_TLP$SPEI_s)
 sdSPEI <- sd(CO_grow_TLP$SPEI_s)
@@ -1215,6 +1363,7 @@ SPEI_2_5 <- qnorm(.025, meanSPEI, sdSPEI)
 
 spei_vals <- c(SPEI_2_5, SPEI_97_5)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -1237,6 +1386,8 @@ SLA_grow_dat <- ggpredict(mGrowSLA, terms = c("SLA_s[SLA_vals]", "SPEI_s[spei_va
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #for RTD_s
 RTD_vals <- seq(min(CO_grow_RTD$RTD_s, na.rm = TRUE), max(CO_grow_RTD$RTD_s, na.rm = TRUE), length.out = 20)
 RTD_grow_dat <- ggpredict(mGrowRTD, terms = c("RTD_s[RTD_vals]", "SPEI_s[spei_vals]"), type = "fixed")
@@ -1247,6 +1398,9 @@ SRL_grow_dat <- ggpredict(mGrowSRL, terms = c("SRL_s[SRL_vals]", "SPEI_s[spei_va
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #make a data.frame to contain all of the values for each trait
 GrowthDat <- data.frame(trait = c("scaled(Root Tissue Density) (g/cm3)"), x = RTD_grow_dat$x, Growth = RTD_grow_dat$predicted, CI_low = RTD_grow_dat$conf.low, CI_high = RTD_grow_dat$conf.high, SPEI = RTD_grow_dat$group)
@@ -1262,6 +1416,7 @@ dat_text <- data.frame(
   trait = c("scaled(Root Tissue Density) (g/cm3)", "scaled(Specific Root Length) (m/g)"),
   x    = c(min(RTD_grow_dat$x), min(SRL_grow_dat$x)),
   y     = c(5.3,5.3)
+<<<<<<< HEAD
 =======
 #for RDiam_s
 RDiam_vals <- seq(min(CO_grow_RDiam$RDiam_s, na.rm = TRUE), max(CO_grow_RDiam$RDiam_s, na.rm = TRUE), length.out = 20)
@@ -1291,6 +1446,8 @@ dat_text <- data.frame(
   x    = c(min(RTD_grow_dat$x), min(SRL_grow_dat$x)),
   y     = c(5.3,5.3)
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 )
 
 #make a multipanel figure
@@ -1298,6 +1455,7 @@ GrowthExtraFig <- ggplot(data = GrowthDat) +
   geom_ribbon(aes(x = x, ymin = CI_low, ymax = CI_high, fill = SPEI), alpha = 0.3) +
   geom_line(aes(x=x, Growth, col = SPEI))  + 
   geom_rug(aes(x = rug), data = RugDat) +
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   labs(title = "Graminoid Growth") +
@@ -1352,6 +1510,9 @@ ggplot(data = CO_SPEI_uniform[CO_SPEI_uniform$Year %in% c(1990:2019),]) +
 =======
   labs(title = "Graminoid Growth") +
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+  labs(title = "Graminoid Growth") +
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
   xlab(NULL) +
   ylab(expression(ln(size[italic(t+1)])))  +
   scale_color_manual(labels = c("dry year", "wet year"), values = c("#fc8d62","#66c2a5")) +
@@ -1391,11 +1552,14 @@ min(CO_SPEI_uniform[CO_SPEI_uniform$Year %in% c(1946:1996),"SPEI_uniform"])
 # -1.82
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 pdf("./Manuscript/Figures/AllTraitsGrowth.pdf", width = 8.5, height = 6.5)
 GrowthExtraFig
 dev.off()
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 ggplot(data = CO_SPEI_uniform[CO_SPEI_uniform$Year %in% c(1990:2019),]) +
   geom_rect(aes(xmin = 1997, xmax = 2010, ymin = -2.5, ymax = 2.5, ), fill = "grey90")+ #1997-2010
   geom_hline(aes(yintercept = 0.067), lty = 2, col = "grey60") +
@@ -1404,4 +1568,7 @@ ggplot(data = CO_SPEI_uniform[CO_SPEI_uniform$Year %in% c(1990:2019),]) +
   geom_line(aes(x = Year, y = SPEI_uniform)) + 
   ylab("SPEI") +
   theme_classic()
+<<<<<<< HEAD
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39

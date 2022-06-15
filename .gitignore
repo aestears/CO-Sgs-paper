@@ -6,6 +6,7 @@
 /scripts/script0_output.RData
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /scripts/script1_output.RData
 /scripts/script2_output.RData
 /scripts/script3_output.RData
@@ -26,3 +27,9 @@
 =======
 .Ruserdata
 >>>>>>> 6773349... change some errors
+=======
+/scripts/script1_output.RData
+/scripts/script2_output.RData
+/scripts/script3_output.RData
+/scripts/script4_output.RData
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39

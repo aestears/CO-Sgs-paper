@@ -1,7 +1,10 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> aa56e37... update SPEI script
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #//////////////////////////
 # Demographic trade-offs affect how leaf turgor loss point and tissue dry matter content mediate the effect of drought on herbaceous perennial survival and growth
 # Calculating species-level SPEI intervals
@@ -10,6 +13,7 @@
 # Revised 9 February 2021
 # R version 4.0.3 
 #//////////////////////////
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 #### load packages ####
@@ -156,6 +160,8 @@ CO_poly_all <- read.csv("./Data/CO Analysis Data Files/Intermediate Analysis Fil
 CO_point_all <- read.csv("./Data/CO Analysis Data Files/Intermediate Analysis Files/point_demo_Traits_2_24_20.csv")
 =======
 >>>>>>> aa56e37... update SPEI script
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #### load packages ####
 library(tidyverse) #v1.3.0
@@ -267,13 +273,19 @@ CO_point_all <- left_join(CO_point_all, CO_SPEI_uniform[,c("SPEI_uniform", "Year
 rm(list = ls()[!(ls() %in% c('CO_point_all','CO_poly_all'))])
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 KS_min <- qnorm(.025 , mean = mean(KS_only$SPEI_6), sd(KS_only$SPEI_6))
 KS_max <- qnorm(.975 , mean = mean(KS_only$SPEI_6), sd(KS_only$SPEI_6))
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 ## for next script, need CO_point_all and CO_poly_all data.frames
 #save as an .RData file 
 # path = #location where you'll put the environment data file
 setwd(path)
 save.image('script2_output.RData')
+<<<<<<< HEAD
 >>>>>>> aa56e37... update SPEI script
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39

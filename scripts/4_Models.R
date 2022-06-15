@@ -10,16 +10,22 @@
 ##### Load Packages #####
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dc34618... cleaning up documentation/updating figures
 library(tidyverse) #v1.3.0
 library(lme4) #v1.1-27.1
+=======
+library(tidyverse) #v1.3.0
+library(lme4) #v1.1-26
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 library(MuMIn) #v1.43.17
 library(lmerTest) #v3.1-3
 library(stargazer) #v5.2.2
 library(sjPlot) #v2.8.7
 library(effects) #v4.2-0
 library(ggeffects) #v1.1.3.1
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -53,12 +59,15 @@ library(afex) #v0.28.1
 =======
 library(afex) #v0.28.1
 >>>>>>> 30a6837... tidying figure code
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 ## clear workspace ##
 rm(list=ls())
 
 ##### Load Data Files #####
 ## set working directory
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -72,25 +81,35 @@ datWD <- c("/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analy
 =======
 # datWD <-  set path for the location of the environment image of script 3 output
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+# datWD <-  set path for the location of the environment image of script 3 output
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 setwd(datWD)
 #load data from previous 
 load("./scripts/script3_output.RData")
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 7e5a451... adding h-line to growth plots
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 CO_poly_old <- CO_poly_all
 
 CO_point_old <- CO_point_all
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #### ensure that the structure of the variables is correct ####
 CO_poly_all <- CO_poly_all %>% 
   dplyr::select(species, quad, year_t, area_t, survives_tplus1, nearEdge_t, area_tplus1, neighbors_5_s, neighbors_10_s, neighbors_15_s, neighbors_20_s, size_t_log, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s, SPEI_uniform, precip_s,  size_tplus1_log) %>% 
   mutate(species = as.factor(species), quad = as.factor(quad), year_t = as.factor(year_t), nearEdge_t = as.factor(nearEdge_t))
 
 CO_point_all <- CO_point_all %>% dplyr::select(species, quad, year, survives, nearEdge,  neighbors_10_s, neighbors_15_s, neighbors_20_s, RTD_s, RDMC_s, SLA_s, SPEI_s, LDMC_s, TLP_s, SRL_s, RDiam_s, SPEI_uniform, precip_s) %>% 
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 7e5a451... adding h-line to growth plots
@@ -136,17 +155,28 @@ mNeigh5 <- glmer(survives_tplus1 ~ area_s + neighbors_5_s + SPEI_s + (area_s|spe
 =======
 mNeigh5 <- glmer(survives_tplus1 ~ size_t_log + neighbors_5_s + SPEI_s + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_poly_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+  mutate(species = as.factor(species), quad = as.factor(quad), year_t = as.factor(year), survives_tplus1 = as.integer(survives), nearEdge_t = as.integer(nearEdge)) 
+  
+#### testing viability of different neighborhood distance radii####
+#simple model using TLP for graminoids 
+mNeigh5 <- glmer(survives_tplus1 ~ size_t_log + neighbors_5_s + SPEI_s + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_poly_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 mNeigh10 <- glmer(survives_tplus1 ~ size_t_log + neighbors_10_s + SPEI_s + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_poly_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
 mNeigh15 <- glmer(survives_tplus1 ~ size_t_log + neighbors_15_s + SPEI_s + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_poly_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 mNeigh20 <- glmer(survives_tplus1 ~ area_s + neighbors_20_s + SPEI_s + (area_s|species) + (1|quad) + (1|year_t), data = CO_poly_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 >>>>>>> a4403b8... update modeling script
 =======
 mNeigh20 <- glmer(survives_tplus1 ~ size_t_log + neighbors_20_s + SPEI_s + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_poly_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+mNeigh20 <- glmer(survives_tplus1 ~ size_t_log + neighbors_20_s + SPEI_s + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_poly_all, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #compare the coefficients for the different radii
 NeCoeff <- data.frame(Radius = c(5,10,15,20), Coeff = c(
@@ -164,6 +194,7 @@ ggplot(data = NeCoeff) +
 #the coefficient for a radius of 10cm was the 'largest' (most negative), so use 10_cm
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> d8181b2... checking numbers in tables of model results
 AIC(mNeigh5, mNeigh10, mNeigh15, mNeigh20)
@@ -176,6 +207,10 @@ AIC(mNeigh5, mNeigh10, mNeigh15, mNeigh20)
 >>>>>>> 882fd5f... changes
 =======
 >>>>>>> 30a6837... tidying figure code
+=======
+AIC(mNeigh5, mNeigh10, mNeigh15, mNeigh20)
+
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #### Model validation functions ####
 ### for glmer models (survival)(Can't make REML = FALSE) 
 glmerInfo <- function(mod) {
@@ -185,12 +220,16 @@ glmerInfo <- function(mod) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
        "anova" = anova(mod, method = "Chisq"),
        "rSquared" = r.squaredGLMM(mod))
 }
 
 
 
+<<<<<<< HEAD
 =======
        "fixedEff" = drop1(mod,test="Chisq"), #see the effect of the fixed effects (as estimated by single-term deletion of fixed-effects) 
        "randEff" = rand(mod), #see the effect of the random effects (as estimated by single-term deletion of random effects)
@@ -212,6 +251,8 @@ glmerInfo <- function(mod) {
 >>>>>>> fc1b797... refined model script
 =======
 >>>>>>> 882fd5f... changes
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 ### for lmer models (growth) (make REML = FALSE )
 lmerInfo <- function(mod) {
   #'mod' is the fitted lmer model
@@ -233,6 +274,7 @@ modCompare <- function(m1, m2){
 }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> a4403b8... update modeling script
 =======
@@ -247,6 +289,9 @@ modCompare <- function(m1, m2){
 >>>>>>> 882fd5f... changes
 =======
 >>>>>>> 30a6837... tidying figure code
+=======
+
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #####Graminoid Survival Models #####
 ### rename polygon dataset
 CO_grams <- CO_poly_all
@@ -256,6 +301,7 @@ CO_grams <- CO_poly_all
 CO_poly_TLP <- CO_grams %>% 
   filter(!is.na(TLP_s))
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 mSurvTLP_grams <- glmer(survives_tplus1 ~ size_t_log + neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_poly_TLP, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -324,10 +370,19 @@ rsquaredm1 <- piecewiseSEM::rsquared(m1_grams)
 >>>>>>> a4403b8... update modeling script
 =======
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+mSurvTLP_grams <- glmer(survives_tplus1 ~ size_t_log + neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_poly_TLP, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+summary(mSurvTLP_grams)
+
+#don't have to calculate overdispersion--not possible for bernoulli binomial variables
+# https://stats.stackexchange.com/questions/206007/can-there-be-overdispersion-in-a-logistic-regression-model-where-each-observatio
+
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 ### LDMC graminoid model ###
 CO_poly_LDMC <- CO_grams %>% 
   filter(!is.na(LDMC_s))
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 mSurvLDMC_grams <- glmer(survives_tplus1 ~ SPEI_s * LDMC_s +  size_t_log + neighbors_10_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data=CO_poly_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -346,11 +401,17 @@ mSurvLDMC_grams <- glmer(survives_tplus1 ~ SPEI_s * LDMC_s +  size_t_log + neigh
 
 summary(mSurvLDMC_grams)
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+mSurvLDMC_grams <- glmer(survives_tplus1 ~ SPEI_s * LDMC_s +  size_t_log + neighbors_10_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data=CO_poly_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+
+summary(mSurvLDMC_grams)
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 ### SLA graminoid model ###
 CO_poly_SLA <- CO_grams %>% 
   filter(is.na(SLA_s)==FALSE)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 mSurvSLA_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * SLA_s + neighbors_10_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t) , data = CO_poly_SLA, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -366,12 +427,17 @@ rsquaredm5 <- piecewiseSEM::rsquared(m5)
 mSurvSLA_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * SLA_s + neighbors_10_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t) , data = CO_poly_SLA, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 summary(mSurvSLA_grams)
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+mSurvSLA_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * SLA_s + neighbors_10_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t) , data = CO_poly_SLA, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+summary(mSurvSLA_grams)
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 ### RDMC graminoid model ###
 CO_poly_RDMC <-
   CO_grams %>% 
   filter(is.na(RDMC_s)==FALSE)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 mSurvRDMC_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * RDMC_s + neighbors_10_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -387,12 +453,17 @@ rsquaredm9 <- piecewiseSEM::rsquared(m9)
 mSurvRDMC_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * RDMC_s + neighbors_10_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 summary(mSurvRDMC_grams)
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+mSurvRDMC_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * RDMC_s + neighbors_10_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_poly_RDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+summary(mSurvRDMC_grams)
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 ### RTD graminoid model ###
 CO_poly_RTD <-
   CO_grams %>% 
   filter(is.na(RTD_s)==FALSE)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 mSurvRTD_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * RTD_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t) , data = CO_poly_RTD, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -425,12 +496,18 @@ mSurvRTD_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * RTD_s + neighbor
 # removed random slope for area, since the model didn't converge
 summary(mSurvRTD_grams)
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+mSurvRTD_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * RTD_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t) , data = CO_poly_RTD, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+# removed random slope for area, since the model didn't converge
+summary(mSurvRTD_grams)
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 ### SRL graminoid model ###
 CO_poly_SRL <-
   CO_grams %>% 
   filter(is.na(SRL_s)==FALSE)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 mSurvSRL_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * SRL_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t) , data = CO_poly_SRL, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -449,6 +526,11 @@ mSurvSRL_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * SRL_s + neighbor
 #removed random slope for area, since the model doesn't converge with it
 
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+mSurvSRL_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * SRL_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t) , data = CO_poly_SRL, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+#removed random slope for area, since the model doesn't converge with it
+
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 ### RDiam graminoid model ###
 CO_poly_Diam <-
   CO_grams %>% 
@@ -456,6 +538,9 @@ CO_poly_Diam <-
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 mSurvRDiam_grams <- glmer(survives_tplus1 ~ size_t_log + SPEI_s * RDiam_s + neighbors_10_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t) , data = CO_poly_Diam, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
 #### Point Survival Models ####
@@ -470,6 +555,7 @@ mSurvTLP_forbs <- glmer(survives_tplus1 ~ SPEI_s*TLP_s + neighbors_10_s + nearEd
 
  summary(mSurvTLP_forbs)
 
+<<<<<<< HEAD
 =======
 m14 <- glmer(survives_tplus1 ~ area_s + SPEI_s * RDiam_s + neighbors_10_s + nearEdge_t + (area_s|species) + (1|quad) + (1|year_t) , data = CO_poly_Diam, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
@@ -496,17 +582,23 @@ mSurvTLP_forbs <- glmer(survives_tplus1 ~ SPEI_s*TLP_s + neighbors_10_s + nearEd
 >>>>>>> a4403b8... update modeling script
 =======
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #for LDMC
 CO_point_LDMC <- CO_point_all %>% 
   filter(!is.na(LDMC_s))
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 mSurvLDMC_forbs <- glmer(survives_tplus1 ~ SPEI_s*LDMC_s + neighbors_10_s + nearEdge_t + 
                (1|species) + (1|quad) + (1|year_t), 
             data=CO_point_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
 summary(mSurvLDMC_forbs)
+<<<<<<< HEAD
 =======
 m4 <- glmer(survives_tplus1 ~ SPEI_s*LDMC_s + neighbors_10_s + nearEdge_t + 
                (1|species) + (1|quad) + (1|year_t), 
@@ -524,18 +616,24 @@ mSurvLDMC_forbs <- glmer(survives_tplus1 ~ SPEI_s*LDMC_s + neighbors_10_s + near
 
 summary(mSurvLDMC_forbs)
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #SLA for forbs
 CO_point_SLA <- CO_point_all %>% 
   filter(is.na(SLA_s)==FALSE)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 mSurvSLA_forbs <- glmer(survives_tplus1 ~ SPEI_s*SLA_s + neighbors_10_s + nearEdge_t  + (1|species) + (1|quad) + (1|year_t), data = CO_point_SLA, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
 summary(mSurvSLA_forbs)
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 m6 <- glmer(survives_tplus1 ~ SPEI_s*SLA_s + neighbors_10_s + nearEdge_t  + (1|species) + (1|quad) + (1|year_t), data = CO_point_SLA, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -543,6 +641,8 @@ summary(m6)
 >>>>>>> a4403b8... update modeling script
 =======
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #### test forb survival root traits ####
 
@@ -551,6 +651,7 @@ CO_point_RDMC <-
   CO_point_all %>% 
   filter(is.na(RDMC_s)==FALSE)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 mSurvRDMC_forbs <- glmer(survives_tplus1 ~ SPEI_s*RDMC_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t),data = CO_point_RDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -563,12 +664,17 @@ summary(m11)
 mSurvRDMC_forbs <- glmer(survives_tplus1 ~ SPEI_s*RDMC_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t),data = CO_point_RDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 summary(mSurvRDMC_forbs)
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+mSurvRDMC_forbs <- glmer(survives_tplus1 ~ SPEI_s*RDMC_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t),data = CO_point_RDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+summary(mSurvRDMC_forbs)
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #rtd for forbs
 CO_point_RTD <-
   CO_point_all %>% 
   filter(is.na(RTD_s)==FALSE)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 mSurvRTD_forbs <- glmer(survives_tplus1 ~ SPEI_s*RTD_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_point_RTD, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -581,12 +687,17 @@ summary(m12)
 mSurvRTD_forbs <- glmer(survives_tplus1 ~ SPEI_s*RTD_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_point_RTD, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 summary(mSurvRTD_forbs)
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+mSurvRTD_forbs <- glmer(survives_tplus1 ~ SPEI_s*RTD_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_point_RTD, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+summary(mSurvRTD_forbs)
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #SRL for forbs
 CO_point_SRL <-
   CO_point_all %>% 
   filter(is.na(SRL_s)==FALSE)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 mSurvSRL_forbs <- glmer(survives_tplus1 ~ SPEI_s*SRL_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_point_SRL, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -596,6 +707,9 @@ m15 <- glmer(survives_tplus1 ~ SPEI_s*SRL_s + neighbors_10_s + nearEdge_t + (1|s
 =======
 mSurvSRL_forbs <- glmer(survives_tplus1 ~ SPEI_s*SRL_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_point_SRL, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+mSurvSRL_forbs <- glmer(survives_tplus1 ~ SPEI_s*SRL_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_point_SRL, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #root diameter for forbs
 CO_point_Diam <-
@@ -604,12 +718,16 @@ CO_point_Diam <-
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 mSurvRDiam_forbs <- glmer(survives_tplus1 ~ SPEI_s*RDiam_s + neighbors_10_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_point_Diam, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 
 
 #### fit survival models w/out traits ####
 mSurvTLP_grams_NO <- glmer(survives_tplus1 ~ size_t_log + neighbors_10_s + SPEI_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t) ,
                   data = CO_poly_TLP, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 mSurvLDMC_grams_NO <- glmer(survives_tplus1 ~ size_t_log + neighbors_10_s + SPEI_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t) ,
@@ -679,6 +797,8 @@ mSurvTLP_grams_NO <- glmer(survives_tplus1 ~ size_t_log + neighbors_10_s + SPEI_
                   data = (CO_poly_TLP), family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
 =======
 >>>>>>> c3ae556... adding likelihood ratio tests
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 mSurvLDMC_grams_NO <- glmer(survives_tplus1 ~ size_t_log + neighbors_10_s + SPEI_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t) ,
                data = CO_poly_LDMC, family = binomial(link = logit), control=glmerControl(optimizer="bobyqa"))
@@ -731,11 +851,15 @@ mSurvRDiam_forbs_NO <- glmer(survives_tplus1 ~ SPEI_s + neighbors_10_s + nearEdg
 #subset the datasets to only include observations that have growth data (for those plants that survived)
 CO_poly_growth <- CO_grams %>% 
 <<<<<<< HEAD
+<<<<<<< HEAD
   filter(!is.na(CO_grams$logDiffArea))
 >>>>>>> a4403b8... update modeling script
 =======
   filter(!is.na(CO_grams$size_tplus1_log))
 >>>>>>> d8181b2... checking numbers in tables of model results
+=======
+  filter(!is.na(CO_grams$size_tplus1_log))
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 ## TLP model
 #global model
@@ -748,6 +872,9 @@ CO_grow_TLP <-
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 mGrowTLP<- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
 
 summary(as_lmerModLmerTest(mGrowTLP))
@@ -810,6 +937,9 @@ summary(as_lmerModLmerTest(mGrowRDiam))
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #### testing different growth response variables ####
 ## log-transformed area in year t: size_t_log
 ## log-transformed area in year t+1: size_tplus1_log
@@ -818,6 +948,7 @@ summary(as_lmerModLmerTest(mGrowRDiam))
 mGrow_GROWTH <- lme4::lmer(logDiffArea ~ size_t_log +neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
 
 #compare the results of the above model to the model using size_t+1 as the response variable
+<<<<<<< HEAD
 =======
 mGrowTLP<- lme4::lmer(logDiffArea ~ neighbors_10_s + SPEI_s * TLP_s + nearEdge_t + (1|species) + (1|quad) + (1|year_t), data = CO_grow_TLP , control=lmerControl(optimizer="bobyqa"))
 =======
@@ -931,6 +1062,13 @@ mGrowTLP_NO <- lme4::lmer(area_tplus1_s ~  area_s + neighbors_10_s + SPEI_s  + n
 =======
 mGrowTLP_NO <- lme4::lmer(size_tplus1_log ~  size_t_log + neighbors_10_s + SPEI_s  + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_TLP, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
 >>>>>>> 9c17ea9... Changing model names to reflect traits and response variables used, and cleaning up code to remove unnecessary/exploratory sections
+=======
+
+#### make growth models without traits for comparison ####
+#fit models
+
+mGrowTLP_NO <- lme4::lmer(size_tplus1_log ~  size_t_log + neighbors_10_s + SPEI_s  + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_TLP, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 mGrowLDMC_NO <- lme4::lmer(size_tplus1_log ~  size_t_log + neighbors_10_s + SPEI_s  + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_LDMC, control=lme4::lmerControl(optimizer="bobyqa"), na.action = na.omit)
 
@@ -945,6 +1083,7 @@ mGrowRTD_NO  <- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + SPEI_
 mGrowRDiam_NO  <- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + SPEI_s + nearEdge_t + (size_t_log|species) + (1|quad) + (1|year_t), data = CO_grow_RDiam , control=lmerControl(optimizer="bobyqa"))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -955,6 +1094,11 @@ mGrowRDiam_NO  <- lme4::lmer(size_tplus1_log ~ size_t_log + neighbors_10_s + SPE
 >>>>>>> 882fd5f... changes
 =======
 >>>>>>> 30a6837... tidying figure code
+=======
+#compare AIC of models with and without traits
+
+
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #### Get Correlation TLP and LDMC for polygons (graminoids) ####
 # "traits_Not_dups" is the data.frame with the species-level trait averages
 # make sure that it is subset for the species we used in our analysis
@@ -966,6 +1110,7 @@ pointSpp <- as.character(unique(CO_point_all$species))
 setwd(datWD)
 CO_traits <- read.csv("./CO_mean_traits.csv", stringsAsFactors = FALSE)
 
+<<<<<<< HEAD
 #get trait correlations for all species used in the models
 traits_modSpp <- CO_traits[CO_traits$species %in% c(polySpp, pointSpp),]
 
@@ -1113,6 +1258,9 @@ CO_traits <- read.csv("./CO_mean_traits.csv", stringsAsFactors = FALSE)
 >>>>>>> a4403b8... update modeling script
 =======
 >>>>>>> d1625fe... try different precip models
+=======
+#l
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #get trait correlations for all species used in the models
 traits_modSpp <- CO_traits[CO_traits$species %in% c(polySpp, pointSpp),]
 
@@ -1125,6 +1273,9 @@ abline(reg = mComp)
 #traits of interest
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 traits <- c("TLP", "AvgDiam_mm", "RTD_g_cmSurvTLP_forbs", "RDMC_g_g", "SRL_best_m_g", "LDMC_g_g", "SLA_adj_cm2_g")
 
 #calculate a correlation matrix
@@ -1216,6 +1367,7 @@ anova(mGrowRTD, mGrowRTD_NO, test = "Chisq")
 diff(AIC(mGrowSRL, mGrowSRL_NO)$AIC) #SRL
 anova(mGrowSRL, mGrowSRL_NO, test = "Chisq")
 diff(AIC(mGrowRDiam, mGrowRDiam_NO)$AIC) #RDiam
+<<<<<<< HEAD
 =======
 >>>>>>> c3ae556... adding likelihood ratio tests
 anova(mGrowRDiam, mGrowRDiam_NO, test = "Chisq")
@@ -1239,6 +1391,12 @@ stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDi
 =======
           #type = "text",
 >>>>>>> fc1b797... refined model script
+=======
+anova(mGrowRDiam, mGrowRDiam_NO, test = "Chisq")
+
+stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam, style = "all2", column.labels = c("TLP", "LDMC", "SLA", "RDMC","RTD", "SRL", "RDiam"), dep.var.labels = c("P(Survival)"), digits = 2, model.numbers = FALSE, report = c("vc*"), omit = c("TLP_s", "LDMC_s", "SLA_s", "RDMC_s", "RTD_s", "SRL_s", "RDiam_s"), 
+          #type = "text",
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
           add.lines =  list(
             Trait = c("Trait", "-0.17**", "0.13", "0.05", "0.05", "-0.20**", "-0.09", "0.02") ,
             Blank = c("", "", "", "", "", "", "", ""),
@@ -1248,6 +1406,7 @@ stargazer(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDi
           ), omit.table.layout = c("-"),
           omit.stat = c("bic", "ll"))
 sjPlot::tab_model(mGrowTLP, mGrowLDMC, mGrowSLA, mGrowRDMC, mGrowRTD, mGrowSRL, mGrowRDiam)
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 #### comparing spp in growth analysis to spp in survival analsysis (for grams only) ####
@@ -1873,3 +2032,9 @@ save.image('script4_output.RData')
 =======
 save.image('./script4_output.RData')
 >>>>>>> 30a6837... tidying figure code
+=======
+
+  #### save output to use in figure script ####vc s/CO-Sgs-paper/scripts" #location where you'll put the environment data file
+setwd(path)
+save.image('script4_output.RData')
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39

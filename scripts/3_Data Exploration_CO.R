@@ -1,7 +1,10 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 80dfe2b... updating script 2
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #//////////////////////////
 # Demographic trade-offs affect how leaf turgor loss point and tissue dry matter content mediate the effect of drought on herbaceous perennial survival and growth
 # Data Exploration
@@ -12,6 +15,9 @@
 #//////////////////////////
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 ## Load packages
 library(lattice) #v0.20-41
 library(tidyverse) #v1.3.0
@@ -27,6 +33,7 @@ rm(list=ls())
 #datWD <- #set path for the location of the environment image of script 2 output
 setwd(datWD)
 #load data from previous 
+<<<<<<< HEAD
 <<<<<<< HEAD
 #load("./scripts/script2_output.RData")
 =======
@@ -65,11 +72,17 @@ load("./scripts/script2_output.RData")
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
 >>>>>>> b60fa6d... starting to update script 3
+=======
+load("./scripts/script2_output.RData")
+
+####Data exploration steps for survival data####
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #Data exploration steps
 #trim out the variables we aren't using from the datset
 poly_temp <- CO_poly_all
 #variables to test
 MyVar <- c("species","quad","year_t","area_t","survives_tplus1","TLP",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -97,6 +110,9 @@ hist(poly_temp$SRL_m_g)
 =======
            "SPEI_uniform","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "AvgDiam_mm", "neighbor_area_5",
 >>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
+=======
+           "SPEI_uniform","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "AvgDiam_mm", "neighbor_area_5",
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
            "neighbor_area_15", "neighbor_area_10","neighbor_area_20")
 poly_temp <- poly_temp[,MyVar]
 
@@ -107,6 +123,7 @@ hist(poly_temp$LDMC_g_g)
 hist(poly_temp$TLP)
 hist(poly_temp$survives)
 <<<<<<< HEAD
+<<<<<<< HEAD
 hist(poly_temp$SPEI_unique)
 <<<<<<< HEAD
 >>>>>>> 56c8fd3... added scripts for data analysis
@@ -114,12 +131,18 @@ hist(poly_temp$SPEI_unique)
 =======
 hist(poly_temp$SPEI_uniform)
 >>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
+=======
+hist(poly_temp$SPEI_uniform)
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 hist(poly_temp$SLA_adj_cm2_g)
 hist(poly_temp$RDMC_g_g)
 hist(poly_temp$RTD_g_cm3)
 hist(poly_temp$AvgDiam_mm)
 hist(poly_temp$SRL_m_g)
+<<<<<<< HEAD
 >>>>>>> b60fa6d... starting to update script 3
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 boxplot(poly_temp$area,
 varwidth = TRUE,
 main = "Boxplot of area",
@@ -128,12 +151,16 @@ ylab = "LDMC_g_g", col=c("gray40", "gray60", "gray80"), data = poly_temp, pch=16
 ###	Extra 0s
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #From the above histograms, it looks like the only variable with a lot of zeros is survival, which makes sense (it is all 0sand 1s, so we expect lots of 0s).  
 
 ###	Check for collinearity
 #for TLP models
 par(mfrow = c(1,1))
 MyVar2 <- c("area_t","survives_tplus1","TLP","SPEI_uniform")
+<<<<<<< HEAD
 <<<<<<< HEAD
 corrplot(cor(poly_temp[,MyVar2], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #There is some corrrelation between survival and area, but not enough to worry about (0.32)
@@ -198,6 +225,8 @@ par(mfrow = c(1,1))
 MyVar2 <- c("area_t","survives_tplus1","TLP","SPEI_unique")
 =======
 >>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 corrplot(cor(poly_temp[,MyVar2], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #There is some corrrelation between survival and area, but not enough to worry about (0.32)
 
@@ -235,6 +264,7 @@ corrplot(cor(poly_temp[,MyVar8], use = "na.or.complete", method = "pearson"), me
 ### examing variance inflation factors (VIF) for fixed effects
 #for TLP model
 <<<<<<< HEAD
+<<<<<<< HEAD
 vif(poly_temp[,MyVar2])
 #for LDMC_g_g model
 <<<<<<< HEAD
@@ -263,6 +293,8 @@ vif(poly_temp[,MyVar8])
 >>>>>>> c814ff3... calculating p-values using lrt
 =======
 =======
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 corvif(poly_temp[,MyVar2])
 #for LDMC_g_g model
 corvif(poly_temp[,MyVar3])
@@ -276,12 +308,16 @@ corvif(poly_temp[,MyVar6])
 corvif(poly_temp[,MyVar7])
 #for RDiam model
 corvif(poly_temp[,MyVar8])
+<<<<<<< HEAD
 >>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 >>>>>>> 882fd5f... changes
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 # All values are below 3, which is good
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -328,6 +364,8 @@ hist(poly_temp$area_s)
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
 >>>>>>> b60fa6d... starting to update script 3
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 ### Data exploration steps for forbs
 #trim the dataset to those variables you actually want 
 temp_point <- CO_point_all
@@ -336,6 +374,9 @@ MyVar <- c("species","quad","year","stems","survives","TLP",
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
            "SPEI_uniform","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3", "AvgDiam_mm",
            "neighbors_15", "neighbors_10","neighbors_20")
 temp_point <- temp_point[,MyVar]
@@ -351,6 +392,7 @@ hist(temp_point$RDMC_g_g)
 hist(temp_point$RTD_g_cm3)
 hist(temp_point$AvgDiam_mm)
 hist(temp_point$SRL_m_g)
+<<<<<<< HEAD
 =======
            "SPEI_unique","SPEI_unique_prev","LDMC_g_g","Tribe", "SLA_adj_cm2_g", "SRL_m_g", "RDMC_g_g","RTD_g_cm3",
 =======
@@ -385,6 +427,8 @@ hist(temp_point$RTD_g_cm3)
 hist(temp_point$AvgDiam_mm)
 hist(temp_point$SRL_m_g)
 >>>>>>> b60fa6d... starting to update script 3
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #There don't seem to be any really crazy outliers. The values for LDMC_g_g and LOP are definitely skewed, and I think that is because this dataset is largely dominated by one species. But that is one reason why I will include a random intercept for species
 
 ###	Extra 0s (looking at previous histograms)
@@ -392,6 +436,7 @@ hist(temp_point$SRL_m_g)
 #(it is all 0sand 1s, so we expect lots of 0s).  Obvious hint that I'll want to use a binomial distribution
 
 ##	Collinearity
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 par(mfrow=c(1,1))
@@ -499,6 +544,11 @@ par(mfrow=c(1,1))
 MyVar9 <-c("survives","TLP","SPEI_unique")  
 =======
 >>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
+=======
+par(mfrow=c(1,1))
+#for LOP
+MyVar9 <-c("survives","TLP","SPEI_uniform")  
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 corrplot(cor(temp_point[,MyVar9], use = "na.or.complete", method = "pearson"), method = "number", type = "lower")
 #No correlation between covariates for LOP model
 
@@ -571,6 +621,7 @@ hist(poly_temp_growth$LDMC_g_g)
 hist(poly_temp_growth$TLP)
 hist(poly_temp_growth$logDiffArea)
 <<<<<<< HEAD
+<<<<<<< HEAD
 hist(poly_temp_growth$SPEI_unique)
 <<<<<<< HEAD
 >>>>>>> 56c8fd3... added scripts for data analysis
@@ -578,17 +629,24 @@ hist(poly_temp_growth$SPEI_unique)
 =======
 hist(poly_temp_growth$SPEI_uniform)
 >>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
+=======
+hist(poly_temp_growth$SPEI_uniform)
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 hist(poly_temp_growth$SLA_adj_cm2_g)
 hist(poly_temp_growth$RDMC_g_g)
 hist(poly_temp_growth$SRL_m_g)
 hist(poly_temp_growth$RTD_g_cm3)
 hist(poly_temp_growth$AvgDiam_mm)
+<<<<<<< HEAD
 >>>>>>> 5e29c0b... finishing update of script 3
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 boxplot(poly_temp_growth$area,
         varwidth = TRUE,
         main = "Boxplot of area",
         ylab = "area", col=c("gray40", "gray60", "gray80"), data = poly_temp_growth, pch=16)	
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 ###	Collinearity
@@ -665,6 +723,8 @@ temp <- poly_temp_growth[,MyVar8] %>%
 
 =======
 >>>>>>> 5e29c0b... finishing update of script 3
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 ###	Collinearity
 par(mfrow=c(1,1))
 #for TLP models
@@ -711,6 +771,7 @@ corvif(temp)
 #for LDMC_g_g model
 temp <- poly_temp_growth[,MyVar3] %>% 
 <<<<<<< HEAD
+<<<<<<< HEAD
   dplyr::filter(!is.na(LDMC_g_g))
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
@@ -746,6 +807,8 @@ vif(temp)
 corvif(temp)
 #for LDMC_g_g model
 temp <- poly_temp_growth[,MyVar3] %>% 
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
   dplyr::filter(!is.na("LDMC_g_g"))
 corvif(temp)
 #for SLA model
@@ -768,6 +831,7 @@ corvif(temp)
 temp <- poly_temp_growth[,MyVar8] %>% 
   dplyr::filter(!is.na("AvgDiam_mm"))
 corvif(temp)
+<<<<<<< HEAD
 >>>>>>> 9414fd525d36bb1231035fb6b40fb550a46303f0
 >>>>>>> 882fd5f... changes
 
@@ -802,6 +866,11 @@ plot(jitter(logDiffArea)~jitter(LDMC_g_g),
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
 >>>>>>> 5e29c0b... finishing update of script 3
+=======
+
+# All values are below 3, which is good
+
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #### subset and scale data sets ####
 #subset the point dataset to include only 500 of Sphaeralcea coccinea indivduals
 #divide out the sphaeralcea data
@@ -809,8 +878,11 @@ CO_point_SPH <- CO_point_all[CO_point_all$species == "Sphaeralcea coccinea",]
 #subset randomly for 360 observations (randomly select 15 observations per quadrat) (3 iterations)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dbabe56... update sphaeralcea subsetting and associated tables/figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #set random seed so results are reproducible
 set.seed(12011993)
@@ -833,6 +905,7 @@ for(i in 1:length(unique(CO_point_SPH$quad))){
     CO_point_SPH_rand <- temp2
   }
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 #rest of points 
@@ -862,6 +935,8 @@ CO_point_SPHfew_3 <- CO_point_SPH %>%
   as.data.frame()
 =======
 >>>>>>> dbabe56... update sphaeralcea subsetting and associated tables/figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #rest of points 
 CO_point_rest <- CO_point_all[CO_point_all$species != "Sphaeralcea coccinea",]
@@ -875,11 +950,15 @@ CO_point_all <- rbind(rbind(CO_point_SPH_rand, CO_point_rest))
 CO_poly_all$TLP_s <- as.numeric(scale(CO_poly_all$TLP))
 CO_poly_all$LDMC_s <- as.numeric(scale(CO_poly_all$LDMC_g_g))
 <<<<<<< HEAD
+<<<<<<< HEAD
 CO_poly_all$SPEI_s <- as.numeric(scale(CO_poly_all$SPEI_unique))
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
 CO_poly_all$SPEI_s <- as.numeric(scale(CO_poly_all$SPEI_uniform))
 >>>>>>> 071ffc7... update script 3 to use uniform rather than unique SPEI
+=======
+CO_poly_all$SPEI_s <- as.numeric(scale(CO_poly_all$SPEI_uniform))
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 CO_poly_all$neighbors_5_s <- as.numeric(scale(CO_poly_all$neighbor_area_5))
 CO_poly_all$neighbors_10_s <- as.numeric(scale(CO_poly_all$neighbor_area_10))
 CO_poly_all$neighbors_15_s <- as.numeric(scale(CO_poly_all$neighbor_area_15))
@@ -887,6 +966,9 @@ CO_poly_all$neighbors_20_s <- as.numeric(scale(CO_poly_all$neighbor_area_20))
 CO_poly_all$SLA_s <- as.numeric(scale(CO_poly_all$SLA_adj_cm2_g))
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 CO_poly_all$RDMC_s <- as.numeric(scale(CO_poly_all$RDMC_g_g))
 CO_poly_all$RTD_s <- as.numeric(scale(CO_poly_all$RTD_g_cm3))
 CO_poly_all$RDiam_s <- as.numeric(scale(CO_poly_all$AvgDiam_mm))
@@ -918,6 +1000,7 @@ rm(list = ls()[!(ls() %in% c('CO_point_all','CO_poly_all'))])
 ## for next script, need CO_point_all and CO_poly_all data.frames
 #save as an .RData file 
 # path = #location where you'll put the environment data file
+<<<<<<< HEAD
 <<<<<<< HEAD
 setwd(path)
 save.image('script3_output.RData')
@@ -973,3 +1056,7 @@ save.image('script3_output.RData')
 =======
 save.image('script3_output.RData')
 >>>>>>> fa7c121... updating analysis and figure code
+=======
+setwd(path)
+save.image('script3_output.RData')
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39

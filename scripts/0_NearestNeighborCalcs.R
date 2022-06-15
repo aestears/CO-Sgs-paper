@@ -13,19 +13,26 @@ rm(list=ls())
 #### load packages ####
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 library(tidyverse) #v1.3.0
 library(sf) #v0.9-7
 library(mapview) #v2.9.0
 library(lwgeom) #v0.2-5
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #### Data Sources ####
 # Polygon and Point demographic tracking data from output of 'tracking script' set of scripts
 #### Calculating Conspecific Nearest Neighbor Area for Polygon Dataset
 ## set wd and read in data file
 # workDir <-  #change to the path of your file "polygon_species_survD_IPM.csv"
+<<<<<<< HEAD
 =======
 require(tidyverse) #v1.3.0
 require(sf) #v0.9-7
@@ -48,6 +55,12 @@ setwd(workDir)
 
 #read in polygon survival data file
 poly <- read.csv("polygonSpeciesSurvData.csv")
+=======
+setwd(workDir) 
+
+#read in polygon survival data file
+poly <- read.csv("polygon_species_survD_IPM.csv")
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 ## create empty columns in the data.frame to hold values for each nearest neighbor radius (in cm)
 poly$neighbor_area_5 <- NA
@@ -71,6 +84,7 @@ species <- unique(poly$species)
 #set the working directory to the location of the folder "PolygonTrackingResults"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # trackingDatWD <- # change the location of the folder "PolygonTrackingResults"
 #change to appropriate working directory
 =======
@@ -80,6 +94,10 @@ trackingDatWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs
 # trackingDatWD <- # change the location of the folder "PolygonTrackingResults"
 #change to appropriate working directory
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+# trackingDatWD <- # change the location of the folder "PolygonTrackingResults"
+#change to appropriate working directory
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 setwd(trackingDatWD)
 
 for(k in 1:length(species)) { #loop through all species
@@ -115,6 +133,7 @@ poly<- left_join(poly, trackSP[,c("quad","year","SP_ID","Species","trackID")], b
 #### calculate nearest neighbor for polygons with only one SP_ID ####
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # shpWD <- #change to your file that contains the CO shapefiles
 =======
 shpWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Adler Dowloaded Datasets/Adler_CO_Downloaded Data/CO_shapefiles" #change to your file that contains the CO shapefiles
@@ -122,6 +141,9 @@ shpWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/Data/Adler Dow
 =======
 # shpWD <- #change to your file that contains the CO shapefiles
 >>>>>>> dc34618... cleaning up documentation/updating figures
+=======
+# shpWD <- #change to your file that contains the CO shapefiles
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 setwd(shpWD)
 
 #make a bounding box that is the shape and size of the quadrat
@@ -517,6 +539,7 @@ for (k in 1:length(species)){
 #### Calculate Nearest Neighbor for Points Dataset ####
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # pointsWD <-#change the location of your 'point_species_survD.csv" file 
 =======
 pointsWD <- "/Users/Alice/Dropbox/Grad School/Research/Trait Project/CO_sgs Analysis/trackingData/SurvivalData" #change the location of your 'point_species_survD.csv" file 
@@ -528,6 +551,13 @@ setwd(pointsWD)
 
 #read in point survival data
 points <- read.csv("/pointSpeciesSurvData.csv", stringsAsFactors = FALSE)
+=======
+# pointsWD <-#change the location of your 'point_species_survD.csv" file 
+setwd(pointsWD)
+
+#read in point survival data
+points <- read.csv("point_species_survD.csv", stringsAsFactors = FALSE)
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #add a column for 'site' 
 points$Site <- "CO"
 
@@ -538,7 +568,11 @@ points$neighbors_15 <- NA
 points$neighbors_20 <- NA
 
 #make a vector for years in the dataset
+<<<<<<< HEAD
 year <- sort(unique(points$year_t))
+=======
+year <- sort(unique(points$year))
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 quad <- unique(points$quad) #make a vector of quads in the dataset
 species <- unique(points$species) #make a vector of species in the dataset
 
@@ -563,7 +597,11 @@ for(j in 1:length(quad)) {
                    points$quad == quad[j] &
                    points$year == year[i] &
                    points$species == species[k], "neighbors_5"] <- count
+<<<<<<< HEAD
           }
+=======
+        }
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
       }
     }
   }
@@ -656,6 +694,7 @@ rm(list = ls()[!(ls() %in% c('points','poly'))])
 #### for next script, need 'points' and 'poly' data.frames ####
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 #save as an .RData file 
 # path =  #location where you'll put the environment data file
 setwd(path)
@@ -663,8 +702,13 @@ save.image('script0_output.RData')
 =======
 >>>>>>> 00232cd... renamed file
 =======
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #save as an .RData file 
 # path =  #location where you'll put the environment data file
 setwd(path)
 save.image('script0_output.RData')
+<<<<<<< HEAD
 >>>>>>> f43506c... updating script 0 and script 1
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
