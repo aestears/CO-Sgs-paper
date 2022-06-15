@@ -553,10 +553,6 @@ globPreds_growth <- data.frame("x" = globPreds_growth$x, "preds" = globPreds_gro
 
 
 #### Make a figure showing the fitted relationship between size_t and size_t+1 for each graminoid species (figure 4: panel C) ####
-<<<<<<< HEAD
->>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
-=======
->>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 ## use CO_poly_growth dataset
 growTemp <- CO_grow_TLP
