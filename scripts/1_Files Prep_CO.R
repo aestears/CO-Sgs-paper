@@ -29,7 +29,7 @@ setwd(nearWD)
 ##load trait data 
 # data source: Blumenthal, 2020 (https://doi.org/10.1111/1365-2745.13454) 
 # Except: all trait values for Schedonnardus paniculatus, root trait values for Sitanion hystrix, Stipa comata RDMC, Allium textile RDMC and root diameter values, and all trait values for Vicia americana
-# datWD <- #set working directory for location of flowering time data file
+# datWD <- #set working directory for location of trait data file
 setwd(datWD)
 CO_traits <- read.csv(".//CO_mean_traits.csv", stringsAsFactors = FALSE)
 
