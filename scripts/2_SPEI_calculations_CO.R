@@ -1,8 +1,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> aa56e37... update SPEI script
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 =======
 >>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 #//////////////////////////
@@ -13,6 +16,7 @@
 # Revised 9 February 2021
 # R version 4.0.3 
 #//////////////////////////
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -162,6 +166,8 @@ CO_point_all <- read.csv("./Data/CO Analysis Data Files/Intermediate Analysis Fi
 >>>>>>> aa56e37... update SPEI script
 =======
 >>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 
 #### load packages ####
 library(tidyverse) #v1.3.0
@@ -274,10 +280,13 @@ rm(list = ls()[!(ls() %in% c('CO_point_all','CO_poly_all'))])
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 KS_min <- qnorm(.025 , mean = mean(KS_only$SPEI_6), sd(KS_only$SPEI_6))
 KS_max <- qnorm(.975 , mean = mean(KS_only$SPEI_6), sd(KS_only$SPEI_6))
 >>>>>>> 56c8fd3... added scripts for data analysis
 =======
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 =======
 >>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 ## for next script, need CO_point_all and CO_poly_all data.frames
@@ -286,6 +295,9 @@ KS_max <- qnorm(.975 , mean = mean(KS_only$SPEI_6), sd(KS_only$SPEI_6))
 setwd(path)
 save.image('script2_output.RData')
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> aa56e37... update SPEI script
+=======
+>>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
 =======
 >>>>>>> 1d2849d87a02a3a215397b25908f81eff4b56d39
