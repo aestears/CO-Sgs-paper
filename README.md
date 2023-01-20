@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6647755.svg)](https://doi.org/10.5281/zenodo.6647755)
 # CO-Sgs-paper
 This repository contains R code to replicate the analyses in the 
 manuscript "Water availability dictates how plant traits predict 
@@ -8,6 +9,4 @@ Readers can use these scripts to replicate our analyses. Data used in these anly
 previously published data sets that are detailed in the manuscript as well as novel data 
 that is archived in a Dryad repository indicated in the manuscript. Scripts should be run in numerical 
 order, starting with "0_NearestNeighborCalcs.R"
-
-Zenodo DOI: https://zenodo.org/badge/latestdoi/315482996
 
